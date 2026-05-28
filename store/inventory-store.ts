@@ -20,6 +20,11 @@ interface InventoryStore {
   products: Product[]
 ) => void;
 
+reduceStock: (
+  id: string,
+  quantity: number
+) => void;
+
 }
 
 export const useInventoryStore = 
@@ -55,10 +60,33 @@ export const useInventoryStore =
       ),
   }));
 
+
+  
+
   await deleteProductFromDB(
     id
   );
 },
+
+reduceStock: (
+  id,
+  quantity
+) =>
+  set((state) => ({
+    products:
+      state.products.map(
+        (product) =>
+          product.id === id
+            ? {
+                ...product,
+
+                stock:
+                  product.stock -
+                  quantity,
+              }
+            : product
+      ),
+  })),
 
             
         }),
