@@ -6,6 +6,9 @@ import { useInventoryStore } from "../../store/inventory-store";
 
 import { useSalesStore } from "../../store/sales-store";
 import DashboardLayout from "../../components/dashboard-layout";
+import {
+  updateProductStock,
+} from "../../lib/inventory";
 
 import {
   getSales,
@@ -18,6 +21,8 @@ export default function SalesPage() {
       (state) =>
         state.products
     );
+
+
 
   const reduceStock =
     useInventoryStore(
@@ -64,6 +69,14 @@ export default function SalesPage() {
       Number(quantity || 0)
       : 0;
 
+  const profit =
+    selectedProduct
+      ? (
+        selectedProduct.sellPrice -
+        selectedProduct.buyPrice
+      ) * Number(quantity || 0)
+      : 0;
+
   useEffect(() => {
     async function loadSales() {
       const data =
@@ -71,26 +84,30 @@ export default function SalesPage() {
 
       if (!data) return;
 
-      const formatted =
-        data.map((sale) => ({
-          id: sale.id,
+const formatted =
+  data.map((sale) => ({
+    id: sale.id,
 
-          productId:
-            sale.product_id,
+    productId:
+      sale.product_id,
 
-          productName:
-            sale.product_name,
+    productName:
+      sale.product_name,
 
-          quantity:
-            sale.quantity,
+    quantity:
+      sale.quantity,
 
-          total: Number(
-            sale.total
-          ),
+    total: Number(
+      sale.total
+    ),
 
-          createdAt:
-            sale.created_at,
-        }));
+    profit: Number(
+      sale.profit
+    ),
+
+    createdAt:
+      sale.created_at,
+  }));
 
       setSales(formatted);
     }
@@ -103,22 +120,22 @@ export default function SalesPage() {
   ) {
     e.preventDefault();
 
-   if (
-  !selectedProduct ||
-  !quantity
-)
-  return;
+    if (
+      !selectedProduct ||
+      !quantity
+    )
+      return;
 
-if (
-  Number(quantity) >
-  selectedProduct.stock
-) {
-  alert(
-    "Not enough stock"
-  );
+    if (
+      Number(quantity) >
+      selectedProduct.stock
+    ) {
+      alert(
+        "Not enough stock"
+      );
 
-  return;
-}
+      return;
+    }
 
     await createSale({
       productId:
@@ -131,6 +148,7 @@ if (
         Number(quantity),
 
       total,
+      profit,
     });
 
     addSale({
@@ -146,6 +164,7 @@ if (
         Number(quantity),
 
       total,
+      profit,
 
       createdAt:
         new Date().toISOString(),
@@ -153,6 +172,13 @@ if (
 
     reduceStock(
       selectedProduct.id,
+      Number(quantity)
+    );
+
+    await updateProductStock(
+      selectedProduct.id,
+
+      selectedProduct.stock -
       Number(quantity)
     );
 
@@ -219,22 +245,29 @@ if (
             TZS
           </div>
 
-{selectedProduct && (
-  <div className="border rounded-xl p-4">
-    <div>
-      Stock Left:
-      {" "}
-      {selectedProduct.stock}
-    </div>
+          <div className="text-green-600">
+            Profit:
+            {" "}
+            TZS{" "}
+            {profit.toLocaleString()}
+          </div>
 
-    {selectedProduct.stock <=
-      5 && (
-      <div className="text-red-500 text-sm mt-2">
-        Low Stock Warning
-      </div>
-    )}
-  </div>
-)}
+          {selectedProduct && (
+            <div className="border rounded-xl p-4">
+              <div>
+                Stock Left:
+                {" "}
+                {selectedProduct.stock}
+              </div>
+
+              {selectedProduct.stock <=
+                5 && (
+                  <div className="text-red-500 text-sm mt-2">
+                    Low Stock Warning
+                  </div>
+                )}
+            </div>
+          )}
 
           <button
             type="submit"

@@ -73,3 +73,20 @@ export async function deleteProductFromDB(
     console.error(error);
   }
 }
+
+export async function updateProductStock(
+  id: string,
+  stock: number
+) {
+  const { error } =
+    await supabase
+      .from("inventory")
+      .update({
+        stock,
+      })
+      .eq("id", id);
+
+  if (error) {
+    console.error(error);
+  }
+}

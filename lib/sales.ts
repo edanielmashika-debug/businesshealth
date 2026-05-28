@@ -28,6 +28,8 @@ export async function createSale(
 
     quantity: number;
 
+    profit: number;
+
     total: number;
   }
 ) {
@@ -54,6 +56,7 @@ export async function createSale(
           sale.quantity,
 
         total: sale.total,
+        profit: sale.profit,
       });
 
   if (error) {

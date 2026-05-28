@@ -14,6 +14,8 @@ export interface Sale {
 
   total: number;
 
+  profit: number;
+
   createdAt: string;
 }
 
