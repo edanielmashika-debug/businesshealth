@@ -39,6 +39,10 @@ const links = [
     name: "Analytics",
     href: "/analytics",
   },
+  {
+    name: "Sales",
+    href: "/sales",
+  },
 ];
 
 export default function Sidebar() {
