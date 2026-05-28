@@ -10,13 +10,95 @@ import {
   useSalesStore,
 } from "../../store/sales-store";
 
+import {
+  useEffect,
+  useState,
+} from "react";
+
+import {
+  getSales,
+} from "../../lib/sales";
+
 export default function AnalyticsPage() {
 
-   const sales =
-    useSalesStore(
-      (state) =>
-        state.sales
+  const [sales, setSales] =
+    useState<any[]>([]);
+
+  useEffect(() => {
+    async function loadSales() {
+      const data =
+        await getSales();
+
+      if (data) {
+        const formatted =
+          data.map(
+            (sale: any) => ({
+              id: sale.id,
+
+              productId:
+                sale.product_id,
+
+              productName:
+                sale.product_name,
+
+              quantity:
+                sale.quantity,
+
+              total: Number(
+                sale.total
+              ),
+
+              profit: Number(
+                sale.profit
+              ),
+
+              createdAt:
+                sale.created_at,
+            })
+          );
+
+        setSales(
+          formatted
+        );
+      }
+    }
+
+    loadSales();
+  }, []);
+
+
+  const today =
+    new Date()
+      .toISOString()
+      .split("T")[0];
+
+
+  const todaySales =
+    sales.filter(
+      (sale) =>
+        sale.createdAt.startsWith(
+          today
+        )
     );
+
+  const todayRevenue =
+    todaySales.reduce(
+      (sum, sale) =>
+        sum + sale.total,
+      0
+    );
+
+  const todayProfit =
+    todaySales.reduce(
+      (sum, sale) =>
+        sum + sale.profit,
+      0
+    );
+
+  const todaySalesCount =
+    todaySales.length;
+
+
   const chartData =
     sales.map((sale) => ({
       name:
@@ -30,7 +112,7 @@ export default function AnalyticsPage() {
     }));
 
 
- 
+
 
   const totalRevenue =
     sales.reduce(
@@ -135,7 +217,61 @@ export default function AnalyticsPage() {
           </div>
         </div>
         <AnalyticsChart />
+        <div className="border rounded-2xl p-5 space-y-4">
+          <h2 className="text-xl font-bold">
+            Daily Report
+          </h2>
 
+          <div className="grid grid-cols-2 gap-4">
+            <div className="border rounded-xl p-4">
+              <div className="text-sm text-gray-500">
+                Today Revenue
+              </div>
+
+              <div className="text-xl font-bold">
+                TZS{" "}
+                {todayRevenue.toLocaleString()}
+              </div>
+            </div>
+
+            <div className="border rounded-xl p-4">
+              <div className="text-sm text-gray-500">
+                Today Profit
+              </div>
+
+              <div className="text-xl font-bold text-green-600">
+                TZS{" "}
+                {todayProfit.toLocaleString()}
+              </div>
+            </div>
+
+            <div className="border rounded-xl p-4">
+              <div className="text-sm text-gray-500">
+                Sales Today
+              </div>
+
+              <div className="text-xl font-bold">
+                {todaySalesCount}
+              </div>
+            </div>
+
+            <div className="border rounded-xl p-4">
+              <div className="text-sm text-gray-500">
+                Average Sale
+              </div>
+
+              <div className="text-xl font-bold">
+                TZS{" "}
+                {todaySalesCount > 0
+                  ? Math.round(
+                    todayRevenue /
+                    todaySalesCount
+                  ).toLocaleString()
+                  : 0}
+              </div>
+            </div>
+          </div>
+        </div>
         <CategoryChart />
 
         <ProfitChart
