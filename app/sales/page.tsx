@@ -19,11 +19,11 @@ export default function SalesPage() {
         state.products
     );
 
-    const reduceStock =
-  useInventoryStore(
-    (state) =>
-      state.reduceStock
-  );
+  const reduceStock =
+    useInventoryStore(
+      (state) =>
+        state.reduceStock
+    );
 
   const addSale =
     useSalesStore(
@@ -61,7 +61,7 @@ export default function SalesPage() {
   const total =
     selectedProduct
       ? selectedProduct.sellPrice *
-        Number(quantity || 0)
+      Number(quantity || 0)
       : 0;
 
   useEffect(() => {
@@ -103,11 +103,22 @@ export default function SalesPage() {
   ) {
     e.preventDefault();
 
-    if (
-      !selectedProduct ||
-      !quantity
-    )
-      return;
+   if (
+  !selectedProduct ||
+  !quantity
+)
+  return;
+
+if (
+  Number(quantity) >
+  selectedProduct.stock
+) {
+  alert(
+    "Not enough stock"
+  );
+
+  return;
+}
 
     await createSale({
       productId:
@@ -141,9 +152,9 @@ export default function SalesPage() {
     });
 
     reduceStock(
-  selectedProduct.id,
-  Number(quantity)
-);
+      selectedProduct.id,
+      Number(quantity)
+    );
 
     setSelectedProductId("");
 
@@ -152,95 +163,112 @@ export default function SalesPage() {
 
   return (
     <DashboardLayout>
-    <div className="p-4 space-y-6">
-      <h1 className="text-2xl font-bold">
-        Sales
-      </h1>
+      <div className="p-4 space-y-6">
+        <h1 className="text-2xl font-bold">
+          Sales
+        </h1>
 
-      <form
-        onSubmit={handleSubmit}
-        className="space-y-4"
-      >
-        <select
-          value={
-            selectedProductId
-          }
-          onChange={(e) =>
-            setSelectedProductId(
-              e.target.value
-            )
-          }
-          className="w-full border rounded-xl p-3"
+        <form
+          onSubmit={handleSubmit}
+          className="space-y-4"
         >
-          <option value="">
-            Select Product
-          </option>
-
-          {products.map(
-            (product) => (
-              <option
-                key={product.id}
-                value={product.id}
-              >
-                {product.name}
-              </option>
-            )
-          )}
-        </select>
-
-        <input
-          type="number"
-          placeholder="Quantity"
-          value={quantity}
-          onChange={(e) =>
-            setQuantity(
-              e.target.value
-            )
-          }
-          className="w-full border rounded-xl p-3"
-        />
-
-        <div className="border rounded-xl p-4">
-          Total:
-          {" "}
-          {total.toLocaleString()}
-          {" "}
-          TZS
-        </div>
-
-        <button
-          type="submit"
-          className="w-full bg-black text-white rounded-xl p-3"
-        >
-          Record Sale
-        </button>
-      </form>
-
-      <div className="space-y-3">
-        {sales.map((sale) => (
-          <div
-            key={sale.id}
-            className="border rounded-xl p-4"
+          <select
+            value={
+              selectedProductId
+            }
+            onChange={(e) =>
+              setSelectedProductId(
+                e.target.value
+              )
+            }
+            className="w-full border rounded-xl p-3"
           >
-            <div className="font-semibold">
-              {sale.productName}
-            </div>
+            <option value="">
+              Select Product
+            </option>
 
-            <div>
-              Qty:
-              {" "}
-              {sale.quantity}
-            </div>
+            {products.map(
+              (product) => (
+                <option
+                  key={product.id}
+                  value={product.id}
+                >
+                  {product.name}({product.stock} left)
+                </option>
+              )
+            )}
+          </select>
 
-            <div>
-              TZS
-              {" "}
-              {sale.total.toLocaleString()}
-            </div>
+          <input
+            type="number"
+            placeholder="Quantity"
+            value={quantity}
+            onChange={(e) =>
+              setQuantity(
+                e.target.value
+              )
+            }
+            className="w-full border rounded-xl p-3"
+          />
+
+          <div className="border rounded-xl p-4">
+            Total:
+            {" "}
+            {total.toLocaleString()}
+            {" "}
+            TZS
           </div>
-        ))}
-      </div>
+
+{selectedProduct && (
+  <div className="border rounded-xl p-4">
+    <div>
+      Stock Left:
+      {" "}
+      {selectedProduct.stock}
     </div>
+
+    {selectedProduct.stock <=
+      5 && (
+      <div className="text-red-500 text-sm mt-2">
+        Low Stock Warning
+      </div>
+    )}
+  </div>
+)}
+
+          <button
+            type="submit"
+            className="w-full bg-black text-white rounded-xl p-3"
+          >
+            Record Sale
+          </button>
+        </form>
+
+        <div className="space-y-3">
+          {sales.map((sale) => (
+            <div
+              key={sale.id}
+              className="border rounded-xl p-4"
+            >
+              <div className="font-semibold">
+                {sale.productName}
+              </div>
+
+              <div>
+                Qty:
+                {" "}
+                {sale.quantity}
+              </div>
+
+              <div>
+                TZS
+                {" "}
+                {sale.total.toLocaleString()}
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
     </DashboardLayout>
   );
 }
