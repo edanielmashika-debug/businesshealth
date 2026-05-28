@@ -3,6 +3,7 @@ import { create } from "zustand";
 import { persist } from "zustand/middleware";
 
 import { Transaction } from "@/types/transaction";
+import { deleteTransactionFromDB } from "@/lib/transactions";
 
 interface TransactionStore {
   transactions: Transaction[];
@@ -13,7 +14,7 @@ interface TransactionStore {
 
   deleteTransaction: (
     id: string,
-  ) => void;
+  ) => Promise<void>;
 
   setTransactions: (
     transactions: Transaction[]
@@ -36,14 +37,21 @@ export const useTransactionStore =
             ],
           })),
 
-        deleteTransaction: (id) =>
-          set((state) => ({
-            transactions:
-              state.transactions.filter(
-                (transaction) =>
-                  transaction.id !== id
-              ),
-          })),
+        deleteTransaction: async(id) =>
+          {
+  set((state) => ({
+    transactions:
+      state.transactions.filter(
+        (transaction) =>
+          transaction.id !== id
+      ),
+  }));
+
+  await deleteTransactionFromDB(
+    id
+  );
+},
+          
 
         setTransactions: (
           transactions

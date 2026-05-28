@@ -2,10 +2,15 @@ import DashboardLayout from "@/components/dashboard-layout";
 import AddTransactionForm from "@/components/add-transaction-form";
 import TransactionList from "@/components/transaction-list";
 import SMSImport from "@/components/sms-import";
+import {
+  deleteTransactionFromDB,
+} from "@/lib/transactions";
 
 export default function TransactionsPage() {
-    return (
-        <DashboardLayout>
+
+
+  return (
+    <DashboardLayout>
       <h1 className="text-3xl font-bold mb-6">
         Transactions
       </h1>
@@ -14,8 +19,8 @@ export default function TransactionsPage() {
         <AddTransactionForm />
 
         <TransactionList />
-        <SMSImport/>
+        <SMSImport />
       </div>
     </DashboardLayout>
-    );
+  );
 } 
