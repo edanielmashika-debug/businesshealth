@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import { useInventoryStore } from "../../store/inventory-store";
 
 import { useSalesStore } from "../../store/sales-store";
+import DashboardLayout from "/Users/Emmanuel Daniel/businesshealth/components/dashboard-layout";
 
 import {
   getSales,
@@ -150,6 +151,7 @@ export default function SalesPage() {
   }
 
   return (
+    <DashboardLayout>
     <div className="p-4 space-y-6">
       <h1 className="text-2xl font-bold">
         Sales
@@ -239,5 +241,6 @@ export default function SalesPage() {
         ))}
       </div>
     </div>
+    </DashboardLayout>
   );
 }

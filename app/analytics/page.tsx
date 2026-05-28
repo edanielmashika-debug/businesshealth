@@ -1,10 +1,10 @@
 "use client";
 
-import DashboardLayout from "@/components/dashboard-layout";
+import DashboardLayout from "/Users/Emmanuel Daniel/businesshealth/components/dashboard-layout";
 
-import AnalyticsChart from "@/components/analytics-chart";
+import AnalyticsChart from "/Users/Emmanuel Daniel/businesshealth/components/analytics-chart";
 
-import CategoryChart from "@/components/category-chart";
+import CategoryChart from "/Users/Emmanuel Daniel/businesshealth/components/category-chart";
 
 export default function AnalyticsPage() {
   return (
