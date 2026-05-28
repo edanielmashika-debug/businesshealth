@@ -5,7 +5,7 @@ import { useEffect, useState } from "react";
 import { useInventoryStore } from "../../store/inventory-store";
 
 import { useSalesStore } from "../../store/sales-store";
-import DashboardLayout from "/Users/Emmanuel Daniel/businesshealth/components/dashboard-layout";
+import DashboardLayout from "../../components/dashboard-layout";
 
 import {
   getSales,
