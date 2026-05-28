@@ -1,6 +1,9 @@
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
 import { Product } from "@/types/product";
+import {
+  deleteProductFromDB,
+} from "@/lib/inventory";
 
 interface InventoryStore {
     products: Product[];
@@ -11,7 +14,11 @@ interface InventoryStore {
 
     deleteProduct: (
         id: string
-    )=> void;
+    )=> Promise<void>;
+
+    setProducts: (
+  products: Product[]
+) => void;
 
 }
 
@@ -20,6 +27,13 @@ export const useInventoryStore =
      persist(
         (set)=>({
             products: [],
+
+            setProducts: (
+  products
+) =>
+  set({
+    products,
+  }),
             
             addProduct: (
                 product
@@ -30,16 +44,21 @@ export const useInventoryStore =
                         ...state.products,
                     ],
                 })),
-             deleteProduct: (
-                id
-             )=>
-                set((state)=>({
-                    products:
-                      state.products.filter(
-                        (product) =>
-                            product.id !== id
-                      ),
-                })),
+  deleteProduct: async (
+  id
+) => {
+  set((state) => ({
+    products:
+      state.products.filter(
+        (product) =>
+          product.id !== id
+      ),
+  }));
+
+  await deleteProductFromDB(
+    id
+  );
+},
 
             
         }),

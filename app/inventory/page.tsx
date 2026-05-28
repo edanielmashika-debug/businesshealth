@@ -5,6 +5,12 @@ import DashboardLayout from "@/components/dashboard-layout";
 import { useInventoryStore } from "@/store/inventory-store";
 
 import { useState } from "react";
+import { useEffect } from "react";
+
+import {
+  getProducts,
+  createProduct,
+} from "@/lib/inventory";
 
 export default function InventoryPage() {
   const products =
@@ -12,6 +18,12 @@ export default function InventoryPage() {
       (state) =>
         state.products
     );
+
+    const setProducts =
+  useInventoryStore(
+    (state) =>
+      state.setProducts
+  );
 
   const addProduct =
     useInventoryStore(
@@ -37,10 +49,22 @@ export default function InventoryPage() {
   const [sellPrice, setSellPrice] =
     useState("");
 
-  function handleSubmit(
+  async function handleSubmit(
     e: React.FormEvent
   ) {
     e.preventDefault();
+
+    await createProduct({
+  name,
+
+  stock: Number(stock),
+
+  buyPrice:
+    Number(buyPrice),
+
+  sellPrice:
+    Number(sellPrice),
+});
 
     addProduct({
       id: crypto.randomUUID(),
@@ -67,6 +91,40 @@ export default function InventoryPage() {
 
     setSellPrice("");
   }
+
+
+  useEffect(() => {
+  async function loadProducts() {
+    const data =
+      await getProducts();
+
+    if (!data) return;
+
+    const formatted =
+      data.map((product) => ({
+        id: product.id,
+
+        name: product.name,
+
+        stock: product.stock,
+
+        buyPrice: Number(
+          product.buy_price
+        ),
+
+        sellPrice: Number(
+          product.sell_price
+        ),
+
+        createdAt:
+          product.created_at,
+      }));
+
+    setProducts(formatted);
+  }
+
+  loadProducts();
+}, [setProducts]);
 
   return (
     <DashboardLayout>
