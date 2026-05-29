@@ -66,11 +66,11 @@ export default function Sidebar() {
         <div className="fixed inset-0 ocean-card/40 z-50 md:hidden">
           <aside className="bg-white w-64 h-full p-4">
             <div className="flex items-center justify-between mb-8">
-              <h1 className="text-2xl font-bold">
+              <h1 className="text-2xl font-bold  text-rose-950">
                 Biashara
               </h1>
 
-              <button onClick={() => { setOpen(false); }}>
+              <button className="text-white" onClick={() => { setOpen(false); }}>
                 <X />
               </button>
             </div>
@@ -82,7 +82,7 @@ export default function Sidebar() {
                   <Link
                     key={link.name}
                     href={link.href}
-                    className="block p-3 rounded-lg hover:bg-gray-100 transition text-slate-200"
+                    className="block p-3 rounded-lg hover:bg-gray-100 transition text-rose-950"
                   >
                     {link.name}
                   </Link>
