@@ -21,7 +21,7 @@ export default function ProfitChart({
   data,
 }: Props) {
   return (
-    <div className="border rounded-xl p-4 h-80">
+    <div className="ocean-card p-4 h-80">
       <ResponsiveContainer
         width="100%"
         height="100%"

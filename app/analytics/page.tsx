@@ -163,7 +163,7 @@ export default function AnalyticsPage() {
     <DashboardLayout>
       <div className="space-y-6">
         <div>
-          <h1 className="text-3xl font-bold">
+          <h1 className="text-3xl font-bold text-rose-950">
             Analytics
           </h1>
 
@@ -172,7 +172,7 @@ export default function AnalyticsPage() {
           </p>
         </div>
         <div className="grid grid-cols-2 gap-4">
-          <div className="border rounded-xl p-4">
+          <div className="border rounded-xl p-4 ocean-general">
             <div className="text-sm text-gray-500">
               Revenue
             </div>
@@ -183,7 +183,7 @@ export default function AnalyticsPage() {
             </div>
           </div>
 
-          <div className="border rounded-xl p-4">
+          <div className="border rounded-xl p-4 ocean-general">
             <div className="text-sm text-gray-500">
               Profit
             </div>
@@ -194,22 +194,22 @@ export default function AnalyticsPage() {
             </div>
           </div>
 
-          <div className="border rounded-xl p-4">
+          <div className="border rounded-xl p-4 ocean-general">
             <div className="text-sm text-gray-500">
               Sales
             </div>
 
-            <div className="text-2xl font-bold">
+            <div className="text-2xl font-bold text-rose-950">
               {totalSales}
             </div>
           </div>
 
-          <div className="border rounded-xl p-4">
+          <div className="border rounded-xl p-4 ocean-general">
             <div className="text-sm text-gray-500">
               Best Seller
             </div>
 
-            <div className="text-xl font-bold">
+            <div className="text-xl font-bold text-rose-950">
               {bestSeller
                 ? bestSeller[0]
                 : "No sales"}
