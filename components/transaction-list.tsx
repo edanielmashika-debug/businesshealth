@@ -29,7 +29,7 @@ export default function TransactionList() {
   }
 
   return (
-    <div className="border rounded-2xl p-5">
+    <div className="border rounded-2xl p-5 ocean-general">
       <h2 className="text-xl font-bold mb-4">
         Transactions
       </h2>

@@ -56,7 +56,7 @@ export default function AddTransactionForm() {
       onSubmit={handleSubmit}
       className="border rounded-2xl p-5 space-y-4 ocean-general"
     >
-      <h2 className="text-xl font-bold text-rose-950">
+      <h2 className="text-xl font-bold">
         Add Transaction
       </h2>
 

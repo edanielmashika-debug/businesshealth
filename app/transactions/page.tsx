@@ -11,7 +11,7 @@ export default function TransactionsPage() {
 
   return (
     <DashboardLayout>
-      <h1 className="text-3xl font-bold mb-6">
+      <h1 className="text-3xl font-bold mb-6 text-rose-950">
         Transactions
       </h1>
 
