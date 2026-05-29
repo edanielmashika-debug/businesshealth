@@ -120,7 +120,7 @@ export default function DebtsPage() {
                                     </p>
                                 </div>
 
-                                <div className="flex flex-col items-end gap-2">
+                                <div className="flex flex-col items-end gap-2 bg-text-rose-950">
                                     <span
                                         className={`px-3 py-1 rounded-full text-sm ${debt.status ===
                                             "paid"

@@ -57,7 +57,7 @@ export default function AddDebtForm() {
             </h2>
 
             <div>
-                <label>
+                <label className="text-rose-950">
                     Person Name
                 </label>
 
@@ -86,7 +86,7 @@ export default function AddDebtForm() {
             </div>
             <button
                 type="submit"
-                className="oean-button touch-manipulation"
+                className="ocean-button touch-manipulation"
             >
                 Add Debt
             </button>
