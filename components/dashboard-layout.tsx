@@ -3,88 +3,95 @@
 import Link from "next/link";
 
 import {
-  Home,
-  BarChart3,
-  Package,
-  Receipt,
-  Wallet,
-  Settings,
-  Menu,
-  X,
+    usePathname,
+} from "next/navigation";
+
+import {
+    Home,
+    BarChart3,
+    Package,
+    Receipt,
+    Wallet,
+    Settings,
+    Menu,
+    X,
 } from "lucide-react";
 
 import {
-  useState,
+    useState,
 } from "react";
 
 export default function DashboardLayout({
-  children,
+    children,
 }: {
-  children: React.ReactNode;
+    children: React.ReactNode;
 }) {
-  const [open, setOpen] =
-    useState(false);
+    const [open, setOpen] =
+        useState(false);
 
-  const links = [
-    {
-      name: "Dashboard",
-      href: "/analytics",
-      icon: Home,
-    },
+    const pathname =
+        usePathname();
 
-    {
-      name: "Sales",
-      href: "/sales",
-      icon: Receipt,
-    },
+    const links = [
+        {
+            name: "Dashboard",
+            href: "/analytics",
+            icon: Home,
+        },
 
-    {
-      name: "Inventory",
-      href: "/inventory",
-      icon: Package,
-    },
+        {
+            name: "Sales",
+            href: "/sales",
+            icon: Receipt,
+        },
 
-    {
-      name: "Transactions",
-      href: "/transactions",
-      icon: Wallet,
-    },
+        {
+            name: "Inventory",
+            href: "/inventory",
+            icon: Package,
+        },
 
-    {
-      name: "Analytics",
-      href: "/analytics",
-      icon: BarChart3,
-    },
+        {
+            name: "Transactions",
+            href: "/transactions",
+            icon: Wallet,
+        },
 
-    {
-      name: "Settings",
-      href: "/settings",
-      icon: Settings,
-    },
-  ];
+        {
+            name: "Analytics",
+            href: "/analytics",
+            icon: BarChart3,
+        },
 
-  return (
-    <div className="flex min-h-screen bg-[#f5f7fb]">
-      
-      {/* MOBILE BUTTON */}
+        {
+            name: "Settings",
+            href: "/settings",
+            icon: Settings,
+        },
+    ];
 
-      <button
-        onClick={() =>
-          setOpen(!open)
-        }
-        className="fixed top-4 left-4 z-50 bg-black text-white p-2 rounded-xl lg:hidden"
-      >
-        {open ? (
-          <X size={20} />
-        ) : (
-          <Menu size={20} />
-        )}
-      </button>
+    return (
+        <div className="flex min-h-screen bg-[#f5f7fb]">
 
-      {/* SIDEBAR */}
+            {/* MOBILE BUTTON */}
 
-      <aside
-        className={`
+            <button
+                onClick={() =>
+                    setOpen(!open)
+                }
+                className="fixed top-4 left-4 z-50 bg-black text-white p-2 rounded-xl lg:hidden"
+            >
+                {open ? (
+                    <X size={20} />
+                ) : (
+                    <Menu size={20} />
+                )}
+            </button>
+
+            {/* SIDEBAR */}
+
+            <aside
+                className={`
         fixed top-0 left-0 z-40
         h-screen w-72 bg-white
         border-r
@@ -92,97 +99,103 @@ export default function DashboardLayout({
         duration-300
         flex flex-col
 
-        ${
-          open
-            ? "translate-x-0"
-            : "-translate-x-full"
-        }
+        ${open
+                        ? "translate-x-0"
+                        : "-translate-x-full"
+                    }
 
         lg:translate-x-0
       `}
-      >
-        {/* LOGO */}
+            >
+                {/* LOGO */}
 
-        <div className="p-6 border-b">
-          <h1 className="text-2xl font-bold">
-            BusinessHealth
-          </h1>
+                <div className="p-6 border-b">
+                    <h1 className="text-2xl font-bold">
+                        BusinessHealth
+                    </h1>
 
-          <p className="text-sm text-gray-500">
-            Enterprise Dashboard
-          </p>
+                    <p className="text-sm text-gray-500">
+                        Enterprise Dashboard
+                    </p>
+                </div>
+
+                {/* SEARCH */}
+
+                <div className="p-4">
+                    <input
+                        placeholder="Search..."
+                        className="w-full border rounded-xl px-4 py-3 outline-none"
+                    />
+                </div>
+
+                {/* LINKS */}
+
+                <nav className="flex-1 px-3 space-y-2 overflow-y-auto">
+                    {links.map(
+                        (link) => {
+                            const Icon =
+                                link.icon;
+
+                            return (
+                                <Link
+                                    key={
+                                        link.href
+                                    }
+                                    href={
+                                        link.href
+                                    }
+                                    className={`
+flex items-center gap-3 px-4 py-3 rounded-xl transition
+
+${pathname === link.href
+                                            ? "bg-blue-50 text-blue-600 font-semibold"
+                                            : "text-gray-700 hover:bg-blue-50 hover:text-blue-600"
+                                        }
+`}
+                                >
+                                    <Icon
+                                        size={20}
+                                    />
+
+                                    <span>
+                                        {link.name}
+                                    </span>
+                                </Link>
+                            );
+                        }
+                    )}
+                </nav>
+
+                {/* PROFILE */}
+
+                <div className="border-t p-4">
+                    <div className="flex items-center gap-3">
+                        <div className="w-12 h-12 rounded-full bg-blue-600 text-white flex items-center justify-center font-bold">
+                            ED
+                        </div>
+
+                        <div>
+                            <div className="font-semibold">
+                                Emmanuel
+                            </div>
+
+                            <div className="text-sm text-gray-500">
+                                Admin
+                            </div>
+                        </div>
+                    </div>
+
+                    <button className="mt-4 w-full border rounded-xl py-3 text-red-500 hover:bg-red-50 transition">
+                        Logout
+                    </button>
+                </div>
+            </aside>
+
+            {/* MAIN CONTENT */}
+
+            <main className="flex-1 lg:ml-72 p-6">
+                {children}
+            </main>
         </div>
-
-        {/* SEARCH */}
-
-        <div className="p-4">
-          <input
-            placeholder="Search..."
-            className="w-full border rounded-xl px-4 py-3 outline-none"
-          />
-        </div>
-
-        {/* LINKS */}
-
-        <nav className="flex-1 px-3 space-y-2 overflow-y-auto">
-          {links.map(
-            (link) => {
-              const Icon =
-                link.icon;
-
-              return (
-                <Link
-                  key={
-                    link.href
-                  }
-                  href={
-                    link.href
-                  }
-                  className="flex items-center gap-3 px-4 py-3 rounded-xl text-gray-700 hover:bg-blue-50 hover:text-blue-600 transition"
-                >
-                  <Icon
-                    size={20}
-                  />
-
-                  <span>
-                    {link.name}
-                  </span>
-                </Link>
-              );
-            }
-          )}
-        </nav>
-
-        {/* PROFILE */}
-
-        <div className="border-t p-4">
-          <div className="flex items-center gap-3">
-            <div className="w-12 h-12 rounded-full bg-blue-600 text-white flex items-center justify-center font-bold">
-              ED
-            </div>
-
-            <div>
-              <div className="font-semibold">
-                Emmanuel
-              </div>
-
-              <div className="text-sm text-gray-500">
-                Admin
-              </div>
-            </div>
-          </div>
-
-          <button className="mt-4 w-full border rounded-xl py-3 text-red-500 hover:bg-red-50 transition">
-            Logout
-          </button>
-        </div>
-      </aside>
-
-      {/* MAIN CONTENT */}
-
-      <main className="flex-1 lg:ml-72 p-6">
-        {children}
-      </main>
-    </div>
-  );
+    );
 }
