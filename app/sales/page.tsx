@@ -207,7 +207,7 @@ const formatted =
                 e.target.value
               )
             }
-            className="w-full border rounded-xl p-3"
+            className=" ocean-input w-full p-3"
           >
             <option value="">
               Select Product
@@ -234,10 +234,10 @@ const formatted =
                 e.target.value
               )
             }
-            className="w-full border rounded-xl p-3"
+            className="ocean-input w-full p-3"
           />
 
-          <div className="border rounded-xl p-4">
+          <div className="ocean-card p-4">
             Total:
             {" "}
             {total.toLocaleString()}
@@ -253,7 +253,7 @@ const formatted =
           </div>
 
           {selectedProduct && (
-            <div className="border rounded-xl p-4">
+            <div className="ocean-card p-4">
               <div>
                 Stock Left:
                 {" "}
@@ -271,7 +271,7 @@ const formatted =
 
           <button
             type="submit"
-            className="w-full ocean text-white rounded-xl p-3"
+            className="w-full text-white rounded-xl p-3"
           >
             Record Sale
           </button>
@@ -281,7 +281,7 @@ const formatted =
           {sales.map((sale) => (
             <div
               key={sale.id}
-              className="border rounded-xl p-4"
+              className="ocean-card p-4"
             >
               <div className="font-semibold">
                 {sale.productName}
