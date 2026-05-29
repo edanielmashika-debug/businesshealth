@@ -234,7 +234,7 @@ const formatted =
                 e.target.value
               )
             }
-            className="ocean-input w-full p-3"
+            className="ocean-card w-full p-3"
           />
 
           <div className="ocean-card p-4">
