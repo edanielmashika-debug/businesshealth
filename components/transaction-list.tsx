@@ -18,7 +18,7 @@ export default function TransactionList() {
 
   if (transactions.length === 0) {
     return (
-      <div className="border rounded-2xl p-5">
+      <div className="border rounded-2xl p-5 ocean-general">
         <div className="text-center py-10">
           <p className="text-gray-500">
             No transactions yet.
