@@ -271,7 +271,7 @@ const formatted =
 
           <button
             type="submit"
-            className="w-full text-white rounded-xl p-3"
+            className="ocean-button p-3"
           >
             Record Sale
           </button>
