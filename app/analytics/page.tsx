@@ -307,6 +307,22 @@ export default function AnalyticsPage() {
             <CategoryChart />
           </div>
 
+          {/* PROFIT CHART */}
+           <div className="bg-white rounded-3xl p-6 shadow-sm border">
+
+            <div className="mb-6">
+              <h2 className="text-xl font-bold text-gray-800">
+                Profit Tracking
+              </h2>
+
+              <p className="text-sm text-gray-500">
+                Check how your business is growinf
+              </p>
+            </div>
+
+            <ProfitChart data={sales} />
+          </div>
+
         </div>
       </div>
     </DashboardLayout>
