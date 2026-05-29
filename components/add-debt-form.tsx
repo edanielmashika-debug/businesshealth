@@ -81,7 +81,7 @@ export default function AddDebtForm() {
                             e.target.value
                         )
                     }
-                    className="ocean-input"
+                    className="w-full border rounded-xl p-3 ocean-general"
                 />
             </div>
             <button
