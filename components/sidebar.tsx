@@ -70,7 +70,7 @@ export default function Sidebar() {
                 Biashara
               </h1>
 
-              <button className="text-white" onClick={() => { setOpen(false); }}>
+              <button className="text-rose-950" onClick={() => { setOpen(false); }}>
                 <X />
               </button>
             </div>

@@ -26,25 +26,20 @@ body {
 }
 
 body {
-  background: rgb(71, 71, 71);
+  background: rgb(219, 219, 219);
   color: white;
 }
 
 
 
 .ocean-card {
-  background: rgba(
-    15,
-    23,
-    42,
-    0.9
-  );
+  background: rgb(73, 5, 24);
 
   border: 1px solid
     rgba(
-      14,
-      165,
-      233,
+      73,
+      5,
+      25,
       0.15
     );
 
