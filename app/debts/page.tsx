@@ -107,7 +107,7 @@ export default function DebtsPage() {
                     {debts.map((debt) => (
                         <div
                             key={debt.id}
-                            className="border rounded-2xl p-5 bg-rose-950"
+                            className="border rounded-2xl p-5 ocean-general"
                         >
                             <div className="flex items-center justify-between gap-4">
                                 <div>
