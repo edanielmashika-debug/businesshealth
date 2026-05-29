@@ -63,7 +63,7 @@ export default function Sidebar() {
 
       {/* Mobile Sidebar */}
       {open && (
-        <div className="fixed inset-0 ocean-card z-50 md:hidden">
+        <div className="fixed inset-0 bg-white z-50 md:hidden">
           <aside className="bg-white w-64 h-full p-4">
             <div className="flex items-center justify-between mb-8">
               <h1 className="text-2xl font-bold">
