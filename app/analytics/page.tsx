@@ -7,6 +7,14 @@ import AnalyticsChart from "../../components/analytics-chart";
 import CategoryChart from "../../components/category-chart";
 import ProfitChart from "../../components/profit-chart";
 import {
+  DollarSign,
+  TrendingUp,
+  ShoppingCart,
+  Package,
+} from "lucide-react";
+
+
+import {
   useSalesStore,
 } from "../../store/sales-store";
 
@@ -171,107 +179,98 @@ export default function AnalyticsPage() {
             Business insights and trends
           </p>
         </div>
-        <div className="grid grid-cols-2 gap-4">
-          <div className="border rounded-xl p-4 ocean-general">
-            <div className="text-sm text-gray-500">
-              Revenue
-            </div>
+       <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6 mb-8">
 
-            <div className="text-2xl font-bold">
-              TZS{" "}
-              {totalRevenue.toLocaleString()}
-            </div>
-          </div>
+  {/* TOTAL SALES */}
 
-          <div className="border rounded-xl p-4 ocean-general">
-            <div className="text-sm text-gray-500">
-              Profit
-            </div>
+  <div className="bg-gradient-to-br from-blue-500 to-blue-700 rounded-3xl p-6 text-white shadow-lg">
+    
+    <div className="flex items-center justify-between">
+      <div>
+        <p className="text-sm opacity-80">
+          Total Revenue
+        </p>
 
-            <div className="text-2xl font-bold text-green-600">
-              TZS{" "}
-              {totalProfit.toLocaleString()}
-            </div>
-          </div>
+        <h2 className="text-3xl font-bold mt-2">
+          TZS{" "}
+          {totalRevenue.toLocaleString()}
+        </h2>
+      </div>
 
-          <div className="border rounded-xl p-4 ocean-general">
-            <div className="text-sm text-gray-500">
-              Sales
-            </div>
+      <div className="bg-white/20 p-3 rounded-2xl">
+        <DollarSign />
+      </div>
+    </div>
+  </div>
 
-            <div className="text-2xl font-bold">
-              {totalSales}
-            </div>
-          </div>
+  {/* PROFIT */}
 
-          <div className="border rounded-xl p-4 ocean-general">
-            <div className="text-sm text-gray-500">
-              Best Seller
-            </div>
+  <div className="bg-gradient-to-br from-green-500 to-emerald-700 rounded-3xl p-6 text-white shadow-lg">
+    
+    <div className="flex items-center justify-between">
+      <div>
+        <p className="text-sm opacity-80">
+          Total Profit
+        </p>
 
-            <div className="text-xl font-bold">
-              {bestSeller
-                ? bestSeller[0]
-                : "No sales"}
-            </div>
-          </div>
-        </div>
-        <AnalyticsChart />
-        <div className="border rounded-2xl p-5 space-y-4">
-          <h2 className="text-xl font-bold text-rose-950">
-            Daily Report
-          </h2>
+        <h2 className="text-3xl font-bold mt-2">
+          TZS{" "}
+          {totalProfit.toLocaleString()}
+        </h2>
+      </div>
 
-          <div className="grid grid-cols-2 gap-4">
-            <div className="border rounded-xl p-4 ocean-general">
-              <div className="text-sm text-gray-500">
-                Today Revenue
-              </div>
+      <div className="bg-white/20 p-3 rounded-2xl">
+        <TrendingUp />
+      </div>
+    </div>
+  </div>
 
-              <div className="text-xl font-bold">
-                TZS{" "}
-                {todayRevenue.toLocaleString()}
-              </div>
-            </div>
+  {/* SALES */}
 
-            <div className="border rounded-xl p-4 ocean-general">
-              <div className="text-sm text-gray-500">
-                Today Profit
-              </div>
+  <div className="bg-gradient-to-br from-purple-500 to-violet-700 rounded-3xl p-6 text-white shadow-lg">
+    
+    <div className="flex items-center justify-between">
+      <div>
+        <p className="text-sm opacity-80">
+          Sales Count
+        </p>
 
-              <div className="text-xl font-bold text-green-600">
-                TZS{" "}
-                {todayProfit.toLocaleString()}
-              </div>
-            </div>
+        <h2 className="text-3xl font-bold mt-2">
+          {sales.length}
+        </h2>
+      </div>
 
-            <div className="border rounded-xl p-4 ocean-general">
-              <div className="text-sm text-gray-500">
-                Sales Today
-              </div>
+      <div className="bg-white/20 p-3 rounded-2xl">
+        <ShoppingCart />
+      </div>
+    </div>
+  </div>
 
-              <div className="text-xl font-bold">
-                {todaySalesCount}
-              </div>
-            </div>
+  {/* PRODUCTS */}
 
-            <div className="border rounded-xl p-4 ocean-general">
-              <div className="text-sm text-gray-500">
-                Average Sale
-              </div>
+<div className="bg-gradient-to-br from-orange-500 to-red-600 rounded-3xl p-6 text-white shadow-lg">
+  
+  <div className="flex items-center justify-between">
+    
+    <div>
+      <p className="text-sm opacity-80">
+        Best Seller
+      </p>
 
-              <div className="text-xl font-bold">
-                TZS{" "}
-                {todaySalesCount > 0
-                  ? Math.round(
-                    todayRevenue /
-                    todaySalesCount
-                  ).toLocaleString()
-                  : 0}
-              </div>
-            </div>
-          </div>
-        </div>
+      <h2 className="text-2xl font-bold mt-2">
+        {bestSeller?
+          bestSeller[0]:
+          "No sales"}
+      </h2>
+    </div>
+
+    <div className="bg-white/20 p-3 rounded-2xl">
+      🔥
+    </div>
+  </div>
+</div>
+
+</div>
         <CategoryChart />
 
         <ProfitChart
