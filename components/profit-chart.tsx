@@ -26,6 +26,9 @@ export default function ProfitChart({
         width="100%"
         height="100%"
       >
+        <h1>
+          Profit Trend
+        </h1>
         <LineChart data={data}>
           <XAxis dataKey="name" />
 
