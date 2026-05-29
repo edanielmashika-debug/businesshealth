@@ -199,7 +199,7 @@ export default function AnalyticsPage() {
               Sales
             </div>
 
-            <div className="text-2xl font-bold text-rose-950">
+            <div className="text-2xl font-bold">
               {totalSales}
             </div>
           </div>
@@ -209,7 +209,7 @@ export default function AnalyticsPage() {
               Best Seller
             </div>
 
-            <div className="text-xl font-bold text-rose-950">
+            <div className="text-xl font-bold">
               {bestSeller
                 ? bestSeller[0]
                 : "No sales"}

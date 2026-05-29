@@ -56,7 +56,7 @@ export default function CategoryChart() {
         );
 
     return (
-        <div className="border round-2x1 p-5 bg-white mt-6">
+        <div className="border round-2x1 p-5  mt-6">
             <h2 className="text-x1 font bold-m4">
                 Expense Categories
             </h2>
