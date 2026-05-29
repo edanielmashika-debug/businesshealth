@@ -28,8 +28,8 @@
     ];
 
     return(
-        <div className="border rounded-2x1 p-5 ocean-general">
-            <h2 className="text-x1 font-bold mb-4">
+        <div className="border rounded-2x1 p-5">
+            <h2 className="text-x1 font-bold mb-4 text-black">
                 Analytics
             </h2>
             <div className="h-[300px]">
