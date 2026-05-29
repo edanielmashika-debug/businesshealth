@@ -130,7 +130,7 @@ export default function InventoryPage() {
     <DashboardLayout>
       <div className="space-y-6">
         <div>
-          <h1 className="text-3xl font-bold">
+          <h1 className="text-3xl font-bold text-rose-950">
             Inventory
           </h1>
 
@@ -141,7 +141,7 @@ export default function InventoryPage() {
 
         <form
           onSubmit={handleSubmit}
-          className="border rounded-2xl p-5 bg-white space-y-4"
+          className="border rounded-2xl p-5 bg-white space-y-4 ocean-general"
         >
           <input
             type="text"
@@ -206,7 +206,7 @@ export default function InventoryPage() {
                 key={
                   product.id
                 }
-                className="border rounded-2xl p-5 bg-white"
+                className="border rounded-2xl p-5 ocean-general"
               >
                 <div className="flex items-center justify-between gap-4">
                   <div>
