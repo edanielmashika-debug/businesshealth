@@ -56,8 +56,8 @@ export default function Sidebar() {
           Biashara
         </h1>
 
-        <button onClick={() => { setOpen((prev) => !prev); }}>
-          <Menu />
+        <button className="text-white" onClick={() => { setOpen((prev) => !prev); }}>
+          <Menu className="text-white" />
         </button>
       </div>
 
