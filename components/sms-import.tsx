@@ -55,7 +55,7 @@ export default function SMSImport() {
   }
 
   return (
-    <div className="border rounded-2xl p-5 bg-white mt-6">
+    <div className="border rounded-2xl p-5 ocean-general mt-6">
       <h2 className="text-xl font-bold mb-4">
         Import SMS
       </h2>
@@ -74,7 +74,7 @@ export default function SMSImport() {
       <button
         type="button"
         onClick={handleParse}
-        className="mt-4 bg-black text-white px-5 py-3 rounded-xl"
+        className="mt-4 bg-black text-white px-5 py-3 rounded-xl ocean-general"
       >
         Parse SMS
       </button>
