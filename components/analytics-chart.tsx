@@ -28,7 +28,7 @@
     ];
 
     return(
-        <div className="border rounded-2x1 p-5 bg-grey">
+        <div className="border rounded-2x1 p-5 ocean-general">
             <h2 className="text-x1 font-bold mb-4">
                 Analytics
             </h2>
