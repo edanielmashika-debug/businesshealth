@@ -190,7 +190,7 @@ const formatted =
   return (
     <DashboardLayout>
       <div className="p-4 space-y-6">
-        <h1 className="text-2xl font-bold">
+        <h1 className="text-2xl font-bold text-rose-950">
           Sales
         </h1>
 

@@ -54,11 +54,7 @@ body {
 }
 
 .ocean-button {
-  background: linear-gradient(
-    to right,
-    #0284c7,
-    #0ea5e9
-  );
+  background: rgb(97, 38, 3);
 
   border-radius: 18px;
 
