@@ -51,7 +51,7 @@ export default function Sidebar() {
   return (
     <>
       {/* Mobile Top Bar */}
-      <div className="md:hidden fixed top-0 left-0 right-0 h-14 border-b bg-white flex items-center justify-between px-4 z-50">
+      <div className="fixed top-0 left-0 h-full w-64 bg-slate-950 border-r border-sky-500/10">
         <h1 className="font-bold text-xl">
           Biashara
         </h1>
