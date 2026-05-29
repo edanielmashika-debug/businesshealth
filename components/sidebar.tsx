@@ -51,13 +51,13 @@ export default function Sidebar() {
   return (
     <>
       {/* Mobile Top Bar */}
-      <div className="md:hidden fixed top-0 left-0 right-0 h-14 border-b ocean-card flex items-center justify-between px-4 z-50">
-        <h1 className="font-bold text-xl">
+      <div className="md:hidden fixed top-0 left-0 right-0 h-14 border-b bg-white flex items-center justify-between px-4 z-50">
+        <h1 className="font-bold text-xl text-rose-950">
           Biashara
         </h1>
 
-        <button className="text-white" onClick={() => { setOpen((prev) => !prev); }}>
-          <Menu className="text-white" />
+        <button  onClick={() => { setOpen((prev) => !prev); }}>
+          <Menu className="text-rose-950" />
         </button>
       </div>
 
