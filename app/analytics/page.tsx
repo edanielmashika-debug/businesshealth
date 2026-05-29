@@ -218,12 +218,12 @@ export default function AnalyticsPage() {
         </div>
         <AnalyticsChart />
         <div className="border rounded-2xl p-5 space-y-4">
-          <h2 className="text-xl font-bold">
+          <h2 className="text-xl font-bold text-rose-950">
             Daily Report
           </h2>
 
           <div className="grid grid-cols-2 gap-4">
-            <div className="border rounded-xl p-4">
+            <div className="border rounded-xl p-4 ocean-general">
               <div className="text-sm text-gray-500">
                 Today Revenue
               </div>
@@ -234,7 +234,7 @@ export default function AnalyticsPage() {
               </div>
             </div>
 
-            <div className="border rounded-xl p-4">
+            <div className="border rounded-xl p-4 ocean-general">
               <div className="text-sm text-gray-500">
                 Today Profit
               </div>
@@ -245,7 +245,7 @@ export default function AnalyticsPage() {
               </div>
             </div>
 
-            <div className="border rounded-xl p-4">
+            <div className="border rounded-xl p-4 ocean-general">
               <div className="text-sm text-gray-500">
                 Sales Today
               </div>
@@ -255,7 +255,7 @@ export default function AnalyticsPage() {
               </div>
             </div>
 
-            <div className="border rounded-xl p-4">
+            <div className="border rounded-xl p-4 ocean-general">
               <div className="text-sm text-gray-500">
                 Average Sale
               </div>
