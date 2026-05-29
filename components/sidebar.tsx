@@ -82,7 +82,7 @@ export default function Sidebar() {
                   <Link
                     key={link.name}
                     href={link.href}
-                    className="block p-3 rounded-lg hover:bg-gray-100 transition"
+                    className="block p-3 rounded-lg hover:bg-gray-100 transition text-slate-200"
                   >
                     {link.name}
                   </Link>
