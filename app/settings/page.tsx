@@ -49,7 +49,7 @@ export default function SettingsPage() {
     <DashboardLayout>
       <div className="space-y-6">
         <div>
-          <h1 className="text-3xl font-bold">
+          <h1 className="text-3xl font-bold text-rose-950">
             Settings
           </h1>
 
@@ -58,7 +58,7 @@ export default function SettingsPage() {
           </p>
         </div>
 
-        <div className="border rounded-2xl bg-white p-5 space-y-4">
+        <div className="border rounded-2xl bg-white p-5 space-y-4 ocean-general">
           <button
             className="w-full border rounded-xl py-4 touch-manipulation"
           >
