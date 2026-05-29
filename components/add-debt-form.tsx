@@ -50,9 +50,9 @@ export default function AddDebtForm() {
     return (
         <form
             onSubmit={handleSubmit}
-            className="ocean-card"
+            className="border rounded-2x1 p-5 bg-white space-y-4"
         >
-            <h2 className="text -x1 font-bold text text-rose-950">
+            <h2 className="text -x1 font-bold text-rose-950">
                 Add Debt
             </h2>
 
@@ -86,7 +86,7 @@ export default function AddDebtForm() {
             </div>
             <button
                 type="submit"
-                className="ocean-button touch-manipulation"
+                className="oean-button touch-manipulation"
             >
                 Add Debt
             </button>
