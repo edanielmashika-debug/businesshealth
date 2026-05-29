@@ -33,7 +33,7 @@ body {
 
 
 .ocean-card {
-  background: #a55a28;
+  background: rgb(75, 5, 25);
 
   border: 1px solid
      #E7DADA
@@ -72,7 +72,7 @@ body {
 }
 
 .ocean-input {
-  background: #a55a28;
+  background: rgb(75, 5 ,25);
 
   border: 1px solid
      #E7DADA
