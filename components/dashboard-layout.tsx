@@ -193,8 +193,58 @@ ${pathname === link.href
 
             {/* MAIN CONTENT */}
 
-            <main className="flex-1 lg:ml-72 p-6">
-                {children}
+            <main className="flex-1 lg:ml-72">
+
+                {/* TOP HEADER */}
+
+                <header className="h-20 bg-white border-b flex items-center justify-between px-6 sticky top-0 z-30">
+
+                    <div>
+                        <h1 className="text-2xl font-bold text-gray-800">
+                            Dashboard
+                        </h1>
+
+                        <p className="text-sm text-gray-500">
+                            Welcome back, Emmanuel 👋
+                        </p>
+                    </div>
+
+                    <div className="flex items-center gap-4">
+
+                        {/* NOTIFICATION */}
+
+                        <button className="relative p-3 rounded-xl border hover:bg-gray-50 transition">
+                            🔔
+
+                            <span className="absolute top-1 right-1 w-2 h-2 bg-blue-500 rounded-full"></span>
+                        </button>
+
+                        {/* PROFILE */}
+
+                        <div className="flex items-center gap-3">
+                            <div className="w-10 h-10 rounded-full bg-blue-600 text-white flex items-center justify-center font-bold">
+                                ED
+                            </div>
+
+                            <div className="hidden md:block">
+                                <div className="font-semibold text-sm">
+                                    Emmanuel
+                                </div>
+
+                                <div className="text-xs text-gray-500">
+                                    Administrator
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </header>
+
+                {/* PAGE CONTENT */}
+
+                <div className="p-6">
+                    {children}
+                </div>
+
             </main>
         </div>
     );
