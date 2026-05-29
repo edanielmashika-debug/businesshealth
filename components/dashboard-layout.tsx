@@ -12,7 +12,7 @@ export default function DashboardLayout(
             <div className="flex-1">
                 <Navbar/>
 
-                <section className="p-6 pt-20 md:pt-6">
+                <section className="fixed bottom-0 left-0 right-0 bg-slate-900/90 backdrop-blur-xl border-t border-sky-500/10">
                     {children}
                 </section>
             </div>
