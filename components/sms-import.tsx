@@ -74,7 +74,7 @@ export default function SMSImport() {
       <button
         type="button"
         onClick={handleParse}
-        className="mt-4 bg-black text-white px-5 py-3 rounded-xl ocean-general"
+        className="mt-4 bg-black text-white px-5 py-3 rounded-xl"
       >
         Parse SMS
       </button>
