@@ -107,7 +107,7 @@ export default function DebtsPage() {
                     {debts.map((debt) => (
                         <div
                             key={debt.id}
-                            className="border rounded-2xl p-5 bg-white"
+                            className="border rounded-2xl p-5 bg-rose-950"
                         >
                             <div className="flex items-center justify-between gap-4">
                                 <div>
@@ -120,7 +120,7 @@ export default function DebtsPage() {
                                     </p>
                                 </div>
 
-                                <div className="flex flex-col items-end gap-2 bg-text-rose-950">
+                                <div className="flex flex-col items-end gap-2">
                                     <span
                                         className={`px-3 py-1 rounded-full text-sm ${debt.status ===
                                             "paid"
