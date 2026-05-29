@@ -72,7 +72,7 @@ export default function AddDebtForm() {
                     className="ocean-input" />
             </div>
             <div>
-                <label>Amount</label>
+                <label className="text-rose-950">Amount</label>
                 <input
                     type="number"
                     value={amount}
@@ -86,7 +86,7 @@ export default function AddDebtForm() {
             </div>
             <button
                 type="submit"
-                className="ocean-button touch-manipulation"
+                className="ocean-button p-3 touch-manipulation"
             >
                 Add Debt
             </button>
