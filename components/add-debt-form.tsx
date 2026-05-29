@@ -50,7 +50,7 @@ export default function AddDebtForm() {
     return (
         <form
             onSubmit={handleSubmit}
-            className="border rounded-2x1 p-5 bg-white space-y-4"
+            className="border rounded-2x1 p-5  space-y-4"
         >
             <h2 className="text -x1 font-bold text-rose-950">
                 Add Debt
