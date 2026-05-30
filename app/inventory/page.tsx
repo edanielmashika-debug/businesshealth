@@ -311,7 +311,7 @@ export default function InventoryPage() {
                     Edit
                   </button>
 
-                  <button className="flex-1 border rounded-2xl py-3 hover:bg-gray-50 transition text-red-500" >
+                  <button className="flex-1 border rounded-2xl py-3 hover:bg-gray-50 transition text-red-500" onClick={()=>deleteProduct(product.id)} >
                     Delete
                   </button>
                 </div>
