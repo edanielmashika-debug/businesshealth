@@ -202,64 +202,114 @@ export default function InventoryPage() {
         <div className="grid gap-4">
           {products.map(
             (product) => (
-              <div
-                key={
-                  product.id
-                }
-                className="border rounded-2xl p-5 ocean-general"
-              >
-                <div className="flex items-center justify-between gap-4">
-                  <div>
-                    <h2 className="font-bold text-lg">
-                      {
-                        product.name
-                      }
-                    </h2>
+<div
+  key={product.id}
+  className="bg-white rounded-3xl p-5 shadow-sm border hover:shadow-md transition"
+>
+  
+  {/* TOP */}
 
-                    <p className="text-gray-500">
-                      Stock:
-                      {
-                        product.stock
-                      }
-                    </p>
+  <div className="flex items-start justify-between">
+    
+    <div>
+      <h2 className="text-xl font-bold text-gray-800">
+        {product.name}
+      </h2>
 
-                    <p className="text-gray-500">
-                      Buy:
-                      TZS
-                      {
-                        product.buyPrice
-                      }
-                    </p>
+      <p className="text-sm text-gray-500 mt-1">
+        Product Inventory
+      </p>
+    </div>
 
-                    <p className="text-gray-500">
-                      Sell:
-                      TZS
-                      {
-                        product.sellPrice
-                      }
-                    </p>
+    <div
+      className={`
+      px-3 py-1 rounded-full text-sm font-medium
 
-                    <p className="font-semibold mt-2">
-                      Profit:
-                      TZS
-                      {` `}
-                      {product.sellPrice -
-                        product.buyPrice}
-                    </p>
-                  </div>
+      ${
+        product.stock <= 5
+          ? "bg-red-100 text-red-600"
+          : "bg-green-100 text-green-600"
+      }
+    `}
+    >
+      {product.stock <= 5
+        ? "Low Stock"
+        : "In Stock"}
+    </div>
+  </div>
 
-                  <button
-                    onClick={() =>
-                      deleteProduct(
-                        product.id
-                      )
-                    }
-                    className="bg-red-500 text-white px-3 py-2 rounded-lg touch-manipulation"
-                  >
-                    Delete
-                  </button>
-                </div>
-              </div>
+  {/* STATS */}
+
+  <div className="grid grid-cols-2 gap-4 mt-6">
+    
+    {/* BUYING */}
+
+    <div className="bg-gray-50 rounded-2xl p-4">
+      <p className="text-sm text-gray-500">
+        Buying Price
+      </p>
+
+      <h3 className="text-lg font-bold mt-1">
+        TZS{" "}
+        {product.buyPrice.toLocaleString()}
+      </h3>
+    </div>
+
+    {/* SELLING */}
+
+    <div className="bg-gray-50 rounded-2xl p-4">
+      <p className="text-sm text-gray-500">
+        Selling Price
+      </p>
+
+      <h3 className="text-lg font-bold mt-1">
+        TZS{" "}
+        {product.sellPrice.toLocaleString()}
+      </h3>
+    </div>
+
+    {/* STOCK */}
+
+    <div className="bg-gray-50 rounded-2xl p-4">
+      <p className="text-sm text-gray-500">
+        Stock Left
+      </p>
+
+      <h3 className="text-lg font-bold mt-1">
+        {product.stock}
+      </h3>
+    </div>
+
+    {/* PROFIT */}
+
+    <div className="bg-gray-50 rounded-2xl p-4">
+      <p className="text-sm text-gray-500">
+        Profit / Item
+      </p>
+
+      <h3 className="text-lg font-bold mt-1 text-green-600">
+        TZS{" "}
+        {(
+          product.sellPrice -
+          product.buyPrice
+        ).toLocaleString()}
+      </h3>
+    </div>
+  </div>
+
+  {/* ACTIONS */}
+
+  <div className="flex gap-3 mt-6">
+    
+    <button className="flex-1 bg-blue-600 text-white rounded-2xl py-3 hover:bg-blue-700 transition">
+      Edit
+    </button>
+
+    <button className="flex-1 border rounded-2xl py-3 hover:bg-gray-50 transition text-red-500">
+      Delete
+    </button>
+  </div>
+</div>
             )
           )}
         </div>
