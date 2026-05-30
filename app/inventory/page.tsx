@@ -249,7 +249,7 @@ export default function InventoryPage() {
         Buying Price
       </p>
 
-      <h3 className="text-lg font-bold mt-1">
+      <h3 className="text-lg font-bold mt-1 text-black">
         TZS{" "}
         {product.buyPrice.toLocaleString()}
       </h3>
@@ -262,7 +262,7 @@ export default function InventoryPage() {
         Selling Price
       </p>
 
-      <h3 className="text-lg font-bold mt-1">
+      <h3 className="text-lg font-bold mt-1 text-black">
         TZS{" "}
         {product.sellPrice.toLocaleString()}
       </h3>
@@ -275,7 +275,7 @@ export default function InventoryPage() {
         Stock Left
       </p>
 
-      <h3 className="text-lg font-bold mt-1">
+      <h3 className="text-lg font-bold mt-1 text-black">
         {product.stock}
       </h3>
     </div>
@@ -305,7 +305,7 @@ export default function InventoryPage() {
       Edit
     </button>
 
-    <button className="flex-1 border rounded-2xl py-3 hover:bg-gray-50 transition text-red-500">
+    <button className="flex-1 border rounded-2xl py-3 hover:bg-gray-50 transition text-red-500" onClick ={()=>deleteProduct}>
       Delete
     </button>
   </div>
