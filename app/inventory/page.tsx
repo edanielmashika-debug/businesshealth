@@ -144,7 +144,7 @@ export default function InventoryPage() {
         <div className="bg-white rounded-3xl p-6 shadow-sm border">
           <form
             onSubmit={handleSubmit}
-            className="border rounded-2xl p-5 bg-white space-y-4 ocean-general"
+            className="border rounded-2xl p-5 bg-white space-y-4 "
           >
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <input
@@ -156,7 +156,7 @@ export default function InventoryPage() {
                     e.target.value
                   )
                 }
-                className="w-full rounded-2xl border border-gray-200 bg-gray-50 px-4 py-4 outline-none focus:ring-2 focus:ring-blue-500 focus:bg-white transition"
+                className="w-full rounded-2xl border border-gray-200 bg-gray-50 px-4 py-4 outline-none focus:ring-2 focus:ring-blue-500 focus:bg-white transition text-black"
               />
 
               <input
@@ -168,7 +168,7 @@ export default function InventoryPage() {
                     e.target.value
                   )
                 }
-                className="w-full rounded-2xl border border-gray-200 bg-gray-50 px-4 py-4 outline-none focus:ring-2 focus:ring-blue-500 focus:bg-white transition"
+                className="w-full rounded-2xl border border-gray-200 bg-gray-50 px-4 py-4 outline-none focus:ring-2 focus:ring-blue-500 focus:bg-white transition text-black"
               />
 
               <input
@@ -180,7 +180,7 @@ export default function InventoryPage() {
                     e.target.value
                   )
                 }
-                className="w-full rounded-2xl border border-gray-200 bg-gray-50 px-4 py-4 outline-none focus:ring-2 focus:ring-blue-500 focus:bg-white transition"
+                className="w-full rounded-2xl border border-gray-200 bg-gray-50 px-4 py-4 outline-none focus:ring-2 focus:ring-blue-500 focus:bg-white transition text-black"
               />
 
               <input
@@ -192,7 +192,7 @@ export default function InventoryPage() {
                     e.target.value
                   )
                 }
-                className="w-full rounded-2xl border border-gray-200 bg-gray-50 px-4 py-4 outline-none focus:ring-2 focus:ring-blue-500 focus:bg-white transition"
+                className="w-full rounded-2xl border border-gray-200 bg-gray-50 px-4 py-4 outline-none focus:ring-2 focus:ring-blue-500 focus:bg-white transition text-black"
               />
 
             </div>
