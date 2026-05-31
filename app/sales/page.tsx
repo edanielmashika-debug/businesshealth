@@ -340,7 +340,7 @@ export default function SalesPage() {
                     Quantity
                   </p>
 
-                  <h3 className="text-lg font-bold mt-1">
+                  <h3 className="text-lg font-bold mt-1 text-black">
                     {sale.quantity}
                   </h3>
                 </div>
@@ -365,7 +365,7 @@ export default function SalesPage() {
                     Date
                   </p>
 
-                  <h3 className="text-sm font-semibold mt-1">
+                  <h3 className="text-sm font-semibold mt-1 text-black">
                     {new Date(
                       sale.createdAt
                     ).toLocaleDateString()}
