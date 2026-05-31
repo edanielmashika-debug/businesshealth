@@ -107,8 +107,8 @@ export default function AnalyticsPage() {
   const todaySalesCount =
     todaySales.length;
 
-    const { products } =
-  useInventoryStore();
+  const { products } =
+    useInventoryStore();
 
 
   const chartData =
@@ -123,11 +123,11 @@ export default function AnalyticsPage() {
         sale.profit,
     }));
 
-    const lowStockProducts =
-  products.filter(
-    (product) =>
-      product.quantity <= 5
-  );
+  const lowStockProducts =
+    products.filter(
+      (product) =>
+        product.stock <= 5
+    );
 
 
 
@@ -318,7 +318,7 @@ export default function AnalyticsPage() {
           </div>
 
           {/* PROFIT CHART */}
-           <div className="bg-white rounded-3xl p-6 shadow-sm border">
+          <div className="bg-white rounded-3xl p-6 shadow-sm border">
 
             <div className="mb-6">
               <h2 className="text-xl font-bold text-gray-800">
@@ -332,60 +332,60 @@ export default function AnalyticsPage() {
 
             <ProfitChart data={sales} />
             {lowStockProducts.length >
-  0 && (
-  <div className="bg-red-50 border border-red-200 rounded-3xl p-6 mb-8">
-    
-    <div className="flex items-center justify-between">
-      
-      <div>
-        <h2 className="text-2xl font-bold text-red-600">
-          Low Stock Alert
-        </h2>
+              0 && (
+                <div className="bg-red-50 border border-red-200 rounded-3xl p-6 mb-8">
 
-        <p className="text-red-500 mt-1">
-          {lowStockProducts.length}{" "}
-          products are running low
-        </p>
-      </div>
+                  <div className="flex items-center justify-between">
 
-      <div className="text-5xl">
-        ⚠️
-      </div>
-    </div>
+                    <div>
+                      <h2 className="text-2xl font-bold text-red-600">
+                        Low Stock Alert
+                      </h2>
 
-    {/* PRODUCTS */}
+                      <p className="text-red-500 mt-1">
+                        {lowStockProducts.length}{" "}
+                        products are running low
+                      </p>
+                    </div>
 
-    <div className="mt-6 grid gap-3">
-      
-      {lowStockProducts.map(
-        (product) => (
-          <div
-            key={product.id}
-            className="bg-white rounded-2xl p-4 flex items-center justify-between"
-          >
-            <div>
-              <h3 className="font-bold text-gray-800">
-                {product.name}
-              </h3>
+                    <div className="text-5xl">
+                      ⚠️
+                    </div>
+                  </div>
 
-              <p className="text-sm text-gray-500">
-                Only{" "}
-                {
-                  product.quantity
-                }{" "}
-                items left
-              </p>
-            </div>
+                  {/* PRODUCTS */}
 
-            <div className="bg-red-100 text-red-600 px-3 py-1 rounded-full text-sm font-semibold">
-              Restock
-            </div>
-          </div>
-        )
-      )}
-    </div>
-  </div>
-)}
+                  <div className="mt-6 grid gap-3">
+
+                    {lowStockProducts.map(
+                      (product) => (
+                        <div
+                          key={product.id}
+                          className="bg-white rounded-2xl p-4 flex items-center justify-between"
+                        >
+                          <div>
+                            <h3 className="font-bold text-gray-800">
+                              {product.name}
+                            </h3>
+
+                            <p className="text-sm text-gray-500">
+                              Only{" "}
+                              {
+                                product.stock
+                              }{" "}
+                              items left
+                            </p>
+                          </div>
+
+                          <div className="bg-red-100 text-red-600 px-3 py-1 rounded-full text-sm font-semibold">
+                            Restock
+                          </div>
+                        </div>
+                      )
+                    )}
+                  </div>
+                </div>
+              )}
           </div>
 
         </div>
