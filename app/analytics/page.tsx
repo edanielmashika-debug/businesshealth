@@ -6,6 +6,7 @@ import AnalyticsChart from "../../components/analytics-chart";
 
 import CategoryChart from "../../components/category-chart";
 import ProfitChart from "../../components/profit-chart";
+import { useInventoryStore } from "../../store/inventory-store";
 import {
   DollarSign,
   TrendingUp,
@@ -106,6 +107,9 @@ export default function AnalyticsPage() {
   const todaySalesCount =
     todaySales.length;
 
+    const { products } =
+  useInventoryStore();
+
 
   const chartData =
     sales.map((sale) => ({
@@ -118,6 +122,12 @@ export default function AnalyticsPage() {
       profit:
         sale.profit,
     }));
+
+    const lowStockProducts =
+  products.filter(
+    (product) =>
+      product.quantity <= 5
+  );
 
 
 
@@ -321,6 +331,61 @@ export default function AnalyticsPage() {
             </div>
 
             <ProfitChart data={sales} />
+            {lowStockProducts.length >
+  0 && (
+  <div className="bg-red-50 border border-red-200 rounded-3xl p-6 mb-8">
+    
+    <div className="flex items-center justify-between">
+      
+      <div>
+        <h2 className="text-2xl font-bold text-red-600">
+          Low Stock Alert
+        </h2>
+
+        <p className="text-red-500 mt-1">
+          {lowStockProducts.length}{" "}
+          products are running low
+        </p>
+      </div>
+
+      <div className="text-5xl">
+        ⚠️
+      </div>
+    </div>
+
+    {/* PRODUCTS */}
+
+    <div className="mt-6 grid gap-3">
+      
+      {lowStockProducts.map(
+        (product) => (
+          <div
+            key={product.id}
+            className="bg-white rounded-2xl p-4 flex items-center justify-between"
+          >
+            <div>
+              <h3 className="font-bold text-gray-800">
+                {product.name}
+              </h3>
+
+              <p className="text-sm text-gray-500">
+                Only{" "}
+                {
+                  product.quantity
+                }{" "}
+                items left
+              </p>
+            </div>
+
+            <div className="bg-red-100 text-red-600 px-3 py-1 rounded-full text-sm font-semibold">
+              Restock
+            </div>
+          </div>
+        )
+      )}
+    </div>
+  </div>
+)}
           </div>
 
         </div>
