@@ -8,6 +8,9 @@ import CategoryChart from "../../components/category-chart";
 import ProfitChart from "../../components/profit-chart";
 import { useInventoryStore } from "../../store/inventory-store";
 import {
+  useExpenseStore,
+} from "../../store/expense-store";
+import {
   DollarSign,
   TrendingUp,
   ShoppingCart,
@@ -97,10 +100,24 @@ export default function AnalyticsPage() {
       0
     );
 
+  const { expenses } =
+    useExpenseStore();
+
   const todayProfit =
     todaySales.reduce(
       (sum, sale) =>
         sum + sale.profit,
+      0
+    );
+
+  const totalExpenses =
+    expenses.reduce(
+      (
+        sum,
+        expense
+      ) =>
+        sum +
+        expense.amount,
       0
     );
 
@@ -149,6 +166,10 @@ export default function AnalyticsPage() {
     string,
     number
   > = {};
+
+  const netProfit =
+    totalProfit -
+    totalExpenses;
 
   sales.forEach((sale) => {
     if (
@@ -317,6 +338,30 @@ export default function AnalyticsPage() {
             <CategoryChart />
           </div>
 
+          {/*EXPENSES CARD*/}
+          <div>
+            <div className="bg-gradient-to-br from-red-500 to-rose-700 rounded-3xl p-6 text-white shadow-lg">
+
+              <div className="flex items-center justify-between">
+
+                <div>
+                  <p className="text-sm opacity-80">
+                    Expenses
+                  </p>
+
+                  <h2 className="text-3xl font-bold mt-2">
+                    TZS{" "}
+                    {totalExpenses.toLocaleString()}
+                  </h2>
+                </div>
+
+                <div className="bg-white/20 p-3 rounded-2xl">
+                  💸
+                </div>
+              </div>
+            </div>
+          </div>
+
           {/* PROFIT CHART */}
           <div className="bg-white rounded-3xl p-6 shadow-sm border">
 
@@ -334,7 +379,7 @@ export default function AnalyticsPage() {
 
           </div>
           {/* ALERT BANNER */}
-                      <div>
+          <div>
             {lowStockProducts.length >
               0 && (
                 <div className="bg-red-50 border border-red-200 rounded-3xl p-6 mb-8">
@@ -390,7 +435,7 @@ export default function AnalyticsPage() {
                   </div>
                 </div>
               )}
-            </div>
+          </div>
 
         </div>
       </div>
