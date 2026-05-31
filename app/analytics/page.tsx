@@ -306,11 +306,11 @@ export default function AnalyticsPage() {
 
             <div className="mb-6">
               <h2 className="text-xl font-bold text-gray-800">
-                Product Performance
+                What expenses are running
               </h2>
 
               <p className="text-sm text-gray-500">
-                Best selling categories
+                Most costful expenditures
               </p>
             </div>
 
