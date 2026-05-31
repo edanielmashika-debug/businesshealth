@@ -331,7 +331,10 @@ export default function AnalyticsPage() {
             </div>
 
             <ProfitChart data={sales} />
-            <div>
+
+          </div>
+          {/* ALERT BANNER */}
+                      <div>
             {lowStockProducts.length >
               0 && (
                 <div className="bg-red-50 border border-red-200 rounded-3xl p-6 mb-8">
@@ -388,7 +391,6 @@ export default function AnalyticsPage() {
                 </div>
               )}
             </div>
-          </div>
 
         </div>
       </div>
