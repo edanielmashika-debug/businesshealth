@@ -1,8 +1,8 @@
 "use client"
 import { useRouter } from "next/navigation";
 import { LogOut } from "lucide-react";
-import { supabase } from "@/lib/supabase";
-import { deleteAccountData } from "@/services/account-service";
+import { supabase } from "../lib/supabase";
+import { deleteAccountData } from "../services/account-service";
 import { Trash2 } from "lucide-react";
 
 export default function Navbar() {

@@ -15,6 +15,7 @@ import {
     Settings,
     Menu,
     X,
+    BadgeDollarSignIcon,
 } from "lucide-react";
 
 import {
@@ -67,6 +68,12 @@ export default function DashboardLayout({
             name: "Settings",
             href: "/settings",
             icon: Settings,
+        },
+
+        {
+            name: "Expenses",
+            href: "/expenses",
+            icon: BadgeDollarSignIcon
         },
     ];
 
