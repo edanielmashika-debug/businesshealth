@@ -280,6 +280,27 @@ export default function AnalyticsPage() {
             </div>
           </div>
 
+          <div className="bg-gradient-to-br from-emerald-500 to-green-700 rounded-3xl p-6 text-white shadow-lg">
+
+            <div className="flex items-center justify-between">
+
+              <div>
+                <p className="text-sm opacity-80">
+                  Net Profit
+                </p>
+
+                <h2 className="text-3xl font-bold mt-2">
+                  TZS{" "}
+                  {netProfit.toLocaleString()}
+                </h2>
+              </div>
+
+              <div className="bg-white/20 p-3 rounded-2xl">
+                📈
+              </div>
+            </div>
+          </div>
+
           {/* SALES */}
 
           <div className="bg-gradient-to-br from-purple-500 to-violet-700 rounded-3xl p-6 text-white shadow-lg">
