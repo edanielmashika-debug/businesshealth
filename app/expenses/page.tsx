@@ -131,7 +131,7 @@ export default function ExpensesPage() {
                   e.target.value
                 )
               }
-              className="w-full rounded-2xl border border-gray-200 bg-gray-50 px-4 py-4 outline-none focus:ring-2 focus:ring-red-500"
+              className="w-full rounded-2xl border border-gray-200 bg-gray-50 px-4 py-4 outline-none focus:ring-2 focus:ring-red-500 text-black placeholder:text-gray-500"
             />
 
             <input
@@ -143,7 +143,7 @@ export default function ExpensesPage() {
                   e.target.value
                 )
               }
-              className="w-full rounded-2xl border border-gray-200 bg-gray-50 px-4 py-4 outline-none focus:ring-2 focus:ring-red-500"
+              className="w-full rounded-2xl border border-gray-200 bg-gray-50 px-4 py-4 outline-none focus:ring-2 focus:ring-red-500 text-black placeholder:text-gray-500"
             />
 
             <input
@@ -155,7 +155,7 @@ export default function ExpensesPage() {
                   e.target.value
                 )
               }
-              className="w-full rounded-2xl border border-gray-200 bg-gray-50 px-4 py-4 outline-none focus:ring-2 focus:ring-red-500"
+              className="w-full rounded-2xl border border-gray-200 bg-gray-50 px-4 py-4 outline-none focus:ring-2 focus:ring-red-500 text-black   placeholder:text-gray-500"
             />
 
             <button
