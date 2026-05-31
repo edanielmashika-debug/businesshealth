@@ -298,22 +298,79 @@ export default function SalesPage() {
           {sales.map((sale) => (
             <div
               key={sale.id}
-              className="ocean-card p-4"
+              className="bg-white rounded-3xl p-5 shadow-sm border hover:shadow-md transition"
             >
-              <div className="font-semibold">
-                {sale.productName}
+
+              <div className="flex items-start justify-between">
+
+                {/* LEFT */}
+
+                <div>
+                  <h2 className="text-xl font-bold text-gray-800">
+                    {sale.productName}
+                  </h2>
+
+                  <p className="text-sm text-gray-500 mt-1">
+                    Product Sale
+                  </p>
+                </div>
+
+                {/* TOTAL */}
+
+                <div className="text-right">
+                  <p className="text-sm text-gray-500">
+                    Revenue
+                  </p>
+
+                  <h2 className="text-2xl font-bold text-blue-600">
+                    TZS{" "}
+                    {sale.total.toLocaleString()}
+                  </h2>
+                </div>
               </div>
 
-              <div>
-                Qty:
-                {" "}
-                {sale.quantity}
-              </div>
+              {/* STATS */}
 
-              <div>
-                TZS
-                {" "}
-                {sale.total.toLocaleString()}
+              <div className="grid grid-cols-2 md:grid-cols-3 gap-4 mt-6">
+
+                {/* QUANTITY */}
+
+                <div className="bg-gray-50 rounded-2xl p-4">
+                  <p className="text-sm text-gray-500">
+                    Quantity
+                  </p>
+
+                  <h3 className="text-lg font-bold mt-1">
+                    {sale.quantity}
+                  </h3>
+                </div>
+
+                {/* PROFIT */}
+
+                <div className="bg-gray-50 rounded-2xl p-4">
+                  <p className="text-sm text-gray-500">
+                    Profit
+                  </p>
+
+                  <h3 className="text-lg font-bold mt-1 text-green-600">
+                    TZS{" "}
+                    {sale.profit.toLocaleString()}
+                  </h3>
+                </div>
+
+                {/* DATE */}
+
+                <div className="bg-gray-50 rounded-2xl p-4">
+                  <p className="text-sm text-gray-500">
+                    Date
+                  </p>
+
+                  <h3 className="text-sm font-semibold mt-1">
+                    {new Date(
+                      sale.createdAt
+                    ).toLocaleDateString()}
+                  </h3>
+                </div>
               </div>
             </div>
           ))}
