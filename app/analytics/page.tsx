@@ -234,6 +234,30 @@ export default function AnalyticsPage() {
             </div>
           </div>
 
+          {/*EXPENSES CARD*/}
+          <div>
+            <div className="bg-gradient-to-br from-red-500 to-rose-700 rounded-3xl p-6 text-white shadow-lg">
+
+              <div className="flex items-center justify-between">
+
+                <div>
+                  <p className="text-sm opacity-80">
+                    Expenses
+                  </p>
+
+                  <h2 className="text-3xl font-bold mt-2">
+                    TZS{" "}
+                    {totalExpenses.toLocaleString()}
+                  </h2>
+                </div>
+
+                <div className="bg-white/20 p-3 rounded-2xl">
+                  💸
+                </div>
+              </div>
+            </div>
+          </div>
+
           {/* PROFIT */}
 
           <div className="bg-gradient-to-br from-green-500 to-emerald-700 rounded-3xl p-6 text-white shadow-lg">
@@ -338,29 +362,7 @@ export default function AnalyticsPage() {
             <CategoryChart />
           </div>
 
-          {/*EXPENSES CARD*/}
-          <div>
-            <div className="bg-gradient-to-br from-red-500 to-rose-700 rounded-3xl p-6 text-white shadow-lg">
 
-              <div className="flex items-center justify-between">
-
-                <div>
-                  <p className="text-sm opacity-80">
-                    Expenses
-                  </p>
-
-                  <h2 className="text-3xl font-bold mt-2">
-                    TZS{" "}
-                    {totalExpenses.toLocaleString()}
-                  </h2>
-                </div>
-
-                <div className="bg-white/20 p-3 rounded-2xl">
-                  💸
-                </div>
-              </div>
-            </div>
-          </div>
 
           {/* PROFIT CHART */}
           <div className="bg-white rounded-3xl p-6 shadow-sm border">
