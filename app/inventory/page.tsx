@@ -229,7 +229,7 @@ export default function InventoryPage() {
                         Stock Left
                       </p>
 
-                      <h3 className="text-xl font-bold mt-1">
+                      <h3 className="text-xl font-bold mt-1 text-black">
                         {
                           product.stock
                         }
@@ -252,7 +252,7 @@ export default function InventoryPage() {
                         Buying Price
                       </p>
 
-                      <h3 className="text-lg font-bold mt-1">
+                      <h3 className="text-lg font-bold mt-1 text-yellow">
                         TZS{" "}
                         {product.buyPrice.toLocaleString()}
                       </h3>
