@@ -98,35 +98,37 @@ export default function ReportsPage() {
           </h1>
 
           <p className="text-gray-500 mt-1">
-            Export your business reports
+            Pakua ripoti za biashara yako
           </p>
         </div>
 
         <div className="bg-white rounded-3xl border p-6 shadow-sm">
 
           <h2 className="text-xl font-bold text-black">
-            Filter Reports
+            Chuja Ripoti Kwa Tarehe
           </h2>
 
           <p className="text-sm text-gray-500 mt-1">
-            Select report date range
+            Chagua Kipindi Cha Ripoti
           </p>
 
           <div className="grid md:grid-cols-2 gap-4 mt-6">
 
             <input
               type="date"
+              placeholder="Tarehe ya kuanza"
               value={startDate}
               onChange={(e) =>
                 setStartDate(
                   e.target.value
                 )
               }
-              className="border rounded-2xl px-4 py-4 bg-gray-50 text-black"
+              className="border rounded-2xl px-4 py-4 bg-gray-50 text-black placeholder: text-gray-500"
             />
 
             <input
               type="date"
+              placeholder="Tarehe ya mwisho"
               value={endDate}
               onChange={(e) =>
                 setEndDate(

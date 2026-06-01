@@ -23,11 +23,11 @@ export default function ReportChart({
       <div className="mb-6">
 
         <h2 className="text-xl font-bold text-black">
-          Revenue Analytics
+          Takwimu za mapato
         </h2>
 
         <p className="text-sm text-gray-500 mt-1">
-          Business revenue performance
+          Perfomance Ya Mapato Ya Biashara
         </p>
       </div>
 
