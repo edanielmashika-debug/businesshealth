@@ -113,7 +113,7 @@ export default function ReportsPage() {
           </p>
 
           <div className="grid md:grid-cols-2 gap-4 mt-6">
-
+            <span className="text-sm font-medium text-gray-500">Tarehe ya kuanza</span>
             <input
               type="date"
               placeholder="Tarehe ya kuanza"
@@ -124,7 +124,11 @@ export default function ReportsPage() {
                 )
               }
               className="border rounded-2xl px-4 py-4 bg-gray-50 text-black placeholder: text-black"
+              
             />
+
+            <span className="text-sm font-medium text-gray-500">Tarehe ya mwisho</span>
+
 
             <input
               type="date"
