@@ -1,6 +1,7 @@
 "use client";
 
 import {
+  useEffect,
   useState,
 } from "react";
 
@@ -11,11 +12,12 @@ import {
 } from "../../store/expense-store";
 
 export default function ExpensesPage() {
-  
+
   const {
     expenses,
     addExpense,
     deleteExpense,
+    fetchExpenses,
   } =
     useExpenseStore();
 
@@ -28,9 +30,14 @@ export default function ExpensesPage() {
   const [category, setCategory] =
     useState("");
 
-  const handleSubmit = (
+  useEffect(() => {
+    fetchExpenses();
+  }, []);
+
+  const handleSubmit = async (
     e: React.FormEvent
   ) => {
+
     e.preventDefault();
 
     if (
@@ -40,7 +47,7 @@ export default function ExpensesPage() {
     )
       return;
 
-    addExpense({
+    await addExpense({
       id: crypto.randomUUID(),
 
       title,
@@ -72,9 +79,9 @@ export default function ExpensesPage() {
 
   return (
     <DashboardLayout>
-      
+
       <div className="space-y-8">
-        
+
         {/* HEADER */}
 
         <div>
@@ -90,7 +97,7 @@ export default function ExpensesPage() {
         {/* TOP CARD */}
 
         <div className="bg-gradient-to-r from-red-500 to-red-600 rounded-3xl p-6 text-white shadow-lg">
-          
+
           <p className="text-sm opacity-80">
             Total Expenses
           </p>
@@ -104,7 +111,7 @@ export default function ExpensesPage() {
         {/* FORM */}
 
         <div className="bg-white rounded-3xl p-6 shadow-sm border">
-          
+
           <div className="mb-6">
             <h2 className="text-2xl font-bold text-gray-800">
               Add Expense
@@ -121,7 +128,7 @@ export default function ExpensesPage() {
             }
             className="space-y-4"
           >
-            
+
             <input
               type="text"
               placeholder="Expense title"
@@ -155,7 +162,7 @@ export default function ExpensesPage() {
                   e.target.value
                 )
               }
-              className="w-full rounded-2xl border border-gray-200 bg-gray-50 px-4 py-4 outline-none focus:ring-2 focus:ring-red-500 text-black   placeholder:text-gray-500"
+              className="w-full rounded-2xl border border-gray-200 bg-gray-50 px-4 py-4 outline-none focus:ring-2 focus:ring-red-500 text-black placeholder:text-gray-500"
             />
 
             <button
@@ -170,7 +177,7 @@ export default function ExpensesPage() {
         {/* EXPENSE LIST */}
 
         <div className="space-y-4">
-          
+
           {expenses.map(
             (expense) => (
               <div
@@ -179,9 +186,9 @@ export default function ExpensesPage() {
                 }
                 className="bg-white rounded-3xl p-5 shadow-sm border"
               >
-                
+
                 <div className="flex items-start justify-between">
-                  
+
                   <div>
                     <h2 className="text-xl font-bold text-gray-800">
                       {

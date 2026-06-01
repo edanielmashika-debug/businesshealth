@@ -1,9 +1,10 @@
-import { create } from "zustand";
-import {
-  deleteSaleFromDB,
-} from "../lib/sales";
+"use client";
 
-export interface Sale {
+import { create } from "zustand";
+
+import { supabase } from "../lib/supabase";
+
+export type Sale = {
   id: string;
 
   productId: string;
@@ -17,56 +18,164 @@ export interface Sale {
   profit: number;
 
   createdAt: string;
-}
+};
 
-interface SalesStore {
+type SalesStore = {
   sales: Sale[];
 
-  setSales: (
-    sales: Sale[]
-  ) => void;
-
-  addSale: (
+  createSale: (
     sale: Sale
-  ) => void;
+  ) => Promise<void>;
 
   deleteSale: (
     id: string
-  ) => void;
-}
+  ) => Promise<void>;
+
+  fetchSales: () => Promise<void>;
+};
 
 export const useSalesStore =
   create<SalesStore>(
     (set) => ({
       sales: [],
 
-      setSales: (sales) =>
-        set({
-          sales,
-        }),
+      fetchSales:
+        async () => {
 
-      addSale: (sale) =>
-        set((state) => ({
-          sales: [
-            sale,
-            ...state.sales,
-          ],
-        })),
+          const {
+            data,
+            error,
+          } =
+            await supabase
+              .from("sales")
+              .select("*")
+              .order(
+                "created_at",
+                {
+                  ascending:
+                    false,
+                }
+              );
 
-      deleteSale: async (
-  id
-) => {
-  set((state) => ({
-    sales:
-      state.sales.filter(
-        (sale) =>
-          sale.id !== id
-      ),
-  }));
+          if (error) {
+            console.error(
+              error
+            );
 
-  await deleteSaleFromDB(
-    id
-  );
-},
+            return;
+          }
+
+          const formatted =
+            data.map(
+              (sale) => ({
+                id: sale.id,
+
+                productId:
+                  sale.product_id,
+
+                productName:
+                  sale.product_name,
+
+                quantity:
+                  sale.quantity,
+
+                total: Number(
+                  sale.total
+                ),
+
+                profit: Number(
+                  sale.profit
+                ),
+
+                createdAt:
+                  sale.created_at,
+              })
+            );
+
+          set({
+            sales:
+              formatted,
+          });
+        },
+
+      createSale:
+        async (sale) => {
+
+          const {
+            error,
+          } =
+            await supabase
+              .from("sales")
+              .insert({
+                id: sale.id,
+
+                product_id:
+                  sale.productId,
+
+                product_name:
+                  sale.productName,
+
+                quantity:
+                  sale.quantity,
+
+                total:
+                  sale.total,
+
+                profit:
+                  sale.profit,
+
+                created_at:
+                  sale.createdAt,
+              });
+
+          if (error) {
+            console.error(
+              error
+            );
+
+            return;
+          }
+
+          set((state) => ({
+            sales: [
+              sale,
+              ...state.sales,
+            ],
+          }));
+        },
+
+      deleteSale:
+        async (id) => {
+
+          const {
+            error,
+          } =
+            await supabase
+              .from("sales")
+              .delete()
+              .eq(
+                "id",
+                id
+              );
+
+          if (error) {
+            console.error(
+              error
+            );
+
+            return;
+          }
+
+          set((state) => ({
+            sales:
+              state.sales.filter(
+                (
+                  sale
+                ) =>
+                  sale.id !==
+                  id
+              ),
+          }));
+        },
     })
   );

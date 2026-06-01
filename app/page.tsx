@@ -11,14 +11,24 @@ import { getTransactions } from "@/services/transaction-service";
 
 import { useTransactionStore } from "@/store/transaction-store";
 
+import { useInventoryStore } from "@/store/inventory-store";
+
+import { useSalesStore } from "@/store/sales-store";
+
+import { useExpenseStore } from "@/store/expense-store";
+
 import { useRouter } from "next/navigation";
 
 import { supabase } from "@/lib/supabase";
+
 import AnalyticsChart from "@/components/analytics-chart";
+
 import CategoryChart from "@/components/category-chart";
+
 import SMSImport from "@/components/sms-import";
 
 export default function HomePage() {
+
   const {
     income,
     expense,
@@ -33,8 +43,46 @@ export default function HomePage() {
         state.setTransactions
     );
 
+  const products =
+    useInventoryStore(
+      (state) =>
+        state.products
+    );
+
+  const fetchProducts =
+    useInventoryStore(
+      (state) =>
+        state.fetchProducts
+    );
+
+  const sales =
+    useSalesStore(
+      (state) =>
+        state.sales
+    );
+
+  const fetchSales =
+    useSalesStore(
+      (state) =>
+        state.fetchSales
+    );
+
+  const expenses =
+    useExpenseStore(
+      (state) =>
+        state.expenses
+    );
+
+  const fetchExpenses =
+    useExpenseStore(
+      (state) =>
+        state.fetchExpenses
+    );
+
   useEffect(() => {
+
     async function checkUser() {
+
       const {
         data: { user },
       } =
@@ -48,6 +96,7 @@ export default function HomePage() {
     }
 
     async function loadTransactions() {
+
       const data =
         await getTransactions();
 
@@ -64,53 +113,7 @@ export default function HomePage() {
           category:
             transaction.category,
 
-          type: transaction.type as
-            | "income"
-            | "expense",
-
-          paymentMethod:
-            transaction.payment_method as
-            | "cash"
-            | "mpesa"
-            | "airtel money",
-
-          createdAt:
-            transaction.created_at,
-        }));
-
-      setTransactions(formatted);
-    }
-    checkUser();
-    loadTransactions();
-  }, [setTransactions]);
-
-  return (
-    <DashboardLayout>
-      <h1 className="text-3xl font-bold">
-        Dashboard
-      </h1>
-
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-6">
-        <DashboardCard
-          title="Income"
-          amount={`TZS` + income}
-        />
-
-        <DashboardCard
-          title="Expenses"
-          amount={`TZS` + expense}
-        />
-
-        <DashboardCard
-          title="Profit"
-          amount={`TZS` + profit}
-        />
-      </div>
-
-      <div className="mt-6">
-        <AnalyticsChart/>
-        <CategoryChart/>
-      </div>
-    </DashboardLayout>
-  );
-}
+          type:
+            transaction.type as
+              | "income"
+              | "expense

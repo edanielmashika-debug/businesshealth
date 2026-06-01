@@ -1,45 +1,50 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import {
+  useEffect,
+  useState,
+} from "react";
 
-import { useInventoryStore } from "../../store/inventory-store";
-
-import { useSalesStore } from "../../store/sales-store";
 import DashboardLayout from "../../components/dashboard-layout";
-import {
-  updateProductStock,
-} from "../../lib/inventory";
 
 import {
-  getSales,
-  createSale,
-} from "../../lib/sales";
+  useInventoryStore,
+} from "../../store/inventory-store";
+
+import {
+  useSalesStore,
+} from "../../store/sales-store";
 
 export default function SalesPage() {
+
   const products =
     useInventoryStore(
       (state) =>
         state.products
     );
 
-
-
-  const reduceStock =
+  const updateStock =
     useInventoryStore(
       (state) =>
-        state.reduceStock
+        state.updateStock
     );
 
-  const addSale =
-    useSalesStore(
+  const fetchProducts =
+    useInventoryStore(
       (state) =>
-        state.addSale
+        state.fetchProducts
     );
 
-  const setSales =
+  const createSale =
     useSalesStore(
       (state) =>
-        state.setSales
+        state.createSale
+    );
+
+  const fetchSales =
+    useSalesStore(
+      (state) =>
+        state.fetchSales
     );
 
   const sales =
@@ -56,6 +61,12 @@ export default function SalesPage() {
   const [quantity, setQuantity] =
     useState("");
 
+  useEffect(() => {
+    fetchProducts();
+
+    fetchSales();
+  }, []);
+
   const selectedProduct =
     products.find(
       (product) =>
@@ -65,59 +76,23 @@ export default function SalesPage() {
 
   const total =
     selectedProduct
-      ? selectedProduct.sellPrice *
-      Number(quantity || 0)
+      ? selectedProduct.sellingPrice *
+        Number(quantity || 0)
       : 0;
 
   const profit =
     selectedProduct
       ? (
-        selectedProduct.sellPrice -
-        selectedProduct.buyPrice
-      ) * Number(quantity || 0)
+          selectedProduct.sellingPrice -
+          selectedProduct.buyingPrice
+        ) *
+        Number(quantity || 0)
       : 0;
-
-  useEffect(() => {
-    async function loadSales() {
-      const data =
-        await getSales();
-
-      if (!data) return;
-
-      const formatted =
-        data.map((sale) => ({
-          id: sale.id,
-
-          productId:
-            sale.product_id,
-
-          productName:
-            sale.product_name,
-
-          quantity:
-            sale.quantity,
-
-          total: Number(
-            sale.total
-          ),
-
-          profit: Number(
-            sale.profit
-          ),
-
-          createdAt:
-            sale.created_at,
-        }));
-
-      setSales(formatted);
-    }
-
-    loadSales();
-  }, [setSales]);
 
   async function handleSubmit(
     e: React.FormEvent
   ) {
+
     e.preventDefault();
 
     if (
@@ -138,20 +113,6 @@ export default function SalesPage() {
     }
 
     await createSale({
-      productId:
-        selectedProduct.id,
-
-      productName:
-        selectedProduct.name,
-
-      quantity:
-        Number(quantity),
-
-      total,
-      profit,
-    });
-
-    addSale({
       id: crypto.randomUUID(),
 
       productId:
@@ -164,21 +125,15 @@ export default function SalesPage() {
         Number(quantity),
 
       total,
+
       profit,
 
       createdAt:
         new Date().toISOString(),
     });
 
-    reduceStock(
+    await updateStock(
       selectedProduct.id,
-      Number(quantity)
-    );
-
-    await updateProductStock(
-      selectedProduct.id,
-
-      selectedProduct.stock -
       Number(quantity)
     );
 
@@ -190,6 +145,7 @@ export default function SalesPage() {
   return (
     <DashboardLayout>
       <div className="p-4 space-y-8">
+
         <div className="mb-6">
 
           <h2 className="text-2xl font-bold text-gray-800">
@@ -200,11 +156,14 @@ export default function SalesPage() {
             Create and track product sales
           </p>
         </div>
+
         <div className="bg-white rounded-3xl p-6 shadow-sm border">
+
           <form
             onSubmit={handleSubmit}
             className="space-y-4"
           >
+
             <select
               value={
                 selectedProductId
@@ -216,7 +175,11 @@ export default function SalesPage() {
               }
               className="w-full rounded-2xl border border-gray-200 bg-gray-50 px-4 py-4 outline-none focus:ring-2 focus:ring-blue-500 focus:bg-white transition"
             >
-              <option value="" className="text-gray-500">
+
+              <option
+                value=""
+                className="text-gray-500"
+              >
                 Select Product
               </option>
 
@@ -226,7 +189,11 @@ export default function SalesPage() {
                     key={product.id}
                     value={product.id}
                   >
-                    {product.name}({product.stock} left)
+                    {product.name}
+                    (
+                    {product.stock}
+                    {" "}
+                    left)
                   </option>
                 )
               )}
@@ -270,6 +237,7 @@ export default function SalesPage() {
 
             {selectedProduct && (
               <div className="ocean-card p-4">
+
                 <div>
                   Stock Left:
                   {" "}
@@ -278,10 +246,10 @@ export default function SalesPage() {
 
                 {selectedProduct.stock <=
                   5 && (
-                    <div className="text-red-500 text-sm mt-2">
-                      Low Stock Warning
-                    </div>
-                  )}
+                  <div className="text-red-500 text-sm mt-2">
+                    Low Stock Warning
+                  </div>
+                )}
               </div>
             )}
 
@@ -295,15 +263,15 @@ export default function SalesPage() {
         </div>
 
         <div className="space-y-3">
+
           {sales.map((sale) => (
+
             <div
               key={sale.id}
               className="bg-white rounded-3xl p-5 shadow-sm border hover:shadow-md transition"
             >
 
               <div className="flex items-start justify-between">
-
-                {/* LEFT */}
 
                 <div>
                   <h2 className="text-xl font-bold text-gray-800">
@@ -315,9 +283,8 @@ export default function SalesPage() {
                   </p>
                 </div>
 
-                {/* TOTAL */}
-
                 <div className="text-right">
+
                   <p className="text-sm text-gray-500">
                     Revenue
                   </p>
@@ -329,13 +296,10 @@ export default function SalesPage() {
                 </div>
               </div>
 
-              {/* STATS */}
-
               <div className="grid grid-cols-2 md:grid-cols-3 gap-4 mt-6">
 
-                {/* QUANTITY */}
-
                 <div className="bg-gray-50 rounded-2xl p-4">
+
                   <p className="text-sm text-gray-500">
                     Quantity
                   </p>
@@ -345,9 +309,8 @@ export default function SalesPage() {
                   </h3>
                 </div>
 
-                {/* PROFIT */}
-
                 <div className="bg-gray-50 rounded-2xl p-4">
+
                   <p className="text-sm text-gray-500">
                     Profit
                   </p>
@@ -358,9 +321,8 @@ export default function SalesPage() {
                   </h3>
                 </div>
 
-                {/* DATE */}
-
                 <div className="bg-gray-50 rounded-2xl p-4">
+
                   <p className="text-sm text-gray-500">
                     Date
                   </p>

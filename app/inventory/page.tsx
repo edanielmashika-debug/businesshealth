@@ -1,41 +1,25 @@
 "use client";
 
+import {
+  useEffect,
+  useState,
+} from "react";
+
 import DashboardLayout from "@/components/dashboard-layout";
 
-import { useInventoryStore } from "@/store/inventory-store";
-
-import { useState } from "react";
-import { useEffect } from "react";
-
 import {
-  getProducts,
-  createProduct,
-} from "@/lib/inventory";
+  useInventoryStore,
+} from "@/store/inventory-store";
 
 export default function InventoryPage() {
-  const products =
-    useInventoryStore(
-      (state) =>
-        state.products
-    );
-
-  const setProducts =
-    useInventoryStore(
-      (state) =>
-        state.setProducts
-    );
-
-  const addProduct =
-    useInventoryStore(
-      (state) =>
-        state.addProduct
-    );
-
-  const deleteProduct =
-    useInventoryStore(
-      (state) =>
-        state.deleteProduct
-    );
+  
+  const {
+    products,
+    addProduct,
+    deleteProduct,
+    fetchProducts,
+  } =
+    useInventoryStore();
 
   const [name, setName] =
     useState("");
@@ -43,280 +27,264 @@ export default function InventoryPage() {
   const [stock, setStock] =
     useState("");
 
-  const [buyPrice, setBuyPrice] =
-    useState("");
+  const [
+    buyingPrice,
+    setBuyingPrice,
+  ] = useState("");
 
-  const [sellPrice, setSellPrice] =
-    useState("");
+  const [
+    sellingPrice,
+    setSellingPrice,
+  ] = useState("");
 
-  async function handleSubmit(
+  useEffect(() => {
+    fetchProducts();
+  }, []);
+
+  const handleSubmit = async (
     e: React.FormEvent
-  ) {
+  ) => {
     e.preventDefault();
 
-    await createProduct({
-      name,
+    if (
+      !name ||
+      !stock ||
+      !buyingPrice ||
+      !sellingPrice
+    )
+      return;
 
-      stock: Number(stock),
-
-      buyPrice:
-        Number(buyPrice),
-
-      sellPrice:
-        Number(sellPrice),
-    });
-
-    addProduct({
+    await addProduct({
       id: crypto.randomUUID(),
 
       name,
 
       stock: Number(stock),
 
-      buyPrice:
-        Number(buyPrice),
+      buyingPrice:
+        Number(
+          buyingPrice
+        ),
 
-      sellPrice:
-        Number(sellPrice),
-
-      createdAt:
-        new Date().toISOString(),
+      sellingPrice:
+        Number(
+          sellingPrice
+        ),
     });
 
     setName("");
-
     setStock("");
-
-    setBuyPrice("");
-
-    setSellPrice("");
-  }
-
-
-  useEffect(() => {
-    async function loadProducts() {
-      const data =
-        await getProducts();
-
-      if (!data) return;
-
-      const formatted =
-        data.map((product) => ({
-          id: product.id,
-
-          name: product.name,
-
-          stock: product.stock,
-
-          buyPrice: Number(
-            product.buy_price
-          ),
-
-          sellPrice: Number(
-            product.sell_price
-          ),
-
-          createdAt:
-            product.created_at,
-        }));
-
-      setProducts(formatted);
-    }
-
-    loadProducts();
-  }, [setProducts]);
+    setBuyingPrice("");
+    setSellingPrice("");
+  };
 
   return (
     <DashboardLayout>
-      <div className="space-y-6">
-        <div className="mb-6">
+      
+      <div className="space-y-8">
+        
+        {/* HEADER */}
 
-          <h2 className="text-2xl font-bold text-gray-800">
-            Add Product
-          </h2>
+        <div>
+          <h1 className="text-3xl font-bold text-gray-800">
+            Inventory
+          </h1>
 
-          <p className="text-sm text-gray-500 mt-1">
-            Create and manage inventory products
+          <p className="text-gray-500 mt-1">
+            Manage your products
           </p>
         </div>
 
+        {/* FORM */}
 
         <div className="bg-white rounded-3xl p-6 shadow-sm border">
+          
+          <div className="mb-6">
+            <h2 className="text-2xl font-bold text-gray-800">
+              Add Product
+            </h2>
+
+            <p className="text-sm text-gray-500 mt-1">
+              Add new inventory
+            </p>
+          </div>
+
           <form
-            onSubmit={handleSubmit}
-            className="border rounded-2xl p-5 bg-white space-y-4 "
+            onSubmit={
+              handleSubmit
+            }
+            className="space-y-4"
           >
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <input
-                type="text"
-                placeholder="Product name"
-                value={name}
-                onChange={(e) =>
-                  setName(
-                    e.target.value
-                  )
-                }
-                className="w-full rounded-2xl border border-gray-200 bg-gray-50 px-4 py-4 outline-none focus:ring-2 focus:ring-blue-500 focus:bg-white transition text-black"
-              />
+            
+            <input
+              type="text"
+              placeholder="Product name"
+              value={name}
+              onChange={(e) =>
+                setName(
+                  e.target.value
+                )
+              }
+              className="w-full rounded-2xl border border-gray-200 bg-gray-50 px-4 py-4 placeholder:text-gray-400 outline-none focus:ring-2 focus:ring-blue-500"
+            />
 
-              <input
-                type="number"
-                placeholder="Stock quantity"
-                value={stock}
-                onChange={(e) =>
-                  setStock(
-                    e.target.value
-                  )
-                }
-                className="w-full rounded-2xl border border-gray-200 bg-gray-50 px-4 py-4 outline-none focus:ring-2 focus:ring-blue-500 focus:bg-white transition text-black"
-              />
+            <input
+              type="number"
+              placeholder="Stock quantity"
+              value={stock}
+              onChange={(e) =>
+                setStock(
+                  e.target.value
+                )
+              }
+              className="w-full rounded-2xl border border-gray-200 bg-gray-50 px-4 py-4 placeholder:text-gray-400 outline-none focus:ring-2 focus:ring-blue-500"
+            />
 
-              <input
-                type="number"
-                placeholder="Buying price"
-                value={buyPrice}
-                onChange={(e) =>
-                  setBuyPrice(
-                    e.target.value
-                  )
-                }
-                className="w-full rounded-2xl border border-gray-200 bg-gray-50 px-4 py-4 outline-none focus:ring-2 focus:ring-blue-500 focus:bg-white transition text-black"
-              />
+            <input
+              type="number"
+              placeholder="Buying price"
+              value={
+                buyingPrice
+              }
+              onChange={(e) =>
+                setBuyingPrice(
+                  e.target.value
+                )
+              }
+              className="w-full rounded-2xl border border-gray-200 bg-gray-50 px-4 py-4 placeholder:text-gray-400 outline-none focus:ring-2 focus:ring-blue-500"
+            />
 
-              <input
-                type="number"
-                placeholder="Selling price"
-                value={sellPrice}
-                onChange={(e) =>
-                  setSellPrice(
-                    e.target.value
-                  )
-                }
-                className="w-full rounded-2xl border border-gray-200 bg-gray-50 px-4 py-4 outline-none focus:ring-2 focus:ring-blue-500 focus:bg-white transition text-black"
-              />
-
-            </div>
+            <input
+              type="number"
+              placeholder="Selling price"
+              value={
+                sellingPrice
+              }
+              onChange={(e) =>
+                setSellingPrice(
+                  e.target.value
+                )
+              }
+              className="w-full rounded-2xl border border-gray-200 bg-gray-50 px-4 py-4 placeholder:text-gray-400 outline-none focus:ring-2 focus:ring-blue-500"
+            />
 
             <button
               type="submit"
-              className="w-full mt-6 bg-gradient-to-r from-blue-600 to-blue-700 text-white rounded-2xl py-4 font-semibold hover:scale-[1.01] transition"
+              className="w-full bg-gradient-to-r from-blue-600 to-cyan-500 text-white rounded-2xl py-4 font-semibold shadow-lg"
             >
               Add Product
             </button>
           </form>
         </div>
 
-        <div className="grid gap-4">
+        {/* PRODUCTS */}
+
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          
           {products.map(
-            (product) => (
-              <div
-                key={product.id}
-                className="bg-white rounded-3xl p-5 shadow-sm border hover:shadow-md transition"
-              >
+            (product) => {
 
-                {/* TOP */}
+              const profit =
+                product.sellingPrice -
+                product.buyingPrice;
 
-                <div className="flex items-start justify-between">
+              const isLowStock =
+                product.stock <= 5;
 
-                  <div>
-                    <h2 className="text-xl font-bold text-gray-800">
-                      {product.name}
-                    </h2>
+              return (
+                <div
+                  key={
+                    product.id
+                  }
+                  className="bg-white rounded-3xl p-6 shadow-sm border hover:shadow-md transition"
+                >
+                  
+                  <div className="flex items-start justify-between">
+                    
+                    <div>
+                      <h2 className="text-2xl font-bold text-gray-800">
+                        {
+                          product.name
+                        }
+                      </h2>
 
-                    <p className="text-sm text-gray-500 mt-1">
-                      Product Inventory
-                    </p>
+                      <p className="text-sm text-gray-500 mt-1">
+                        Inventory Product
+                      </p>
+                    </div>
+
+                    {isLowStock && (
+                      <div className="bg-red-100 text-red-600 px-3 py-1 rounded-full text-sm font-semibold">
+                        Low Stock
+                      </div>
+                    )}
                   </div>
 
-                  <div
-                    className={`
-      px-3 py-1 rounded-full text-sm font-medium
+                  {/* STATS */}
 
-      ${product.stock <= 5
-                        ? "bg-red-100 text-red-600"
-                        : "bg-green-100 text-green-600"
-                      }
-    `}
+                  <div className="grid grid-cols-2 gap-4 mt-6">
+                    
+                    <div className="bg-gray-50 rounded-2xl p-4">
+                      <p className="text-sm text-gray-500">
+                        Stock Left
+                      </p>
+
+                      <h3 className="text-xl font-bold mt-1">
+                        {
+                          product.stock
+                        }
+                      </h3>
+                    </div>
+
+                    <div className="bg-gray-50 rounded-2xl p-4">
+                      <p className="text-sm text-gray-500">
+                        Profit
+                      </p>
+
+                      <h3 className="text-xl font-bold mt-1 text-green-600">
+                        TZS{" "}
+                        {profit.toLocaleString()}
+                      </h3>
+                    </div>
+
+                    <div className="bg-gray-50 rounded-2xl p-4">
+                      <p className="text-sm text-gray-500">
+                        Buying Price
+                      </p>
+
+                      <h3 className="text-lg font-bold mt-1">
+                        TZS{" "}
+                        {product.buyingPrice.toLocaleString()}
+                      </h3>
+                    </div>
+
+                    <div className="bg-gray-50 rounded-2xl p-4">
+                      <p className="text-sm text-gray-500">
+                        Selling Price
+                      </p>
+
+                      <h3 className="text-lg font-bold mt-1 text-blue-600">
+                        TZS{" "}
+                        {product.sellingPrice.toLocaleString()}
+                      </h3>
+                    </div>
+                  </div>
+
+                  {/* DELETE */}
+
+                  <button
+                    onClick={() =>
+                      deleteProduct(
+                        product.id
+                      )
+                    }
+                    className="mt-6 w-full bg-red-50 text-red-600 rounded-2xl py-3 font-semibold hover:bg-red-100 transition"
                   >
-                    {product.stock <= 5
-                      ? "Low Stock"
-                      : "In Stock"}
-                  </div>
-                </div>
-
-                {/* STATS */}
-
-                <div className="grid grid-cols-2 gap-4 mt-6">
-
-                  {/* BUYING */}
-
-                  <div className="bg-gray-50 rounded-2xl p-4">
-                    <p className="text-sm text-gray-500">
-                      Buying Price
-                    </p>
-
-                    <h3 className="text-lg font-bold mt-1 text-black">
-                      TZS{" "}
-                      {product.buyPrice.toLocaleString()}
-                    </h3>
-                  </div>
-
-                  {/* SELLING */}
-
-                  <div className="bg-gray-50 rounded-2xl p-4">
-                    <p className="text-sm text-gray-500">
-                      Selling Price
-                    </p>
-
-                    <h3 className="text-lg font-bold mt-1 text-black">
-                      TZS{" "}
-                      {product.sellPrice.toLocaleString()}
-                    </h3>
-                  </div>
-
-                  {/* STOCK */}
-
-                  <div className="bg-gray-50 rounded-2xl p-4">
-                    <p className="text-sm text-gray-500">
-                      Stock Left
-                    </p>
-
-                    <h3 className="text-lg font-bold mt-1 text-black">
-                      {product.stock}
-                    </h3>
-                  </div>
-
-                  {/* PROFIT */}
-
-                  <div className="bg-gray-50 rounded-2xl p-4">
-                    <p className="text-sm text-gray-500">
-                      Profit / Item
-                    </p>
-
-                    <h3 className="text-lg font-bold mt-1 text-green-600">
-                      TZS{" "}
-                      {(
-                        product.sellPrice -
-                        product.buyPrice
-                      ).toLocaleString()}
-                    </h3>
-                  </div>
-                </div>
-
-                {/* ACTIONS */}
-
-                <div className="flex gap-3 mt-6">
-
-                  <button className="flex-1 bg-blue-600 text-white rounded-2xl py-3 hover:bg-blue-700 transition">
-                    Edit
-                  </button>
-
-                  <button className="flex-1 border rounded-2xl py-3 hover:bg-gray-50 transition text-red-500" onClick={()=>deleteProduct(product.id)} >
-                    Delete
+                    Delete Product
                   </button>
                 </div>
-              </div>
-            )
+              );
+            }
           )}
         </div>
       </div>
