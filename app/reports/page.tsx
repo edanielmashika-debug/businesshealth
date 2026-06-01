@@ -13,6 +13,8 @@ import {
   useSalesStore,
 } from "../../store/sales-store";
 
+import ReportChart from "../../components/report-chart";
+
 export default function ReportsPage() {
 
   const sales =
@@ -65,6 +67,24 @@ export default function ReportsPage() {
 
   const totalSales =
     filteredSales.length;
+
+
+  const chartData =
+    filteredSales.map(
+      (sale) => ({
+
+        date:
+          new Date(
+            sale.createdAt
+          ).toLocaleDateString(),
+
+        revenue:
+          sale.total,
+
+        profit:
+          sale.profit,
+      })
+    );
 
   return (
     <DashboardLayout>
@@ -159,6 +179,12 @@ export default function ReportsPage() {
             <h2 className="text-3xl font-bold text-black mt-2">
               {totalSales}
             </h2>
+          </div>
+
+          <div className="bg-white rounded-3xl border p-6 shadow-sm">
+            <ReportChart
+              data={chartData}
+            />
           </div>
         </div>
 
