@@ -12,7 +12,7 @@ export function generateSalesPDF(
   doc.setFontSize(20);
 
   doc.text(
-    "BusinessHealth Sales Report",
+    "Biashara Nova ripoti ya mauzo",
     14,
     20
   );
@@ -21,10 +21,11 @@ export function generateSalesPDF(
     startY: 30,
 
     head: [[
-      "Product",
-      "Quantity",
-      "Revenue",
-      "Profit",
+      "Bidhaa",
+      "Idadi",
+      "Mapato",
+      "Faida",
+      "Tarehe",
     ]],
 
     body: sales.map(
@@ -36,6 +37,8 @@ export function generateSalesPDF(
         `TZS ${sale.total}`,
 
         `TZS ${sale.profit}`,
+
+        new Date(sale.createdAt).toLocaleDateString(),
       ]
     ),
   });
