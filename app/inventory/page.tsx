@@ -252,7 +252,7 @@ export default function InventoryPage() {
                         Buying Price
                       </p>
 
-                      <h3 className="text-lg font-bold mt-1 text-yellow">
+                      <h3 className="text-lg font-bold mt-1 text-black">
                         TZS{" "}
                         {product.buyPrice.toLocaleString()}
                       </h3>
