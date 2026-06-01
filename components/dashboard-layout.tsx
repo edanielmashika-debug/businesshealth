@@ -42,12 +42,6 @@ export default function DashboardLayout({
 
 
         {
-            name: "Dashboard",
-            href: "/app",
-            icon: Home,
-        },
-
-        {
             name: "Sales",
             href: "/sales",
             icon: Receipt,
