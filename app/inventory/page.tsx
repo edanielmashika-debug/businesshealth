@@ -61,12 +61,12 @@ export default function InventoryPage() {
 
       stock: Number(stock),
 
-      buyingPrice:
+      buyPrice:
         Number(
           buyingPrice
         ),
 
-      sellingPrice:
+      sellPrice:
         Number(
           sellingPrice
         ),
@@ -125,7 +125,7 @@ export default function InventoryPage() {
                   e.target.value
                 )
               }
-              className="w-full rounded-2xl border border-gray-200 bg-gray-50 px-4 py-4 placeholder:text-gray-400 outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full rounded-2xl border border-gray-200 bg-gray-50 px-4 py-4 placeholder:text-gray-400 outline-none focus:ring-2 focus:ring-blue-500 text-black"
             />
 
             <input
@@ -137,7 +137,7 @@ export default function InventoryPage() {
                   e.target.value
                 )
               }
-              className="w-full rounded-2xl border border-gray-200 bg-gray-50 px-4 py-4 placeholder:text-gray-400 outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full rounded-2xl border border-gray-200 bg-gray-50 px-4 py-4 placeholder:text-gray-400 outline-none focus:ring-2 focus:ring-blue-500 text-black"
             />
 
             <input
@@ -151,7 +151,7 @@ export default function InventoryPage() {
                   e.target.value
                 )
               }
-              className="w-full rounded-2xl border border-gray-200 bg-gray-50 px-4 py-4 placeholder:text-gray-400 outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full rounded-2xl border border-gray-200 bg-gray-50 px-4 py-4 placeholder:text-gray-400 outline-none focus:ring-2 focus:ring-blue-500 text-black"
             />
 
             <input
@@ -165,7 +165,7 @@ export default function InventoryPage() {
                   e.target.value
                 )
               }
-              className="w-full rounded-2xl border border-gray-200 bg-gray-50 px-4 py-4 placeholder:text-gray-400 outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full rounded-2xl border border-gray-200 bg-gray-50 px-4 py-4 placeholder:text-gray-400 outline-none focus:ring-2 focus:ring-blue-500 text-black"
             />
 
             <button
@@ -185,8 +185,8 @@ export default function InventoryPage() {
             (product) => {
 
               const profit =
-                product.sellingPrice -
-                product.buyingPrice;
+                product.sellPrice -
+                product.buyPrice;
 
               const isLowStock =
                 product.stock <= 5;
@@ -254,7 +254,7 @@ export default function InventoryPage() {
 
                       <h3 className="text-lg font-bold mt-1">
                         TZS{" "}
-                        {product.buyingPrice.toLocaleString()}
+                        {product.buyPrice.toLocaleString()}
                       </h3>
                     </div>
 
@@ -265,7 +265,7 @@ export default function InventoryPage() {
 
                       <h3 className="text-lg font-bold mt-1 text-blue-600">
                         TZS{" "}
-                        {product.sellingPrice.toLocaleString()}
+                        {product.sellPrice.toLocaleString()}
                       </h3>
                     </div>
                   </div>

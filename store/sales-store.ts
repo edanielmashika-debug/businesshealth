@@ -1,8 +1,6 @@
-"use client";
-
 import { create } from "zustand";
 
-import { supabase } from "../lib/supabase";
+import { supabase } from "@/lib/supabase";
 
 export type Sale = {
   id: string;
@@ -21,26 +19,39 @@ export type Sale = {
 };
 
 type SalesStore = {
+
   sales: Sale[];
+
+  fetchSales: () => Promise<void>;
 
   createSale: (
     sale: Sale
   ) => Promise<void>;
 
-  deleteSale: (
-    id: string
-  ) => Promise<void>;
+  addSale: (
+    sale: Sale
+  ) => void;
 
-  fetchSales: () => Promise<void>;
+  setSales: (
+    sales: Sale[]
+  ) => void;
 };
 
 export const useSalesStore =
   create<SalesStore>(
-    (set) => ({
+    (set, get) => ({
+
       sales: [],
 
       fetchSales:
         async () => {
+
+          const {
+            data: { user },
+          } =
+            await supabase.auth.getUser();
+
+          if (!user) return;
 
           const {
             data,
@@ -49,6 +60,10 @@ export const useSalesStore =
             await supabase
               .from("sales")
               .select("*")
+              .eq(
+                "user_id",
+                user.id
+              )
               .order(
                 "created_at",
                 {
@@ -57,7 +72,10 @@ export const useSalesStore =
                 }
               );
 
-          if (error) {
+          if (
+            error ||
+            !data
+          ) {
             console.error(
               error
             );
@@ -67,8 +85,11 @@ export const useSalesStore =
 
           const formatted =
             data.map(
-              (sale) => ({
-                id: sale.id,
+              (
+                sale
+              ) => ({
+                id:
+                  sale.id,
 
                 productId:
                   sale.product_id,
@@ -79,13 +100,15 @@ export const useSalesStore =
                 quantity:
                   sale.quantity,
 
-                total: Number(
-                  sale.total
-                ),
+                total:
+                  Number(
+                    sale.total
+                  ),
 
-                profit: Number(
-                  sale.profit
-                ),
+                profit:
+                  Number(
+                    sale.profit
+                  ),
 
                 createdAt:
                   sale.created_at,
@@ -99,7 +122,16 @@ export const useSalesStore =
         },
 
       createSale:
-        async (sale) => {
+        async (
+          sale
+        ) => {
+
+          const {
+            data: { user },
+          } =
+            await supabase.auth.getUser();
+
+          if (!user) return;
 
           const {
             error,
@@ -107,7 +139,8 @@ export const useSalesStore =
             await supabase
               .from("sales")
               .insert({
-                id: sale.id,
+                id:
+                  sale.id,
 
                 product_id:
                   sale.productId,
@@ -126,6 +159,9 @@ export const useSalesStore =
 
                 created_at:
                   sale.createdAt,
+
+                user_id:
+                  user.id,
               });
 
           if (error) {
@@ -136,46 +172,37 @@ export const useSalesStore =
             return;
           }
 
-          set((state) => ({
+          set({
             sales: [
               sale,
-              ...state.sales,
+              ...get()
+                .sales,
             ],
-          }));
+          });
         },
 
-      deleteSale:
-        async (id) => {
+      addSale:
+        (
+          sale
+        ) => {
 
-          const {
-            error,
-          } =
-            await supabase
-              .from("sales")
-              .delete()
-              .eq(
-                "id",
-                id
-              );
+          set({
+            sales: [
+              sale,
+              ...get()
+                .sales,
+            ],
+          });
+        },
 
-          if (error) {
-            console.error(
-              error
-            );
+      setSales:
+        (
+          sales
+        ) => {
 
-            return;
-          }
-
-          set((state) => ({
-            sales:
-              state.sales.filter(
-                (
-                  sale
-                ) =>
-                  sale.id !==
-                  id
-              ),
-          }));
+          set({
+            sales,
+          });
         },
     })
   );

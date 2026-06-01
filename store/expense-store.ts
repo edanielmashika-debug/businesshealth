@@ -1,8 +1,6 @@
-"use client";
-
 import { create } from "zustand";
 
-import { supabase } from "../lib/supabase";
+import { supabase } from "@/lib/supabase";
 
 export type Expense = {
   id: string;
@@ -17,7 +15,10 @@ export type Expense = {
 };
 
 type ExpenseStore = {
+
   expenses: Expense[];
+
+  fetchExpenses: () => Promise<void>;
 
   addExpense: (
     expense: Expense
@@ -27,24 +28,40 @@ type ExpenseStore = {
     id: string
   ) => Promise<void>;
 
-  fetchExpenses: () => Promise<void>;
+  setExpenses: (
+    expenses: Expense[]
+  ) => void;
 };
 
 export const useExpenseStore =
   create<ExpenseStore>(
-    (set) => ({
+    (set, get) => ({
+
       expenses: [],
 
       fetchExpenses:
         async () => {
 
           const {
+            data: { user },
+          } =
+            await supabase.auth.getUser();
+
+          if (!user) return;
+
+          const {
             data,
             error,
           } =
             await supabase
-              .from("expenses")
+              .from(
+                "expenses"
+              )
               .select("*")
+              .eq(
+                "user_id",
+                user.id
+              )
               .order(
                 "created_at",
                 {
@@ -53,7 +70,10 @@ export const useExpenseStore =
                 }
               );
 
-          if (error) {
+          if (
+            error ||
+            !data
+          ) {
             console.error(
               error
             );
@@ -66,7 +86,8 @@ export const useExpenseStore =
               (
                 expense
               ) => ({
-                id: expense.id,
+                id:
+                  expense.id,
 
                 title:
                   expense.title,
@@ -96,6 +117,13 @@ export const useExpenseStore =
         ) => {
 
           const {
+            data: { user },
+          } =
+            await supabase.auth.getUser();
+
+          if (!user) return;
+
+          const {
             error,
           } =
             await supabase
@@ -103,7 +131,8 @@ export const useExpenseStore =
                 "expenses"
               )
               .insert({
-                id: expense.id,
+                id:
+                  expense.id,
 
                 title:
                   expense.title,
@@ -116,6 +145,9 @@ export const useExpenseStore =
 
                 created_at:
                   expense.createdAt,
+
+                user_id:
+                  user.id,
               });
 
           if (error) {
@@ -126,16 +158,19 @@ export const useExpenseStore =
             return;
           }
 
-          set((state) => ({
+          set({
             expenses: [
               expense,
-              ...state.expenses,
+              ...get()
+                .expenses,
             ],
-          }));
+          });
         },
 
       deleteExpense:
-        async (id) => {
+        async (
+          id
+        ) => {
 
           const {
             error,
@@ -158,16 +193,26 @@ export const useExpenseStore =
             return;
           }
 
-          set((state) => ({
+          set({
             expenses:
-              state.expenses.filter(
+              get().expenses.filter(
                 (
                   expense
                 ) =>
                   expense.id !==
                   id
               ),
-          }));
+          });
+        },
+
+      setExpenses:
+        (
+          expenses
+        ) => {
+
+          set({
+            expenses,
+          });
         },
     })
   );

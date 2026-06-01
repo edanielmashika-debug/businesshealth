@@ -1,5 +1,3 @@
-"use client";
-
 import { create } from "zustand";
 
 import { supabase } from "@/lib/supabase";
@@ -11,13 +9,16 @@ export type Product = {
 
   stock: number;
 
-  buyingPrice: number;
+  buyPrice: number;
 
-  sellingPrice: number;
+  sellPrice: number;
 };
 
 type InventoryStore = {
+
   products: Product[];
+
+  fetchProducts: () => Promise<void>;
 
   addProduct: (
     product: Product
@@ -27,21 +28,32 @@ type InventoryStore = {
     id: string
   ) => Promise<void>;
 
-  updateStock: (
+  reduceStock: (
     id: string,
-    quantitySold: number
+    quantity: number
   ) => Promise<void>;
 
-  fetchProducts: () => Promise<void>;
+  updateStock: (
+    id: string,
+    stock: number
+  ) => Promise<void>;
 };
 
 export const useInventoryStore =
   create<InventoryStore>(
     (set, get) => ({
+
       products: [],
 
       fetchProducts:
         async () => {
+
+          const {
+            data: { user },
+          } =
+            await supabase.auth.getUser();
+
+          if (!user) return;
 
           const {
             data,
@@ -52,15 +64,15 @@ export const useInventoryStore =
                 "inventory"
               )
               .select("*")
-              .order(
-                "created_at",
-                {
-                  ascending:
-                    false,
-                }
+              .eq(
+                "user_id",
+                user.id
               );
 
-          if (error) {
+          if (
+            error ||
+            !data
+          ) {
             console.error(
               error
             );
@@ -73,7 +85,8 @@ export const useInventoryStore =
               (
                 product
               ) => ({
-                id: product.id,
+                id:
+                  product.id,
 
                 name:
                   product.name,
@@ -81,14 +94,14 @@ export const useInventoryStore =
                 stock:
                   product.stock,
 
-                buyingPrice:
+                buyPrice:
                   Number(
-                    product.buying_price
+                    product.buy_price
                   ),
 
-                sellingPrice:
+                sellPrice:
                   Number(
-                    product.selling_price
+                    product.sell_price
                   ),
               })
             );
@@ -105,6 +118,13 @@ export const useInventoryStore =
         ) => {
 
           const {
+            data: { user },
+          } =
+            await supabase.auth.getUser();
+
+          if (!user) return;
+
+          const {
             error,
           } =
             await supabase
@@ -112,7 +132,8 @@ export const useInventoryStore =
                 "inventory"
               )
               .insert({
-                id: product.id,
+                id:
+                  product.id,
 
                 name:
                   product.name,
@@ -120,11 +141,14 @@ export const useInventoryStore =
                 stock:
                   product.stock,
 
-                buying_price:
-                  product.buyingPrice,
+                buy_price:
+                  product.buyPrice,
 
-                selling_price:
-                  product.sellingPrice,
+                sell_price:
+                  product.sellPrice,
+
+                user_id:
+                  user.id,
               });
 
           if (error) {
@@ -135,16 +159,19 @@ export const useInventoryStore =
             return;
           }
 
-          set((state) => ({
+          set({
             products: [
+              ...get()
+                .products,
               product,
-              ...state.products,
             ],
-          }));
+          });
         },
 
       deleteProduct:
-        async (id) => {
+        async (
+          id
+        ) => {
 
           const {
             error,
@@ -167,28 +194,31 @@ export const useInventoryStore =
             return;
           }
 
-          set((state) => ({
+          set({
             products:
-              state.products.filter(
+              get().products.filter(
                 (
                   product
                 ) =>
                   product.id !==
                   id
               ),
-          }));
+          });
         },
 
-      updateStock:
+      reduceStock:
         async (
           id,
-          quantitySold
+          quantity
         ) => {
 
           const product =
             get().products.find(
-              (p) =>
-                p.id === id
+              (
+                product
+              ) =>
+                product.id ===
+                id
             );
 
           if (!product)
@@ -196,7 +226,44 @@ export const useInventoryStore =
 
           const newStock =
             product.stock -
-            quantitySold;
+            quantity;
+
+          await supabase
+            .from(
+              "inventory"
+            )
+            .update({
+              stock:
+                newStock,
+            })
+            .eq(
+              "id",
+              id
+            );
+
+          set({
+            products:
+              get().products.map(
+                (
+                  product
+                ) =>
+                  product.id ===
+                  id
+                    ? {
+                        ...product,
+                        stock:
+                          newStock,
+                      }
+                    : product
+              ),
+          });
+        },
+
+      updateStock:
+        async (
+          id,
+          stock
+        ) => {
 
           const {
             error,
@@ -206,8 +273,7 @@ export const useInventoryStore =
                 "inventory"
               )
               .update({
-                stock:
-                  newStock,
+                stock,
               })
               .eq(
                 "id",
@@ -222,9 +288,9 @@ export const useInventoryStore =
             return;
           }
 
-          set((state) => ({
+          set({
             products:
-              state.products.map(
+              get().products.map(
                 (
                   product
                 ) =>
@@ -232,13 +298,11 @@ export const useInventoryStore =
                   id
                     ? {
                         ...product,
-
-                        stock:
-                          newStock,
+                        stock,
                       }
                     : product
               ),
-          }));
+          });
         },
     })
   );
