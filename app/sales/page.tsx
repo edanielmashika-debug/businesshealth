@@ -76,15 +76,15 @@ export default function SalesPage() {
 
   const total =
     selectedProduct
-      ? selectedProduct.sellingPrice *
+      ? selectedProduct.sellPrice *
         Number(quantity || 0)
       : 0;
 
   const profit =
     selectedProduct
       ? (
-          selectedProduct.sellingPrice -
-          selectedProduct.buyingPrice
+          selectedProduct.sellPrice -
+          selectedProduct.buyPrice
         ) *
         Number(quantity || 0)
       : 0;
