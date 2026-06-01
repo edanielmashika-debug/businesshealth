@@ -175,7 +175,7 @@ export default function SalesPage() {
                   e.target.value
                 )
               }
-              className="w-full rounded-2xl border border-gray-200 bg-gray-50 px-4 py-4 outline-none focus:ring-2 focus:ring-blue-500 focus:bg-white transition text-black"
+              className="w-full rounded-2xl border border-gray-200 bg-gray-50 px-4 py-4 outline-none focus:ring-2 focus:ring-blue-500 focus:bg-white transition text-gray-500"
             >
 
               <option
