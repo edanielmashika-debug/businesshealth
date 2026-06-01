@@ -5,6 +5,9 @@ import { useEffect } from "react";
 import DashboardLayout from "@/components/dashboard-layout";
 import DashboardCard from "@/components/dashboard-card";
 
+import AnalyticsChart from "@/components/analytics-chart";
+import CategoryChart from "@/components/category-chart";
+
 import { useDashboardStats } from "@/hooks/use-dashboard-stats";
 
 import { getTransactions } from "@/services/transaction-service";
@@ -20,12 +23,6 @@ import { useExpenseStore } from "@/store/expense-store";
 import { useRouter } from "next/navigation";
 
 import { supabase } from "@/lib/supabase";
-
-import AnalyticsChart from "@/components/analytics-chart";
-
-import CategoryChart from "@/components/category-chart";
-
-import SMSImport from "@/components/sms-import";
 
 export default function HomePage() {
 
@@ -89,7 +86,10 @@ export default function HomePage() {
         await supabase.auth.getUser();
 
       if (!user) {
-        router.push("/login");
+
+        router.push(
+          "/login"
+        );
 
         return;
       }
@@ -103,28 +103,351 @@ export default function HomePage() {
       if (!data) return;
 
       const formatted =
-  data.map((transaction) => ({
-    id: transaction.id,
+        data.map(
+          (
+            transaction
+          ) => ({
+            id:
+              transaction.id,
 
-    amount: Number(
-      transaction.amount
-    ),
+            amount:
+              Number(
+                transaction.amount
+              ),
 
-    category:
-      transaction.category,
+            category:
+              transaction.category,
 
-    type:
-      transaction.type as
-        | "income"
-        | "expense",
+            type:
+              transaction.type as
+                | "income"
+                | "expense",
 
-    paymentMethod:
-      transaction.payment_method as
-        | "cash"
-        | "mpesa"
-        | "airtel money",
+            paymentMethod:
+              transaction.payment_method as
+                | "cash"
+                | "mpesa"
+                | "airtel money",
 
-    createdAt:
-      transaction.created_at,
-  }));
-        
+            createdAt:
+              transaction.created_at,
+          })
+        );
+
+      setTransactions(
+        formatted
+      );
+    }
+
+    checkUser();
+
+    loadTransactions();
+
+    fetchProducts();
+
+    fetchSales();
+
+    fetchExpenses();
+
+  }, [
+    setTransactions,
+    router,
+    fetchProducts,
+    fetchSales,
+    fetchExpenses,
+  ]);
+
+  const totalRevenue =
+    sales.reduce(
+      (
+        sum,
+        sale
+      ) =>
+        sum +
+        sale.total,
+      0
+    );
+
+  const totalProfit =
+    sales.reduce(
+      (
+        sum,
+        sale
+      ) =>
+        sum +
+        sale.profit,
+      0
+    );
+
+  const totalExpenses =
+    expenses.reduce(
+      (
+        sum,
+        expense
+      ) =>
+        sum +
+        expense.amount,
+      0
+    );
+
+  const netProfit =
+    totalProfit -
+    totalExpenses;
+
+  const lowStockProducts =
+    products.filter(
+      (product) =>
+        product.stock <= 5
+    );
+
+  const bestSellerMap =
+    sales.reduce(
+      (
+        acc,
+        sale
+      ) => {
+
+        acc[
+          sale.productName
+        ] =
+          (acc[
+            sale.productName
+          ] || 0) +
+          sale.quantity;
+
+        return acc;
+
+      },
+      {} as Record<
+        string,
+        number
+      >
+    );
+
+  const bestSeller =
+    Object.entries(
+      bestSellerMap
+    ).sort(
+      (
+        a,
+        b
+      ) =>
+        b[1] - a[1]
+    )[0];
+
+  return (
+    <DashboardLayout>
+
+      <div className="space-y-8">
+
+        {/* HEADER */}
+
+        <div>
+
+          <h1 className="text-3xl font-bold text-white">
+            Dashboard
+          </h1>
+
+          <p className="text-blue-100 mt-1">
+            Business overview and analytics
+          </p>
+        </div>
+
+        {/* TOP STATS */}
+
+        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-5">
+
+          <DashboardCard
+            title="Revenue"
+            amount={`TZS ${totalRevenue.toLocaleString()}`}
+          />
+
+          <DashboardCard
+            title="Profit"
+            amount={`TZS ${totalProfit.toLocaleString()}`}
+          />
+
+          <DashboardCard
+            title="Expenses"
+            amount={`TZS ${totalExpenses.toLocaleString()}`}
+          />
+
+          <DashboardCard
+            title="Net Profit"
+            amount={`TZS ${netProfit.toLocaleString()}`}
+          />
+        </div>
+
+        {/* SECOND ROW */}
+
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-5">
+
+          {/* BEST SELLER */}
+
+          <div className="bg-white rounded-3xl p-6 shadow-sm border">
+
+            <p className="text-sm text-gray-500">
+              Best Seller
+            </p>
+
+            <h2 className="text-2xl font-bold text-black mt-3">
+              {bestSeller
+                ? bestSeller[0]
+                : "No sales yet"}
+            </h2>
+
+            <p className="text-blue-600 mt-2">
+              {bestSeller
+                ? `${bestSeller[1]} units sold`
+                : ""}
+            </p>
+          </div>
+
+          {/* LOW STOCK */}
+
+          <div className="bg-white rounded-3xl p-6 shadow-sm border">
+
+            <p className="text-sm text-gray-500">
+              Low Stock Alerts
+            </p>
+
+            <h2 className="text-4xl font-bold text-red-500 mt-3">
+              {
+                lowStockProducts.length
+              }
+            </h2>
+
+            <p className="text-gray-500 mt-2 text-sm">
+              Products running low
+            </p>
+          </div>
+
+          {/* PRODUCTS */}
+
+          <div className="bg-white rounded-3xl p-6 shadow-sm border">
+
+            <p className="text-sm text-gray-500">
+              Total Products
+            </p>
+
+            <h2 className="text-4xl font-bold text-blue-600 mt-3">
+              {products.length}
+            </h2>
+
+            <p className="text-gray-500 mt-2 text-sm">
+              Inventory items
+            </p>
+          </div>
+        </div>
+
+        {/* CHARTS */}
+
+        <div className="grid grid-cols-1 xl:grid-cols-2 gap-6">
+
+          <div className="bg-white rounded-3xl p-6 shadow-sm border">
+
+            <div className="mb-4">
+
+              <h2 className="text-xl font-bold text-black">
+                Revenue Analytics
+              </h2>
+
+              <p className="text-sm text-gray-500">
+                Sales and revenue trends
+              </p>
+            </div>
+
+            <AnalyticsChart />
+          </div>
+
+          <div className="bg-white rounded-3xl p-6 shadow-sm border">
+
+            <div className="mb-4">
+
+              <h2 className="text-xl font-bold text-black">
+                Category Breakdown
+              </h2>
+
+              <p className="text-sm text-gray-500">
+                Expense and income categories
+              </p>
+            </div>
+
+            <CategoryChart />
+          </div>
+        </div>
+
+        {/* LOW STOCK LIST */}
+
+        <div className="bg-white rounded-3xl p-6 shadow-sm border">
+
+          <div className="flex items-center justify-between mb-6">
+
+            <div>
+
+              <h2 className="text-2xl font-bold text-black">
+                Inventory Alerts
+              </h2>
+
+              <p className="text-sm text-gray-500 mt-1">
+                Products that need restocking
+              </p>
+            </div>
+          </div>
+
+          <div className="space-y-4">
+
+            {lowStockProducts.length ===
+            0 ? (
+
+              <div className="text-gray-500 text-sm">
+                No low stock alerts
+              </div>
+
+            ) : (
+
+              lowStockProducts.map(
+                (product) => (
+                  <div
+                    key={
+                      product.id
+                    }
+                    className="flex items-center justify-between bg-red-50 border border-red-100 rounded-2xl p-4"
+                  >
+
+                    <div>
+
+                      <h3 className="font-semibold text-black">
+                        {
+                          product.name
+                        }
+                      </h3>
+
+                      <p className="text-sm text-gray-500 mt-1">
+                        Low stock detected
+                      </p>
+                    </div>
+
+                    <div className="text-right">
+
+                      <h2 className="text-2xl font-bold text-red-500">
+                        {
+                          product.stock
+                        }
+                      </h2>
+
+                      <p className="text-xs text-gray-500">
+                        left
+                      </p>
+                    </div>
+                  </div>
+                )
+              )
+            )}
+          </div>
+        </div>
+
+      </div>
+    </DashboardLayout>
+  );
+}
