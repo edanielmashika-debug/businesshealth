@@ -116,4 +116,5 @@ export default function HomePage() {
           type:
             transaction.type as
               | "income"
-              | "expense
+              | "expense"
+        
