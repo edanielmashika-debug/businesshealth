@@ -47,6 +47,10 @@ const links = [
     name: "Expenses",
     href: "/expenses",
   },
+  {
+    name: "Reports",
+    href: "/reports",
+  },
 ];
 
 export default function Sidebar() {

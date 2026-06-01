@@ -16,6 +16,7 @@ import {
     Menu,
     X,
     BadgeDollarSignIcon,
+    FileText,
 } from "lucide-react";
 
 import {
@@ -75,6 +76,12 @@ export default function DashboardLayout({
             name: "Expenses",
             href: "/expenses",
             icon: BadgeDollarSignIcon
+        },
+
+        {
+            name: "Reports",
+            href: "/reports",
+            icon: FileText,
         },
     ];
 
