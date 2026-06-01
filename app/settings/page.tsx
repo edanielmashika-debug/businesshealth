@@ -70,7 +70,7 @@ export default function SettingsPage() {
     <DashboardLayout>
 
       <div className="space-y-8">
-
+        <div className="relative z-10">
         {/* HEADER */}
 
         <div>
@@ -82,6 +82,7 @@ export default function SettingsPage() {
           <p className="text-blue-100 mt-1 relative z-10">
             Manage your business preferences
           </p>
+        </div>
         </div>
 
         {/* SETTINGS CARD */}
