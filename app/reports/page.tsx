@@ -123,7 +123,7 @@ export default function ReportsPage() {
                   e.target.value
                 )
               }
-              className="border rounded-2xl px-4 py-4 bg-gray-50 text-black placeholder: text-gray-500"
+              className="border rounded-2xl px-4 py-4 bg-gray-50 text-black placeholder: text-black"
             />
 
             <input
@@ -135,7 +135,7 @@ export default function ReportsPage() {
                   e.target.value
                 )
               }
-              className="border rounded-2xl px-4 py-4 bg-gray-50 text-black"
+              className="border rounded-2xl px-4 py-4 bg-gray-50 text-black placeholder: text-black"
             />
           </div>
         </div>
