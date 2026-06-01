@@ -164,6 +164,8 @@ export default function SalesPage() {
             className="space-y-4"
           >
 
+            <span className="text-sm font-medium text-gray-500">Product</span>
+
             <select
               value={
                 selectedProductId
