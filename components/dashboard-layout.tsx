@@ -36,7 +36,7 @@ export default function DashboardLayout({
     const links = [
         {
             name: "Dashboard",
-            href: "/analytics",
+            href: "/app",
             icon: Home,
         },
 

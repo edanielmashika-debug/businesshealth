@@ -75,11 +75,11 @@ export default function SettingsPage() {
 
         <div className="relative isolate">
 
-          <h1 className="text-3xl font-bold text-white relative z-10">
+          <h1 className="text-3xl font-bold text-gray-800 relative z-10">
             Settings
           </h1>
 
-          <p className="text-blue-100 mt-1 relative z-10">
+          <p className="text-gray-500 mt-1 relative z-10">
             Manage your business preferences
           </p>
         </div>
