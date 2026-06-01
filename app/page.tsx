@@ -244,11 +244,11 @@ export default function HomePage() {
 
         <div>
 
-          <h1 className="text-3xl font-bold text-white">
+          <h1 className="text-3xl font-bold text-gray-800">
             Dashboard
           </h1>
 
-          <p className="text-blue-100 mt-1">
+          <p className="text-gray-500 mt-1">
             Business overview and analytics
           </p>
         </div>
