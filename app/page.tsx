@@ -260,6 +260,7 @@ export default function HomePage() {
           <DashboardCard
             title="Revenue"
             amount={`TZS ${totalRevenue.toLocaleString()}`}
+            
           />
 
           <DashboardCard

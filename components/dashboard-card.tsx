@@ -4,18 +4,18 @@ type DashboardCardProps = {
 };
 
 export default function DashboardCard({
-    title, 
+    title,
     amount,
-}: DashboardCardProps){
-    return(
-        <div className="border rounded-2xl p-5 shadow-sm">
-          <h3 className="text-sm text-gray-500">
-           {title}
-          </h3>
+}: DashboardCardProps) {
+    return (
+        <div className="bg-gradient-to-br from-blue-500 to-blue-700 rounded-3xl p-6 text-white shadow-lg">
+            <h3 className="text-sm text-gray-800">
+                {title}
+            </h3>
 
-          <p className="text-3xl font-bold mt-2">
-            {amount}
-          </p>
+            <p className="text-3xl font-bold mt-2" text-black>
+                {amount}
+            </p>
         </div>
     );
 }
