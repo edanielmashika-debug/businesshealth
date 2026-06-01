@@ -73,7 +73,7 @@ export default function SettingsPage() {
         <div className="relative z-10">
         {/* HEADER */}
 
-        <div>
+        <div className="relative isolate">
 
           <h1 className="text-3xl font-bold text-white relative z-10">
             Settings
