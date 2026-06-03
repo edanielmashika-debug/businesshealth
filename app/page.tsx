@@ -102,37 +102,31 @@ export default function HomePage() {
 
       if (!data) return;
 
-      const formatted =
-        data.map(
-          (
-            transaction
-          ) => ({
-            id:
-              transaction.id,
+const formatted =
+  data.map(
+    (transaction: any) => ({
+      id: transaction.id,
 
-            amount:
-              Number(
-                transaction.amount
-              ),
+      title:
+        transaction.title,
 
-            category:
-              transaction.category,
+      amount: Number(
+        transaction.amount
+      ),
 
-            type:
-              transaction.type as
-                | "income"
-                | "expense",
+      category:
+        transaction.category,
 
-            paymentMethod:
-              transaction.payment_method as
-                | "cash"
-                | "mpesa"
-                | "airtel money",
+      type:
+        transaction.type,
 
-            createdAt:
-              transaction.created_at,
-          })
-        );
+      source:
+        transaction.source,
+
+      createdAt:
+        transaction.created_at,
+    })
+  );
 
       setTransactions(
         formatted
