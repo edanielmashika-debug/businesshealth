@@ -1,4 +1,5 @@
 @import "tailwindcss";
+@custom-variant dark (&:where(.dark, .dark *));
 
 :root {
   --background: #ffffff;
@@ -30,27 +31,30 @@ body {
   color: white;
 }
 
+html.dark {
+  color-scheme: dark;
+}
+
+.dark body {
+  background: #0f172a;
+}
+
 
 
 .ocean-card {
   background: rgb(97, 38, 3);
 
-  border: 1px solid
-     #E7DADA
-   ;
+  border: 1px solid #E7DADA;
 
   backdrop-filter: blur(12px);
 
   border-radius: 24px;
 
   box-shadow:
-    0 10px 30px
-      rgba(
-        0,
-        0,
-        0,
-        0.3
-      );
+    0 10px 30px rgba(0,
+      0,
+      0,
+      0.3);
 }
 
 .ocean-button {
@@ -74,9 +78,7 @@ body {
 .ocean-input {
   background: rgb(97, 38, 3);
 
-  border: 1px solid
-     #E7DADA
-    ;
+  border: 1px solid #E7DADA;
 
   color: white;
 

@@ -71,18 +71,18 @@ export default function SettingsPage() {
 
       <div className="space-y-8">
         <div className="relative z-10">
-        {/* HEADER */}
+          {/* HEADER */}
 
-        <div className="relative isolate">
+          <div className="relative isolate">
 
-          <h1 className="text-3xl font-bold text-gray-800 relative z-10">
-            Settings
-          </h1>
+            <h1 className="text-3xl font-bold text-gray-800 relative z-10">
+              Settings
+            </h1>
 
-          <p className="text-gray-500 mt-1 relative z-10">
-            Manage your business preferences
-          </p>
-        </div>
+            <p className="text-gray-500 mt-1 relative z-10">
+              Manage your business preferences
+            </p>
+          </div>
         </div>
 
         {/* SETTINGS CARD */}
@@ -170,7 +170,6 @@ export default function SettingsPage() {
             </button>
 
             {/* DARK MODE */}
-
             <button
               onClick={() =>
                 setTheme(
@@ -179,30 +178,13 @@ export default function SettingsPage() {
                     : "dark"
                 )
               }
-              className="w-full flex items-center justify-between rounded-2xl border border-gray-200 bg-gray-50 hover:bg-blue-50 transition px-5 py-5"
+              className="w-full bg-slate-900 dark:bg-white dark:text-black text-white rounded-2xl py-4 font-semibold flex items-center justify-center gap-3 transition"
             >
 
-              <div className="flex items-center gap-4">
+              {theme === "dark"
+                ? "☀️ Light Mode"
+                : "🌙 Dark Mode"}
 
-                <div className="bg-indigo-100 p-3 rounded-2xl">
-                  <Moon className="w-5 h-5 text-indigo-600" />
-                </div>
-
-                <div className="text-left">
-
-                  <h3 className="font-semibold text-black">
-                    Appearance
-                  </h3>
-
-                  <p className="text-sm text-gray-500 mt-1">
-                    Toggle dark and light mode
-                  </p>
-                </div>
-              </div>
-
-              <div className="text-blue-600 font-semibold capitalize">
-                {theme}
-              </div>
             </button>
 
             {/* LOGOUT */}

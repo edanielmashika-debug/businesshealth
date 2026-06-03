@@ -86,7 +86,7 @@ export default function DashboardLayout({
     ];
 
     return (
-        <div className="flex min-h-screen bg-[#f5f7fb]">
+        <div className="flex min-h-screen bg-[#f5f7fb] dark:bg-[#0f172a]">
 
             {/* MOBILE BUTTON */}
 
@@ -108,7 +108,7 @@ export default function DashboardLayout({
             <aside
                 className={`
         fixed top-0 left-0 z-40
-        h-screen w-72 bg-white
+        h-screen w-72 bg-white dark:bg-slate-900
         border-r
         transition-transform
         duration-300
@@ -129,7 +129,7 @@ export default function DashboardLayout({
                         BusinessHealth
                     </h1>
 
-                    <p className="text-sm text-gray-500">
+                    <p className="text-sm text-gray-500 dark:text-slate-400">
                         Enterprise Dashboard
                     </p>
                 </div>
@@ -212,14 +212,14 @@ ${pathname === link.href
 
                 {/* TOP HEADER */}
 
-                <header className="h-20 bg-white border-b flex items-center justify-between px-6 sticky top-0 z-30">
+                <header className="h-20 bg-white dark:bg-slate-900 border-b dark:border-slate-800 flex items-center justify-between px-6 sticky top-0 z-30">
 
                     <div>
-                        <h1 className="text-2xl font-bold text-gray-800">
+                       <h1 className="text-2xl font-bold text-gray-800 dark:text-white">
                             Dashboard
                         </h1>
 
-                        <p className="text-sm text-gray-500">
+                        <p className="text-sm text-gray-500 dark:text-slate-400">
                             Welcome back, Emmanuel 👋
                         </p>
                     </div>
@@ -246,7 +246,7 @@ ${pathname === link.href
                                     Emmanuel
                                 </div>
 
-                                <div className="text-xs text-gray-500">
+                                <div className="text-xs text-gray-500 dark:text-slate-400">
                                     Administrator
                                 </div>
                             </div>
