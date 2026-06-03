@@ -29,8 +29,8 @@ export async function createTransaction(
         category:
           transaction.category,
 
-        payment_method:
-          transaction.paymentMethod,
+        source:
+          transaction.source,
       });
 
   if (error) {
