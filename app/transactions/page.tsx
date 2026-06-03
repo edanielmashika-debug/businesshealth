@@ -21,6 +21,19 @@ export default function TransactionsPage() {
   } =
     useTransactionStore();
 
+
+    const transactions =
+  useTransactionStore(
+    (state) =>
+      state.transactions
+  );
+
+const deleteTransaction =
+  useTransactionStore(
+    (state) =>
+      state.deleteTransaction
+  );
+
   return (
 
     <DashboardLayout>
@@ -112,7 +125,8 @@ export default function TransactionsPage() {
 
           <div className="xl:col-span-2 bg-white dark:bg-slate-900 rounded-3xl border border-gray-200 dark:border-slate-700 p-6 shadow-sm">
 
-            <TransactionList />
+            <TransactionList transactions={transactions}
+              onDelete={deleteTransaction} />
           </div>
         </div>
       </div>
