@@ -85,11 +85,11 @@ export default function ExpensesPage() {
         {/* HEADER */}
 
         <div>
-          <h1 className="text-3xl font-bold text-gray-800">
+          <h1 className="text-3xl font-bold text-gray-800 dark:text-white">
             Expenses
           </h1>
 
-          <p className="text-gray-500 mt-1">
+          <p className="text-gray-500 dark:text-slate-400 mt-1">
             Track business spending
           </p>
         </div>
@@ -110,14 +110,14 @@ export default function ExpensesPage() {
 
         {/* FORM */}
 
-        <div className="bg-white rounded-3xl p-6 shadow-sm border">
+        <div className="bg-white dark:bg-slate-900 rounded-3xl p-6 shadow-sm border border-gray-200 dark:border-slate-700">
 
           <div className="mb-6">
-            <h2 className="text-2xl font-bold text-gray-800">
+            <h2 className="text-2xl font-bold text-gray-800 dark:text-white">
               Add Expense
             </h2>
 
-            <p className="text-sm text-gray-500 mt-1">
+            <p className="text-sm text-gray-500 dark:text-slate-400 mt-1">
               Record business expenses
             </p>
           </div>
@@ -138,7 +138,7 @@ export default function ExpensesPage() {
                   e.target.value
                 )
               }
-              className="w-full rounded-2xl border border-gray-200 bg-gray-50 px-4 py-4 outline-none focus:ring-2 focus:ring-red-500 text-black placeholder:text-gray-500"
+              className="w-full rounded-2xl border border-gray-200 dark:border-slate-700 bg-gray-50 dark:bg-slate-800 px-4 py-4 outline-none focus:ring-2 focus:ring-red-500 text-black dark:text-white placeholder:text-gray-500 dark:placeholder:text-slate-400"
             />
 
             <input
@@ -150,7 +150,7 @@ export default function ExpensesPage() {
                   e.target.value
                 )
               }
-              className="w-full rounded-2xl border border-gray-200 bg-gray-50 px-4 py-4 outline-none focus:ring-2 focus:ring-red-500 text-black placeholder:text-gray-500"
+              className="w-full rounded-2xl border border-gray-200 dark:border-slate-700 bg-gray-50 dark:bg-slate-800 px-4 py-4 outline-none focus:ring-2 focus:ring-red-500 text-black dark:text-white placeholder:text-gray-500 dark:placeholder:text-slate-400"
             />
 
             <input
@@ -162,7 +162,7 @@ export default function ExpensesPage() {
                   e.target.value
                 )
               }
-              className="w-full rounded-2xl border border-gray-200 bg-gray-50 px-4 py-4 outline-none focus:ring-2 focus:ring-red-500 text-black placeholder:text-gray-500"
+              className="w-full rounded-2xl border border-gray-200 dark:border-slate-700 bg-gray-50 dark:bg-slate-800 px-4 py-4 outline-none focus:ring-2 focus:ring-red-500 text-black dark:text-white placeholder:text-gray-500 dark:placeholder:text-slate-400"
             />
 
             <button
@@ -184,19 +184,19 @@ export default function ExpensesPage() {
                 key={
                   expense.id
                 }
-                className="bg-white rounded-3xl p-5 shadow-sm border"
+                className="bg-white dark:bg-slate-900 rounded-3xl p-5 shadow-sm border border-gray-200 dark:border-slate-700"
               >
 
                 <div className="flex items-start justify-between">
 
                   <div>
-                    <h2 className="text-xl font-bold text-gray-800">
+                    <h2 className="text-xl font-bold text-gray-800 dark:text-white">
                       {
                         expense.title
                       }
                     </h2>
 
-                    <p className="text-sm text-gray-500 mt-1">
+                    <p className="text-sm text-gray-500 dark:text-slate-400 mt-1">
                       {
                         expense.category
                       }
@@ -209,7 +209,7 @@ export default function ExpensesPage() {
                       {expense.amount.toLocaleString()}
                     </h2>
 
-                    <p className="text-sm text-gray-500 mt-1">
+                    <p className="text-sm text-gray-500 dark:text-slate-400 mt-1">
                       {new Date(
                         expense.createdAt
                       ).toLocaleDateString()}
@@ -223,7 +223,7 @@ export default function ExpensesPage() {
                       expense.id
                     )
                   }
-                  className="mt-4 text-red-500 hover:text-red-600"
+                  className="mt-4 text-red-500 hover:text-red-600 transition"
                 >
                   Delete
                 </button>

@@ -17,7 +17,6 @@ import { useTransactionStore } from "@/store/transaction-store";
 import {
   DollarSign,
   Download,
-  Moon,
   LogOut,
   Trash2,
   ShieldCheck,
@@ -70,30 +69,29 @@ export default function SettingsPage() {
     <DashboardLayout>
 
       <div className="space-y-8">
-        <div className="relative z-10">
-          {/* HEADER */}
 
-          <div className="relative isolate">
+        {/* HEADER */}
 
-            <h1 className="text-3xl font-bold text-gray-800 dark:text-white relative z-10">
-              Settings
-            </h1>
+        <div>
 
-            <p className="text-gray-500 dark:text-slate-400 mt-1 relative z-10">
-              Manage your business preferences
-            </p>
-          </div>
+          <h1 className="text-3xl font-bold text-gray-800 dark:text-white">
+            Settings
+          </h1>
+
+          <p className="text-gray-500 dark:text-slate-400 mt-1">
+            Manage your business preferences
+          </p>
         </div>
 
         {/* SETTINGS CARD */}
 
-        <div className="bg-white dark:bg-slate-900 rounded-3xl border shadow-sm overflow-hidden">
+        <div className="bg-white dark:bg-slate-900 rounded-3xl border border-gray-200 dark:border-slate-700 shadow-sm overflow-hidden">
 
           {/* SECTION HEADER */}
 
-          <div className="p-6 border-b bg-gradient-to-r from-blue-50 to-cyan-50">
+          <div className="p-6 border-b border-gray-200 dark:border-slate-700 bg-gradient-to-r from-blue-50 to-cyan-50 dark:from-slate-800 dark:to-slate-900">
 
-            <h2 className="text-2xl font-bold text-black">
+            <h2 className="text-2xl font-bold text-black dark:text-white">
               App Settings
             </h2>
 
@@ -109,18 +107,18 @@ export default function SettingsPage() {
             {/* CURRENCY */}
 
             <button
-              className="w-full flex items-center justify-between rounded-2xl border border-gray-200 dark:border-slate-700bg-gray-50 hover:bg-blue-50 transition px-5 py-5"
+              className="w-full flex items-center justify-between rounded-2xl border border-gray-200 dark:border-slate-700 bg-gray-50 dark:bg-slate-800 hover:bg-blue-50 dark:hover:bg-slate-700 transition px-5 py-5"
             >
 
               <div className="flex items-center gap-4">
 
-                <div className="bg-blue-100 p-3 rounded-2xl">
+                <div className="bg-blue-100 dark:bg-blue-900/40 p-3 rounded-2xl">
                   <DollarSign className="w-5 h-5 text-blue-600" />
                 </div>
 
                 <div className="text-left">
 
-                  <h3 className="font-semibold text-black">
+                  <h3 className="font-semibold text-black dark:text-white">
                     Change Currency
                   </h3>
 
@@ -143,18 +141,18 @@ export default function SettingsPage() {
                   transactions
                 )
               }
-              className="w-full flex items-center justify-between rounded-2xl border border-gray-200 dark:border-slate-700 bg-gray-50 hover:bg-blue-50 transition px-5 py-5"
+              className="w-full flex items-center justify-between rounded-2xl border border-gray-200 dark:border-slate-700 bg-gray-50 dark:bg-slate-800 hover:bg-blue-50 dark:hover:bg-slate-700 transition px-5 py-5"
             >
 
               <div className="flex items-center gap-4">
 
-                <div className="bg-cyan-100 p-3 rounded-2xl">
+                <div className="bg-cyan-100 dark:bg-cyan-900/40 p-3 rounded-2xl">
                   <Download className="w-5 h-5 text-cyan-600" />
                 </div>
 
                 <div className="text-left">
 
-                  <h3 className="font-semibold text-black">
+                  <h3 className="font-semibold text-black dark:text-white">
                     Export Reports
                   </h3>
 
@@ -170,6 +168,7 @@ export default function SettingsPage() {
             </button>
 
             {/* DARK MODE */}
+
             <button
               onClick={() =>
                 setTheme(
@@ -206,7 +205,7 @@ export default function SettingsPage() {
               onClick={
                 handleDeleteAccount
               }
-              className="w-full flex items-center justify-center gap-3 rounded-2xl bg-black hover:bg-gray-900 text-white py-5 font-semibold transition"
+              className="w-full flex items-center justify-center gap-3 rounded-2xl bg-black dark:bg-red-950 hover:bg-gray-900 text-white py-5 font-semibold transition"
             >
               <Trash2 className="w-5 h-5" />
 
@@ -217,9 +216,9 @@ export default function SettingsPage() {
 
         {/* ACCOUNT INFO */}
 
-        <div className="bg-white dark:bg-slate-900 rounded-3xl border shadow-sm p-6">
+        <div className="bg-white dark:bg-slate-900 rounded-3xl border border-gray-200 dark:border-slate-700 shadow-sm p-6">
 
-          <h2 className="text-xl font-bold text-black">
+          <h2 className="text-xl font-bold text-black dark:text-white">
             Business System
           </h2>
 
@@ -231,7 +230,7 @@ export default function SettingsPage() {
 
             {/* CLOUD */}
 
-            <div className="rounded-2xl bg-blue-50 border border-blue-100 p-4">
+            <div className="rounded-2xl bg-blue-50 dark:bg-blue-950/30 border border-blue-100 dark:border-blue-900 p-4">
 
               <div className="flex items-center gap-3">
 
@@ -242,14 +241,14 @@ export default function SettingsPage() {
                 </p>
               </div>
 
-              <h3 className="text-xl font-bold text-black mt-2">
+              <h3 className="text-xl font-bold text-black dark:text-white mt-2">
                 Active
               </h3>
             </div>
 
             {/* SECURITY */}
 
-            <div className="rounded-2xl bg-green-50 border border-green-100 p-4">
+            <div className="rounded-2xl bg-green-50 dark:bg-green-950/30 border border-green-100 dark:border-green-900 p-4">
 
               <div className="flex items-center gap-3">
 
@@ -260,14 +259,14 @@ export default function SettingsPage() {
                 </p>
               </div>
 
-              <h3 className="text-xl font-bold text-black mt-2">
+              <h3 className="text-xl font-bold text-black dark:text-white mt-2">
                 Protected
               </h3>
             </div>
 
             {/* MULTI DEVICE */}
 
-            <div className="rounded-2xl bg-cyan-50 border border-cyan-100 p-4">
+            <div className="rounded-2xl bg-cyan-50 dark:bg-cyan-950/30 border border-cyan-100 dark:border-cyan-900 p-4">
 
               <div className="flex items-center gap-3">
 
@@ -278,7 +277,7 @@ export default function SettingsPage() {
                 </p>
               </div>
 
-              <h3 className="text-xl font-bold text-black mt-2">
+              <h3 className="text-xl font-bold text-black dark:text-white mt-2">
                 Enabled
               </h3>
             </div>

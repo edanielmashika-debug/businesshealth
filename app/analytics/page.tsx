@@ -3,24 +3,18 @@
 import DashboardLayout from "../../components/dashboard-layout";
 
 import AnalyticsChart from "../../components/analytics-chart";
-
 import CategoryChart from "../../components/category-chart";
 import ProfitChart from "../../components/profit-chart";
+
 import { useInventoryStore } from "../../store/inventory-store";
-import {
-  useExpenseStore,
-} from "../../store/expense-store";
+import { useExpenseStore } from "../../store/expense-store";
+
 import {
   DollarSign,
   TrendingUp,
   ShoppingCart,
   Package,
 } from "lucide-react";
-
-
-import {
-  useSalesStore,
-} from "../../store/sales-store";
 
 import {
   useEffect,
@@ -37,11 +31,14 @@ export default function AnalyticsPage() {
     useState<any[]>([]);
 
   useEffect(() => {
+
     async function loadSales() {
+
       const data =
         await getSales();
 
       if (data) {
+
         const formatted =
           data.map(
             (sale: any) => ({
@@ -76,14 +73,23 @@ export default function AnalyticsPage() {
     }
 
     loadSales();
+
   }, []);
 
+  const {
+    expenses,
+  } =
+    useExpenseStore();
+
+  const {
+    products,
+  } =
+    useInventoryStore();
 
   const today =
     new Date()
       .toISOString()
       .split("T")[0];
-
 
   const todaySales =
     sales.filter(
@@ -100,15 +106,15 @@ export default function AnalyticsPage() {
       0
     );
 
-  const { expenses } =
-    useExpenseStore();
-
   const todayProfit =
     todaySales.reduce(
       (sum, sale) =>
         sum + sale.profit,
       0
     );
+
+  const todaySalesCount =
+    todaySales.length;
 
   const totalExpenses =
     expenses.reduce(
@@ -121,40 +127,13 @@ export default function AnalyticsPage() {
       0
     );
 
-  const todaySalesCount =
-    todaySales.length;
-
-  const { products } =
-    useInventoryStore();
-
-
-  const chartData =
-    sales.map((sale) => ({
-      name:
-        sale.productName,
-
-      revenue:
-        sale.total,
-
-      profit:
-        sale.profit,
-    }));
-
-  const lowStockProducts =
-    products.filter(
-      (product) =>
-        product.stock <= 5
-    );
-
-
-
-
   const totalRevenue =
     sales.reduce(
       (sum, sale) =>
         sum + sale.total,
       0
     );
+
   const totalProfit =
     sales.reduce(
       (sum, sale) =>
@@ -162,25 +141,35 @@ export default function AnalyticsPage() {
       0
     );
 
+  const netProfit =
+    totalProfit -
+    totalExpenses;
+
+  const lowStockProducts =
+    products.filter(
+      (product) =>
+        product.stock <= 5
+    );
+
   const productCount: Record<
     string,
     number
   > = {};
 
-  const netProfit =
-    totalProfit -
-    totalExpenses;
-
   sales.forEach((sale) => {
+
     if (
       productCount[
-      sale.productName
+        sale.productName
       ]
     ) {
+
       productCount[
         sale.productName
       ] += sale.quantity;
+
     } else {
+
       productCount[
         sale.productName
       ] = sale.quantity;
@@ -191,11 +180,9 @@ export default function AnalyticsPage() {
     Object.entries(
       productCount
     ).sort(
-      (a, b) => b[1] - a[1]
+      (a, b) =>
+        b[1] - a[1]
     )[0];
-
-  const totalSales =
-    sales.length;
 
   const now =
     new Date();
@@ -217,10 +204,10 @@ export default function AnalyticsPage() {
 
         return (
           date.getMonth() ===
-          currentMonth &&
+            currentMonth &&
 
           date.getFullYear() ===
-          currentYear
+            currentYear
         );
       }
     );
@@ -246,10 +233,10 @@ export default function AnalyticsPage() {
 
         return (
           date.getMonth() ===
-          lastMonth &&
+            lastMonth &&
 
           date.getFullYear() ===
-          lastMonthYear
+            lastMonthYear
         );
       }
     );
@@ -272,34 +259,44 @@ export default function AnalyticsPage() {
     lastRevenue === 0
       ? 100
       : (
-        (
-          currentRevenue -
+          (
+            currentRevenue -
+            lastRevenue
+          ) /
           lastRevenue
-        ) /
-        lastRevenue
-      ) * 100;
-
+        ) * 100;
 
   return (
+
     <DashboardLayout>
-      <div className="space-y-6">
+
+      <div className="space-y-8">
+
+        {/* HEADER */}
+
         <div>
-          <h1 className="text-3xl font-bold text-rose-950">
+
+          <h1 className="text-3xl font-bold text-gray-800 dark:text-white">
             Analytics
           </h1>
 
-          <p className="text-gray-500 mt-1">
+          <p className="text-gray-500 dark:text-slate-400 mt-1">
             Business insights and trends
           </p>
         </div>
-        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6 mb-8">
 
-          {/* TOTAL SALES */}
+        {/* TOP STATS */}
+
+        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
+
+          {/* REVENUE */}
 
           <div className="bg-gradient-to-br from-blue-500 to-blue-700 rounded-3xl p-6 text-white shadow-lg">
 
             <div className="flex items-center justify-between">
+
               <div>
+
                 <p className="text-sm opacity-80">
                   Total Revenue
                 </p>
@@ -316,26 +313,26 @@ export default function AnalyticsPage() {
             </div>
           </div>
 
-          {/*EXPENSES CARD*/}
-          <div>
-            <div className="bg-gradient-to-br from-red-500 to-rose-700 rounded-3xl p-6 text-white shadow-lg">
+          {/* EXPENSES */}
 
-              <div className="flex items-center justify-between">
+          <div className="bg-gradient-to-br from-red-500 to-rose-700 rounded-3xl p-6 text-white shadow-lg">
 
-                <div>
-                  <p className="text-sm opacity-80">
-                    Expenses
-                  </p>
+            <div className="flex items-center justify-between">
 
-                  <h2 className="text-3xl font-bold mt-2">
-                    TZS{" "}
-                    {totalExpenses.toLocaleString()}
-                  </h2>
-                </div>
+              <div>
 
-                <div className="bg-white/20 p-3 rounded-2xl">
-                  💸
-                </div>
+                <p className="text-sm opacity-80">
+                  Expenses
+                </p>
+
+                <h2 className="text-3xl font-bold mt-2">
+                  TZS{" "}
+                  {totalExpenses.toLocaleString()}
+                </h2>
+              </div>
+
+              <div className="bg-white/20 p-3 rounded-2xl">
+                💸
               </div>
             </div>
           </div>
@@ -345,28 +342,9 @@ export default function AnalyticsPage() {
           <div className="bg-gradient-to-br from-green-500 to-emerald-700 rounded-3xl p-6 text-white shadow-lg">
 
             <div className="flex items-center justify-between">
-              <div>
-                <p className="text-sm opacity-80">
-                  Total Profit
-                </p>
-
-                <h2 className="text-3xl font-bold mt-2">
-                  TZS{" "}
-                  {totalProfit.toLocaleString()}
-                </h2>
-              </div>
-
-              <div className="bg-white/20 p-3 rounded-2xl">
-                <TrendingUp />
-              </div>
-            </div>
-          </div>
-
-          <div className="bg-gradient-to-br from-emerald-500 to-green-700 rounded-3xl p-6 text-white shadow-lg">
-
-            <div className="flex items-center justify-between">
 
               <div>
+
                 <p className="text-sm opacity-80">
                   Net Profit
                 </p>
@@ -378,7 +356,7 @@ export default function AnalyticsPage() {
               </div>
 
               <div className="bg-white/20 p-3 rounded-2xl">
-                📈
+                <TrendingUp />
               </div>
             </div>
           </div>
@@ -388,7 +366,9 @@ export default function AnalyticsPage() {
           <div className="bg-gradient-to-br from-purple-500 to-violet-700 rounded-3xl p-6 text-white shadow-lg">
 
             <div className="flex items-center justify-between">
+
               <div>
+
                 <p className="text-sm opacity-80">
                   Sales Count
                 </p>
@@ -404,21 +384,23 @@ export default function AnalyticsPage() {
             </div>
           </div>
 
-          {/* PRODUCTS */}
+          {/* BEST SELLER */}
 
           <div className="bg-gradient-to-br from-orange-500 to-red-600 rounded-3xl p-6 text-white shadow-lg">
 
             <div className="flex items-center justify-between">
 
               <div>
+
                 <p className="text-sm opacity-80">
                   Best Seller
                 </p>
 
                 <h2 className="text-2xl font-bold mt-2">
-                  {bestSeller ?
-                    bestSeller[0] :
-                    "No sales"}
+
+                  {bestSeller
+                    ? bestSeller[0]
+                    : "No sales"}
                 </h2>
               </div>
 
@@ -428,10 +410,8 @@ export default function AnalyticsPage() {
             </div>
           </div>
 
-        </div>
-        <div className="grid grid-cols-1 xl:grid-cols-2 gap-6">
+          {/* GROWTH */}
 
-          {/* Revenue comparison */}
           <div className="bg-gradient-to-br from-cyan-500 to-blue-700 rounded-3xl p-6 text-white shadow-lg">
 
             <div className="flex items-center justify-between">
@@ -443,7 +423,6 @@ export default function AnalyticsPage() {
                 </p>
 
                 <h2 className="text-3xl font-bold mt-2">
-
                   {revenueGrowth.toFixed(1)}%
                 </h2>
 
@@ -457,63 +436,80 @@ export default function AnalyticsPage() {
               </div>
             </div>
           </div>
+        </div>
 
-          {/*TODAY'S ANALYTICS*/}
+        {/* TODAY'S ACTIVITY */}
+
+        <div className="bg-white dark:bg-slate-900 rounded-3xl border border-gray-200 dark:border-slate-800 p-6 shadow-sm">
+
+          <div className="mb-6">
+
+            <h2 className="text-2xl font-bold text-gray-800 dark:text-white">
+              Today's Activity
+            </h2>
+
+            <p className="text-gray-500 dark:text-slate-400 mt-1">
+              See how your business performed today
+            </p>
+          </div>
+
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <div>
-              <h1 className="font-bold text-3x1 text-black">
-                TODAY'S ACTIVITY
-              </h1>
 
-              <p className="text-gray-500 mt-1">See how you have business has done today!</p>
-            </div>
-            <div className="bg-white rounded-3xl border p-6 shadow-sm">
+            <div className="rounded-3xl bg-blue-50 dark:bg-slate-800 p-6">
 
               <p className="text-sm text-blue-600">
                 Today's Revenue
               </p>
 
-              <h2 className="text-3xl font-bold text-black mt-2">
+              <h2 className="text-3xl font-bold text-gray-800 dark:text-white mt-2">
+
                 TZS{" "}
                 {todayRevenue.toLocaleString()}
               </h2>
             </div>
 
-            <div className="bg-white rounded-3xl border p-6 shadow-sm">
+            <div className="rounded-3xl bg-green-50 dark:bg-slate-800 p-6">
 
               <p className="text-sm text-green-600">
                 Today's Profit
               </p>
 
-              <h2 className="text-3xl font-bold text-black mt-2">
+              <h2 className="text-3xl font-bold text-gray-800 dark:text-white mt-2">
+
                 TZS{" "}
                 {todayProfit.toLocaleString()}
               </h2>
             </div>
 
-            <div className="bg-white rounded-3xl border p-6 shadow-sm">
+            <div className="rounded-3xl bg-purple-50 dark:bg-slate-800 p-6">
 
               <p className="text-sm text-purple-600">
                 Today's Sales
               </p>
 
-              <h2 className="text-3xl font-bold text-black mt-2">
+              <h2 className="text-3xl font-bold text-gray-800 dark:text-white mt-2">
+
                 {todaySalesCount}
               </h2>
             </div>
           </div>
+        </div>
 
+        {/* CHARTS */}
 
-          {/* SALES CHART */}
+        <div className="grid grid-cols-1 xl:grid-cols-2 gap-6">
 
-          <div className="bg-white rounded-3xl p-6 shadow-sm border">
+          {/* REVENUE CHART */}
+
+          <div className="bg-white dark:bg-slate-900 rounded-3xl p-6 shadow-sm border border-gray-200 dark:border-slate-800">
 
             <div className="mb-6">
-              <h2 className="text-xl font-bold text-gray-800">
+
+              <h2 className="text-xl font-bold text-gray-800 dark:text-white">
                 Revenue Overview
               </h2>
 
-              <p className="text-sm text-gray-500">
+              <p className="text-sm text-gray-500 dark:text-slate-400">
                 Sales performance analytics
               </p>
             </div>
@@ -521,97 +517,110 @@ export default function AnalyticsPage() {
             <AnalyticsChart />
           </div>
 
-          {/* CATEGORY CHART */}
+          {/* EXPENSE CHART */}
 
-          <div className="bg-white rounded-3xl p-6 shadow-sm border">
+          <div className="bg-white dark:bg-slate-900 rounded-3xl p-6 shadow-sm border border-gray-200 dark:border-slate-800">
 
             <div className="mb-6">
-              <h2 className="text-xl font-bold text-gray-800">
-                What expenses are running
+
+              <h2 className="text-xl font-bold text-gray-800 dark:text-white">
+                Expense Analytics
               </h2>
 
-              <p className="text-sm text-gray-500">
-                Most costful expenditures
+              <p className="text-sm text-gray-500 dark:text-slate-400">
+                Business spending categories
               </p>
             </div>
 
             <CategoryChart />
           </div>
 
-
-
           {/* PROFIT CHART */}
-          <div className="bg-white rounded-3xl p-6 shadow-sm border">
+
+          <div className="bg-white dark:bg-slate-900 rounded-3xl p-6 shadow-sm border border-gray-200 dark:border-slate-800 xl:col-span-2">
 
             <div className="mb-6">
-              <h2 className="text-xl font-bold text-gray-800">
+
+              <h2 className="text-xl font-bold text-gray-800 dark:text-white">
                 Profit Tracking
               </h2>
 
-              <p className="text-sm text-gray-500">
-                Check how your business is growinf
+              <p className="text-sm text-gray-500 dark:text-slate-400">
+                Monitor business profitability
               </p>
             </div>
 
-            <ProfitChart data={sales} />
-
+            <ProfitChart
+              data={sales}
+            />
           </div>
-          {/* ALERT BANNER */}
-          <div>
-            {lowStockProducts.length >
-              0 && (
-                <div className="bg-red-50 border border-red-200 rounded-3xl p-6 mb-8">
+        </div>
 
-                  <div className="flex items-center justify-between">
+        {/* LOW STOCK */}
+
+        {lowStockProducts.length >
+          0 && (
+
+          <div className="bg-red-50 dark:bg-red-950/20 border border-red-200 dark:border-red-900 rounded-3xl p-6">
+
+            <div className="flex items-center justify-between">
+
+              <div>
+
+                <h2 className="text-2xl font-bold text-red-600">
+                  Low Stock Alert
+                </h2>
+
+                <p className="text-red-500 mt-1">
+                  {
+                    lowStockProducts.length
+                  }{" "}
+                  products are running low
+                </p>
+              </div>
+
+              <div className="text-5xl">
+                ⚠️
+              </div>
+            </div>
+
+            <div className="mt-6 grid gap-3">
+
+              {lowStockProducts.map(
+                (product) => (
+
+                  <div
+                    key={
+                      product.id
+                    }
+                    className="bg-white dark:bg-slate-900 rounded-2xl p-4 flex items-center justify-between border border-red-100 dark:border-slate-800"
+                  >
 
                     <div>
-                      <h2 className="text-2xl font-bold text-red-600">
-                        Low Stock Alert
-                      </h2>
 
-                      <p className="text-red-500 mt-1">
-                        {lowStockProducts.length}{" "}
-                        products are running low
+                      <h3 className="font-bold text-gray-800 dark:text-white">
+                        {product.name}
+                      </h3>
+
+                      <p className="text-sm text-gray-500 dark:text-slate-400">
+                        Critical inventory level:{" "}
+                        {
+                          product.stock
+                        }{" "}
+                        remaining
                       </p>
                     </div>
 
-                    <div className="text-5xl">
-                      ⚠️
+                    <div className="bg-red-100 dark:bg-red-900/40 text-red-600 px-3 py-1 rounded-full text-sm font-semibold">
+
+                      Restock
                     </div>
                   </div>
-
-                  {/* PRODUCTS */}
-
-                  <div className="mt-6 grid gap-3">
-
-                    {lowStockProducts.map(
-                      (product) => (
-                        <div
-                          key={product.id}
-                          className="bg-white rounded-2xl p-4 flex items-center justify-between"
-                        >
-                          <div>
-                            <h3 className="font-bold text-gray-800">
-                              {product.name}
-                            </h3>
-
-                            <p className="text-sm text-gray-500">
-                              Critical inventory level: {product.stock} remaining
-                            </p>
-                          </div>
-
-                          <div className="bg-red-100 text-red-600 px-3 py-1 rounded-full text-sm font-semibold">
-                            Restock
-                          </div>
-                        </div>
-                      )
-                    )}
-                  </div>
-                </div>
+                )
               )}
+            </div>
           </div>
-
-        </div>
+        )}
       </div>
     </DashboardLayout>
   );
