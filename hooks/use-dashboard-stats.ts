@@ -10,7 +10,7 @@ export function useDashboardStats() {
     const income = transactions
     .filter(
         (transactions)=>
-            transactions.type === "income"
+            transactions.type === "revenue"
     )
     .reduce(
         (acc, transaction)=>
