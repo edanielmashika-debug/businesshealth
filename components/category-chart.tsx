@@ -1,79 +1,114 @@
-"use client"
+"use client";
 
 import {
-    BarChart,
-    Bar,
-    XAxis,
-    YAxis,
-    Tooltip,
-    ResponsiveContainer,
+  PieChart,
+  Pie,
+  Cell,
+  ResponsiveContainer,
+  Tooltip,
+  Legend,
 } from "recharts";
-import { useTransactionStore } from "@/store/transaction-store";
+
+import {
+  useExpenseStore,
+} from "@/store/expense-store";
+
+const COLORS = [
+  "#3b82f6",
+  "#06b6d4",
+  "#8b5cf6",
+  "#10b981",
+  "#f97316",
+  "#ef4444",
+];
 
 export default function CategoryChart() {
-    const transactions =
-        useTransactionStore(
-            (state) => state.transactions
-        );
 
-    const expenses =
-        transactions.filter(
-            (transactions) =>
-                transactions.type === "expense"
-        );
-    const grouped =
-        expenses.reduce(
-            (acc, transaction) => {
-                const existing =
-                    acc.find(
-                        (item) =>
-                            item.category ===
-                            transaction.category
-                    );
-
-
-
-                if (existing) {
-                    existing.amount +=
-                        transaction.amount;
-                } else {
-                    acc.push(
-                        {
-                            category:
-                                transaction.category,
-
-                            amount:
-                                transaction.amount,
-                        }
-                    );
-                }
-                return acc;
-            },
-            [] as {
-                category: string;
-                amount: number;
-            }[]
-        );
-
-    return (
-        <div className="border round-2x1 p-5  mt-6">
-            <h2 className="text-x1 font bold-m4 text-black">
-                Expense Categories
-            </h2>
-
-            <div className="h-[300px]">
-                <ResponsiveContainer
-                    width="100%"
-                    height="100%"
-                >
-                    <BarChart data={grouped}>
-                        <XAxis dataKey="category"/>
-                        <YAxis/>
-                        <Tooltip/>
-                        <Bar className="bg-white" dataKey="amount"/>
-                    </BarChart>
-                </ResponsiveContainer>
-            </div>
-        </div>
+  const expenses =
+    useExpenseStore(
+      (state) =>
+        state.expenses
     );
+
+  const categoryTotals:
+    Record<string, number> = {};
+
+  expenses.forEach(
+    (expense) => {
+
+      if (
+        categoryTotals[
+          expense.category
+        ]
+      ) {
+
+        categoryTotals[
+          expense.category
+        ] += expense.amount;
+
+      } else {
+
+        categoryTotals[
+          expense.category
+        ] = expense.amount;
+      }
+    }
+  );
+
+  const data =
+    Object.entries(
+      categoryTotals
+    ).map(
+      ([name, value]) => ({
+        name,
+        value,
+      })
+    );
+
+  return (
+
+    <div className="h-[350px]">
+
+      <ResponsiveContainer
+        width="100%"
+        height="100%"
+      >
+
+        <PieChart>
+
+          <Pie
+            data={data}
+            cx="50%"
+            cy="50%"
+            outerRadius={110}
+            dataKey="value"
+            label
+          >
+
+            {data.map(
+              (
+                entry,
+                index
+              ) => (
+
+                <Cell
+                  key={`cell-${index}`}
+                  fill={
+                    COLORS[
+                    index %
+                    COLORS.length
+                    ]
+                  }
+                />
+              )
+            )}
+          </Pie>
+
+          <Tooltip />
+
+          <Legend />
+        </PieChart>
+      </ResponsiveContainer>
+    </div>
+  );
 }

@@ -596,11 +596,7 @@ export default function AnalyticsPage() {
                             </h3>
 
                             <p className="text-sm text-gray-500">
-                              Only{" "}
-                              {
-                                product.stock
-                              }{" "}
-                              items left
+                              Critical inventory level: {product.stock} remaining
                             </p>
                           </div>
 
