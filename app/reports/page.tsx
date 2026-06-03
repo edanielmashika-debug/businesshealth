@@ -2,7 +2,6 @@
 
 import { useState } from "react";
 
-
 import DashboardLayout from "../../components/dashboard-layout";
 
 import {
@@ -67,7 +66,6 @@ export default function ReportsPage() {
 
   const totalSales =
     filteredSales.length;
-
 
   const chartData =
     filteredSales.map(
@@ -166,7 +164,6 @@ export default function ReportsPage() {
         lastRevenue
       ) * 100;
 
-
   const currentProfit =
     currentMonthSales.reduce(
       (sum, sale) =>
@@ -199,101 +196,97 @@ export default function ReportsPage() {
 
         <div>
 
-          <h1 className="text-3xl font-bold text-gray-800">
+          <h1 className="text-3xl font-bold text-gray-800 dark:text-white">
             Reports
           </h1>
 
-          <p className="text-gray-500 mt-1">
+          <p className="text-gray-500 dark:text-slate-400 mt-1">
             Pakua ripoti za biashara yako
           </p>
         </div>
 
-        <div className="bg-white rounded-3xl border p-6 shadow-sm">
+        <div className="bg-white dark:bg-slate-900 rounded-3xl border border-gray-200 dark:border-slate-700 p-6 shadow-sm">
 
-          <h2 className="text-xl font-bold text-black">
+          <h2 className="text-xl font-bold text-black dark:text-white">
             Chuja Ripoti Kwa Tarehe
           </h2>
 
-          <p className="text-sm text-gray-500 mt-1">
+          <p className="text-sm text-gray-500 dark:text-slate-400 mt-1">
             Chagua Kipindi Cha Ripoti
           </p>
 
           <div className="grid md:grid-cols-2 gap-4 mt-6">
-            <span className="text-sm font-medium text-gray-500">Tarehe ya kuanza</span>
+
+            <span className="text-sm font-medium text-gray-500 dark:text-slate-400">
+              Tarehe ya kuanza
+            </span>
+
             <input
               type="date"
-              placeholder="Tarehe ya kuanza"
               value={startDate}
               onChange={(e) =>
                 setStartDate(
                   e.target.value
                 )
               }
-              className="border rounded-2xl px-4 py-4 bg-gray-50 text-black placeholder: text-black"
-
+              className="border border-gray-200 dark:border-slate-700 rounded-2xl px-4 py-4 bg-gray-50 dark:bg-slate-800 text-black dark:text-white"
             />
 
-            <span className="text-sm font-medium text-gray-500">Tarehe ya mwisho</span>
-
+            <span className="text-sm font-medium text-gray-500 dark:text-slate-400">
+              Tarehe ya mwisho
+            </span>
 
             <input
               type="date"
-              placeholder="Tarehe ya mwisho"
               value={endDate}
               onChange={(e) =>
                 setEndDate(
                   e.target.value
                 )
               }
-              className="border rounded-2xl px-4 py-4 bg-gray-50 text-black placeholder: text-black"
+              className="border border-gray-200 dark:border-slate-700 rounded-2xl px-4 py-4 bg-gray-50 dark:bg-slate-800 text-black dark:text-white"
             />
           </div>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
 
-          {/* REVENUE */}
-
-          <div className="bg-white rounded-3xl border p-6 shadow-sm">
+          <div className="bg-white dark:bg-slate-900 rounded-3xl border border-gray-200 dark:border-slate-700 p-6 shadow-sm">
 
             <p className="text-sm text-blue-600">
               Revenue
             </p>
 
-            <h2 className="text-3xl font-bold text-black mt-2">
+            <h2 className="text-3xl font-bold text-black dark:text-white mt-2">
               TZS{" "}
               {totalRevenue.toLocaleString()}
             </h2>
           </div>
 
-          {/* PROFIT */}
-
-          <div className="bg-white rounded-3xl border p-6 shadow-sm">
+          <div className="bg-white dark:bg-slate-900 rounded-3xl border border-gray-200 dark:border-slate-700 p-6 shadow-sm">
 
             <p className="text-sm text-green-600">
               Profit
             </p>
 
-            <h2 className="text-3xl font-bold text-black mt-2">
+            <h2 className="text-3xl font-bold text-black dark:text-white mt-2">
               TZS{" "}
               {totalProfit.toLocaleString()}
             </h2>
           </div>
 
-          {/* SALES */}
-
-          <div className="bg-white rounded-3xl border p-6 shadow-sm">
+          <div className="bg-white dark:bg-slate-900 rounded-3xl border border-gray-200 dark:border-slate-700 p-6 shadow-sm">
 
             <p className="text-sm text-cyan-600">
               Sales Count
             </p>
 
-            <h2 className="text-3xl font-bold text-black mt-2">
+            <h2 className="text-3xl font-bold text-black dark:text-white mt-2">
               {totalSales}
             </h2>
           </div>
 
-          <div className="bg-white rounded-3xl border p-6 shadow-sm">
+          <div className="bg-white dark:bg-slate-900 rounded-3xl border border-gray-200 dark:border-slate-700 p-6 shadow-sm">
             <ReportChart
               data={chartData}
             />
@@ -301,20 +294,17 @@ export default function ReportsPage() {
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
 
-            {/* REVENUE COMPARISON */}
-
-            <div className="bg-white rounded-3xl border p-6 shadow-sm">
+            <div className="bg-white dark:bg-slate-900 rounded-3xl border border-gray-200 dark:border-slate-700 p-6 shadow-sm">
 
               <p className="text-sm text-blue-600">
                 Monthly Revenue Growth
               </p>
 
-              <h2 className="text-4xl font-bold text-black mt-3">
-
+              <h2 className="text-4xl font-bold text-black dark:text-white mt-3">
                 {revenueGrowth.toFixed(1)}%
               </h2>
 
-              <p className="text-gray-500 mt-2">
+              <p className="text-gray-500 dark:text-slate-400 mt-2">
 
                 TZS{" "}
                 {currentRevenue.toLocaleString()}
@@ -326,20 +316,17 @@ export default function ReportsPage() {
               </p>
             </div>
 
-            {/* PROFIT COMPARISON */}
-
-            <div className="bg-white rounded-3xl border p-6 shadow-sm">
+            <div className="bg-white dark:bg-slate-900 rounded-3xl border border-gray-200 dark:border-slate-700 p-6 shadow-sm">
 
               <p className="text-sm text-cyan-600">
                 Monthly Profit Growth
               </p>
 
-              <h2 className="text-4xl font-bold text-black mt-3">
-
+              <h2 className="text-4xl font-bold text-black dark:text-white mt-3">
                 {profitGrowth.toFixed(1)}%
               </h2>
 
-              <p className="text-gray-500 mt-2">
+              <p className="text-gray-500 dark:text-slate-400 mt-2">
 
                 TZS{" "}
                 {currentProfit.toLocaleString()}
@@ -353,17 +340,17 @@ export default function ReportsPage() {
           </div>
         </div>
 
-        <div className="bg-white rounded-3xl border p-6 shadow-sm">
+        <div className="bg-white dark:bg-slate-900 rounded-3xl border border-gray-200 dark:border-slate-700 p-6 shadow-sm">
 
           <div className="flex items-center justify-between">
 
             <div>
 
-              <h2 className="text-xl font-bold text-black">
+              <h2 className="text-xl font-bold text-black dark:text-white">
                 Sales Report
               </h2>
 
-              <p className="text-sm text-gray-500 mt-1">
+              <p className="text-sm text-gray-500 dark:text-slate-400 mt-1">
                 Download sales PDF report
               </p>
             </div>
