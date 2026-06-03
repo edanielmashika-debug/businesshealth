@@ -17,6 +17,7 @@ import {
     X,
     BadgeDollarSignIcon,
     FileText,
+    HandCoins,
 } from "lucide-react";
 
 import {
@@ -60,6 +61,11 @@ export default function DashboardLayout({
             icon: Wallet,
         },
 
+        {
+            name: "Debts",
+            href: "/debts",
+            icon: HandCoins,
+        },
         {
             name: "Analytics",
             href: "/analytics",
