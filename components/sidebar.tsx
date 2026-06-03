@@ -51,6 +51,11 @@ const links = [
     name: "Reports",
     href: "/reports",
   },
+
+  {
+    name: "Profile",
+    href: "/profile",
+  },
 ];
 
 export default function Sidebar() {

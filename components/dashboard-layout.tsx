@@ -243,10 +243,11 @@ ${pathname === link.href
                         {/* PROFILE */}
 
                         <div className="flex items-center gap-3">
-                            
+                            <Link href="/profile">
                             <div className="w-10 h-10 rounded-full bg-blue-600 text-white flex items-center justify-center font-bold">
                                 ED
                             </div>
+                            </Link>
 
                             <div className="hidden md:block">
                                 <div className="font-semibold text-sm">
