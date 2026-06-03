@@ -244,11 +244,11 @@ export default function HomePage() {
 
         <div>
 
-          <h1 className="text-3xl font-bold text-gray-800">
+          <h1 className="text-3xl font-bold text-gray-800 dark:text-white">
             Dashboard
           </h1>
 
-          <p className="text-gray-500 mt-1">
+          <p className="text-gray-500 dark:text-slate-400 mt-1">
             Business overview and analytics
           </p>
         </div>
@@ -285,9 +285,9 @@ export default function HomePage() {
 
           {/* BEST SELLER */}
 
-          <div className="bg-white rounded-3xl p-6 shadow-sm border">
+          <div className="bg-white dark:bg-slate-900 rounded-3xl p-6 shadow-sm border">
 
-            <p className="text-sm text-gray-500">
+            <p className="text-sm text-gray-500 dark:text-slate-400">
               Best Seller
             </p>
 
@@ -306,9 +306,9 @@ export default function HomePage() {
 
           {/* LOW STOCK */}
 
-          <div className="bg-white rounded-3xl p-6 shadow-sm border">
+          <div className="bg-white dark:bg-slate-900 rounded-3xl p-6 shadow-sm border">
 
-            <p className="text-sm text-gray-500">
+            <p className="text-sm text-gray-500 dark:text-slate-400">
               Low Stock Alerts
             </p>
 
@@ -318,16 +318,16 @@ export default function HomePage() {
               }
             </h2>
 
-            <p className="text-gray-500 mt-2 text-sm">
+            <p className="text-gray-500 dark:text-slate-400 mt-2 text-sm">
               Products running low
             </p>
           </div>
 
           {/* PRODUCTS */}
 
-          <div className="bg-white rounded-3xl p-6 shadow-sm border">
+          <div className="bg-white dark:bg-slate-900 rounded-3xl p-6 shadow-sm border">
 
-            <p className="text-sm text-gray-500">
+            <p className="text-sm text-gray-500 dark:text-slate-400">
               Total Products
             </p>
 
@@ -335,7 +335,7 @@ export default function HomePage() {
               {products.length}
             </h2>
 
-            <p className="text-gray-500 mt-2 text-sm">
+            <p className="text-gray-500 dark:text-slate-400 mt-2 text-sm">
               Inventory items
             </p>
           </div>
@@ -345,7 +345,7 @@ export default function HomePage() {
 
         <div className="grid grid-cols-1 xl:grid-cols-2 gap-6">
 
-          <div className="bg-white rounded-3xl p-6 shadow-sm border">
+          <div className="bg-white dark:bg-slate-900 rounded-3xl p-6 shadow-sm border">
 
             <div className="mb-4">
 
@@ -353,7 +353,7 @@ export default function HomePage() {
                 Revenue Analytics
               </h2>
 
-              <p className="text-sm text-gray-500">
+              <p className="text-sm text-gray-500 dark:text-slate-400">
                 Sales and revenue trends
               </p>
             </div>
@@ -361,7 +361,7 @@ export default function HomePage() {
             <AnalyticsChart />
           </div>
 
-          <div className="bg-white rounded-3xl p-6 shadow-sm border">
+          <div className="bg-white dark:bg-slate-900 rounded-3xl p-6 shadow-sm border">
 
             <div className="mb-4">
 
@@ -369,7 +369,7 @@ export default function HomePage() {
                 Category Breakdown
               </h2>
 
-              <p className="text-sm text-gray-500">
+              <p className="text-sm text-gray-500 dark:text-slate-400">
                 Expense and income categories
               </p>
             </div>
@@ -380,7 +380,7 @@ export default function HomePage() {
 
         {/* LOW STOCK LIST */}
 
-        <div className="bg-white rounded-3xl p-6 shadow-sm border">
+        <div className="bg-white dark:bg-slate-900 rounded-3xl p-6 shadow-sm border">
 
           <div className="flex items-center justify-between mb-6">
 
@@ -390,7 +390,7 @@ export default function HomePage() {
                 Inventory Alerts
               </h2>
 
-              <p className="text-sm text-gray-500 mt-1">
+              <p className="text-sm text-gray-500 dark:text-slate-400 mt-1">
                 Products that need restocking
               </p>
             </div>
@@ -401,7 +401,7 @@ export default function HomePage() {
             {lowStockProducts.length ===
             0 ? (
 
-              <div className="text-gray-500 text-sm">
+              <div className="text-gray-500 dark:text-slate-400 text-sm">
                 No low stock alerts
               </div>
 
@@ -437,7 +437,7 @@ export default function HomePage() {
                         }
                       </h2>
 
-                      <p className="text-xs text-gray-500">
+                      <p className="text-xs text-gray-500 dark:text-slate-400">
                         left
                       </p>
                     </div>

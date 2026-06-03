@@ -75,11 +75,11 @@ export default function SettingsPage() {
 
           <div className="relative isolate">
 
-            <h1 className="text-3xl font-bold text-gray-800 relative z-10">
+            <h1 className="text-3xl font-bold text-gray-800 dark:text-white relative z-10">
               Settings
             </h1>
 
-            <p className="text-gray-500 mt-1 relative z-10">
+            <p className="text-gray-500 dark:text-slate-400 mt-1 relative z-10">
               Manage your business preferences
             </p>
           </div>
@@ -87,7 +87,7 @@ export default function SettingsPage() {
 
         {/* SETTINGS CARD */}
 
-        <div className="bg-white rounded-3xl border shadow-sm overflow-hidden">
+        <div className="bg-white dark:bg-slate-900 rounded-3xl border shadow-sm overflow-hidden">
 
           {/* SECTION HEADER */}
 
@@ -97,7 +97,7 @@ export default function SettingsPage() {
               App Settings
             </h2>
 
-            <p className="text-sm text-gray-500 mt-1">
+            <p className="text-sm text-gray-500 dark:text-slate-400 mt-1">
               Customize your business dashboard
             </p>
           </div>
@@ -109,7 +109,7 @@ export default function SettingsPage() {
             {/* CURRENCY */}
 
             <button
-              className="w-full flex items-center justify-between rounded-2xl border border-gray-200 bg-gray-50 hover:bg-blue-50 transition px-5 py-5"
+              className="w-full flex items-center justify-between rounded-2xl border border-gray-200 dark:border-slate-700bg-gray-50 hover:bg-blue-50 transition px-5 py-5"
             >
 
               <div className="flex items-center gap-4">
@@ -124,7 +124,7 @@ export default function SettingsPage() {
                     Change Currency
                   </h3>
 
-                  <p className="text-sm text-gray-500 mt-1">
+                  <p className="text-sm text-gray-500 dark:text-slate-400 mt-1">
                     Set your business currency
                   </p>
                 </div>
@@ -143,7 +143,7 @@ export default function SettingsPage() {
                   transactions
                 )
               }
-              className="w-full flex items-center justify-between rounded-2xl border border-gray-200 bg-gray-50 hover:bg-blue-50 transition px-5 py-5"
+              className="w-full flex items-center justify-between rounded-2xl border border-gray-200 dark:border-slate-700 bg-gray-50 hover:bg-blue-50 transition px-5 py-5"
             >
 
               <div className="flex items-center gap-4">
@@ -158,7 +158,7 @@ export default function SettingsPage() {
                     Export Reports
                   </h3>
 
-                  <p className="text-sm text-gray-500 mt-1">
+                  <p className="text-sm text-gray-500 dark:text-slate-400 mt-1">
                     Download sales and expense reports
                   </p>
                 </div>
@@ -217,13 +217,13 @@ export default function SettingsPage() {
 
         {/* ACCOUNT INFO */}
 
-        <div className="bg-white rounded-3xl border shadow-sm p-6">
+        <div className="bg-white dark:bg-slate-900 rounded-3xl border shadow-sm p-6">
 
           <h2 className="text-xl font-bold text-black">
             Business System
           </h2>
 
-          <p className="text-sm text-gray-500 mt-2">
+          <p className="text-sm text-gray-500 dark:text-slate-400 mt-2">
             Your inventory, sales, expenses and analytics are securely synced with your account.
           </p>
 
