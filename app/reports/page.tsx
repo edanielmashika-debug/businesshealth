@@ -86,6 +86,112 @@ export default function ReportsPage() {
       })
     );
 
+  const now =
+    new Date();
+
+  const currentMonth =
+    now.getMonth();
+
+  const currentYear =
+    now.getFullYear();
+
+  const currentMonthSales =
+    filteredSales.filter(
+      (sale) => {
+
+        const date =
+          new Date(
+            sale.createdAt
+          );
+
+        return (
+          date.getMonth() ===
+          currentMonth &&
+          date.getFullYear() ===
+          currentYear
+        );
+      }
+    );
+
+  const lastMonthSales =
+    filteredSales.filter(
+      (sale) => {
+
+        const date =
+          new Date(
+            sale.createdAt
+          );
+
+        const lastMonth =
+          currentMonth === 0
+            ? 11
+            : currentMonth - 1;
+
+        const lastMonthYear =
+          currentMonth === 0
+            ? currentYear - 1
+            : currentYear;
+
+        return (
+          date.getMonth() ===
+          lastMonth &&
+          date.getFullYear() ===
+          lastMonthYear
+        );
+      }
+    );
+
+  const currentRevenue =
+    currentMonthSales.reduce(
+      (sum, sale) =>
+        sum + sale.total,
+      0
+    );
+
+  const lastRevenue =
+    lastMonthSales.reduce(
+      (sum, sale) =>
+        sum + sale.total,
+      0
+    );
+
+  const revenueGrowth =
+    lastRevenue === 0
+      ? 100
+      : (
+        (
+          currentRevenue -
+          lastRevenue
+        ) /
+        lastRevenue
+      ) * 100;
+
+
+  const currentProfit =
+    currentMonthSales.reduce(
+      (sum, sale) =>
+        sum + sale.profit,
+      0
+    );
+
+  const lastProfit =
+    lastMonthSales.reduce(
+      (sum, sale) =>
+        sum + sale.profit,
+      0
+    );
+
+  const profitGrowth =
+    lastProfit === 0
+      ? 100
+      : (
+        (
+          currentProfit -
+          lastProfit
+        ) /
+        lastProfit
+      ) * 100;
+
   return (
     <DashboardLayout>
 
@@ -124,7 +230,7 @@ export default function ReportsPage() {
                 )
               }
               className="border rounded-2xl px-4 py-4 bg-gray-50 text-black placeholder: text-black"
-              
+
             />
 
             <span className="text-sm font-medium text-gray-500">Tarehe ya mwisho</span>
@@ -191,6 +297,59 @@ export default function ReportsPage() {
             <ReportChart
               data={chartData}
             />
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+
+            {/* REVENUE COMPARISON */}
+
+            <div className="bg-white rounded-3xl border p-6 shadow-sm">
+
+              <p className="text-sm text-blue-600">
+                Monthly Revenue Growth
+              </p>
+
+              <h2 className="text-4xl font-bold text-black mt-3">
+
+                {revenueGrowth.toFixed(1)}%
+              </h2>
+
+              <p className="text-gray-500 mt-2">
+
+                TZS{" "}
+                {currentRevenue.toLocaleString()}
+
+                {" "}vs{" "}
+
+                TZS{" "}
+                {lastRevenue.toLocaleString()}
+              </p>
+            </div>
+
+            {/* PROFIT COMPARISON */}
+
+            <div className="bg-white rounded-3xl border p-6 shadow-sm">
+
+              <p className="text-sm text-cyan-600">
+                Monthly Profit Growth
+              </p>
+
+              <h2 className="text-4xl font-bold text-black mt-3">
+
+                {profitGrowth.toFixed(1)}%
+              </h2>
+
+              <p className="text-gray-500 mt-2">
+
+                TZS{" "}
+                {currentProfit.toLocaleString()}
+
+                {" "}vs{" "}
+
+                TZS{" "}
+                {lastProfit.toLocaleString()}
+              </p>
+            </div>
           </div>
         </div>
 
