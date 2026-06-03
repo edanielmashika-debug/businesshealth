@@ -1,49 +1,74 @@
 "use client";
 
 import {
+  ResponsiveContainer,
   LineChart,
   Line,
+  CartesianGrid,
   XAxis,
   YAxis,
   Tooltip,
-  ResponsiveContainer,
 } from "recharts";
-
-type Props = {
-  data: {
-    name: string;
-    revenue: number;
-    profit: number;
-  }[];
-};
 
 export default function ProfitChart({
   data,
-}: Props) {
+}: {
+  data: any[];
+}) {
+
+  const formattedData =
+    data.map(
+      (sale) => ({
+
+        date:
+          new Date(
+            sale.createdAt
+          ).toLocaleDateString(),
+
+        profit:
+          sale.profit,
+      })
+    );
+
   return (
-    <div className="w-full border rounded-2xl  p-4 h-80">
+
+    <div className="h-[350px]">
+
       <ResponsiveContainer
         width="100%"
         height="100%"
       >
-        <h1>
-          Profit Trend
-        </h1>
-        <LineChart data={data}>
-          <XAxis dataKey="name" />
 
-          <YAxis />
+        <LineChart
+          data={
+            formattedData
+          }
+        >
+
+          <CartesianGrid
+            strokeDasharray="3 3"
+            stroke="#e5e7eb"
+          />
+
+          <XAxis
+            dataKey="date"
+            stroke="#94a3b8"
+          />
+
+          <YAxis
+            stroke="#94a3b8"
+          />
 
           <Tooltip />
 
           <Line
             type="monotone"
-            dataKey="revenue"
-          />
-
-          <Line
-            type="monotone"
             dataKey="profit"
+            stroke="#10b981"
+            strokeWidth={4}
+            dot={{
+              r: 5,
+            }}
           />
         </LineChart>
       </ResponsiveContainer>
