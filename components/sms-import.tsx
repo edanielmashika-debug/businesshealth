@@ -6,17 +6,7 @@ import {
   useTransactionStore,
 } from "@/store/transaction-store";
 
-import {
-  createTransaction,
-} from "@/services/transaction-service";
-
-import {
-  Smartphone,
-  ArrowDownCircle,
-  ArrowUpCircle,
-} from "lucide-react";
-
-export default function SMSImport() {
+export default function SmsImport() {
 
   const addTransaction =
     useTransactionStore(
@@ -27,125 +17,166 @@ export default function SMSImport() {
   const [sms, setSms] =
     useState("");
 
-  const [loading, setLoading] =
-    useState(false);
+  function extractAmount(
+    text: string
+  ) {
 
-  async function handleImport() {
-
-    if (!sms) return;
-
-    setLoading(true);
-
-    try {
-
-      let type:
-        | "revenue"
-        | "expense" =
-        "expense";
-
-      if (
-        sms
-          .toLowerCase()
-          .includes("received")
-      ) {
-        type = "revenue";
-      }
-
-      const amountMatch =
-        sms.match(
-          /(?:TZS|Ksh|KES)?\s?([\d,]+)/i
-        );
-
-      const amount =
-        amountMatch
-          ? Number(
-              amountMatch[1].replace(
-                /,/g,
-                ""
-              )
-            )
-          : 0;
-
-      const provider =
-        sms.includes("M-Pesa")
-          ? "M-Pesa"
-          : sms.includes(
-              "Airtel"
-            )
-          ? "Airtel Money"
-          : sms.includes(
-              "Tigo"
-            )
-          ? "Tigo Pesa"
-          : "Mobile Money";
-
-      const transaction = {
-
-        id: crypto.randomUUID(),
-
-        title: provider,
-
-        amount,
-
-        category:
-          "Mobile Money",
-
-        type,
-
-        source: "sms" as const,
-
-        createdAt:
-          new Date().toISOString(),
-      };
-
-      addTransaction(
-        transaction
+    const match =
+      text.match(
+        /(\d[\d,]*)/
       );
 
-      await createTransaction(
-        transaction
-      );
+    if (!match)
+      return 0;
 
-      setSms("");
+    return Number(
+      match[0].replace(
+        /,/g,
+        ""
+      )
+    );
+  }
 
-    } catch (error) {
+  function detectProvider(
+    text: string
+  ) {
 
-      console.error(error);
+    const lower =
+      text.toLowerCase();
 
-      alert(
-        "Failed to import SMS"
-      );
-
-    } finally {
-
-      setLoading(false);
+    if (
+      lower.includes(
+        "mpesa"
+      )
+    ) {
+      return "M-Pesa";
     }
+
+    if (
+      lower.includes(
+        "airtel"
+      )
+    ) {
+      return "Airtel Money";
+    }
+
+    if (
+      lower.includes(
+        "tigopesa"
+      )
+    ) {
+      return "Tigo Pesa";
+    }
+
+    if (
+      lower.includes(
+        "halopesa"
+      )
+    ) {
+      return "HaloPesa";
+    }
+
+    return "Mobile Money";
+  }
+
+  function handleImport() {
+
+    if (!sms)
+      return;
+
+    const lowerMessage =
+      sms.toLowerCase();
+
+    const isRevenue =
+
+      lowerMessage.includes(
+        "received"
+      ) ||
+
+      lowerMessage.includes(
+        "umepokea"
+      ) ||
+
+      lowerMessage.includes(
+        "cash received"
+      ) ||
+
+      lowerMessage.includes(
+        "paid to you"
+      );
+
+    const isExpense =
+
+      lowerMessage.includes(
+        "sent"
+      ) ||
+
+      lowerMessage.includes(
+        "umetuma"
+      ) ||
+
+      lowerMessage.includes(
+        "umetoa"
+      ) ||
+
+      lowerMessage.includes(
+        "payment"
+      ) ||
+
+      lowerMessage.includes(
+        "withdraw"
+      ) ||
+
+      lowerMessage.includes(
+        "withdrawn"
+      );
+
+    const type =
+      isRevenue
+        ? "revenue"
+        : "expense";
+
+    const amount =
+      extractAmount(
+        sms
+      );
+
+    const provider =
+      detectProvider(
+        sms
+      );
+
+    addTransaction({
+
+      id:
+        crypto.randomUUID(),
+
+      title:
+        provider,
+
+      amount,
+
+      category:
+        "Mobile Money",
+
+      type,
+
+      source:
+        "sms" as const,
+
+      paymentMethod:
+        "mpesa",
+
+      createdAt:
+        new Date().toISOString(),
+    });
+
+    setSms("");
   }
 
   return (
 
-    <div className="bg-white dark:bg-slate-900 rounded-3xl border border-gray-200 dark:border-slate-800 p-6 shadow-sm">
-
-      <div className="flex items-center gap-4 mb-6">
-
-        <div className="bg-blue-100 dark:bg-blue-500/20 p-3 rounded-2xl">
-
-          <Smartphone className="w-6 h-6 text-blue-600" />
-
-        </div>
-
-        <div>
-
-          <h2 className="text-2xl font-bold text-gray-800 dark:text-white">
-            SMS Import
-          </h2>
-
-          <p className="text-sm text-gray-500 dark:text-slate-400 mt-1">
-            Paste mobile money SMS to auto record transactions
-          </p>
-
-        </div>
-      </div>
+    <div className="space-y-4">
 
       <textarea
         value={sms}
@@ -154,61 +185,17 @@ export default function SMSImport() {
             e.target.value
           )
         }
-        placeholder="Paste M-Pesa, Airtel Money or Tigo Pesa SMS..."
-        className="w-full h-40 rounded-2xl border border-gray-200 dark:border-slate-700 bg-gray-50 dark:bg-slate-800 px-4 py-4 text-black dark:text-white placeholder:text-gray-400 dark:placeholder:text-slate-500 outline-none focus:ring-2 focus:ring-blue-500 resize-none"
+        placeholder="Paste SMS message here..."
+        className="w-full h-40 rounded-3xl border border-gray-200 dark:border-slate-700 bg-white dark:bg-slate-900 px-5 py-4 text-black dark:text-white placeholder:text-gray-400 dark:placeholder:text-slate-500 outline-none focus:ring-2 focus:ring-blue-500"
       />
-
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-6">
-
-        <div className="bg-green-50 dark:bg-green-500/10 border border-green-100 dark:border-green-500/20 rounded-2xl p-4">
-
-          <div className="flex items-center gap-3">
-
-            <ArrowDownCircle className="w-5 h-5 text-green-600" />
-
-            <p className="text-sm text-green-600">
-              Revenue SMS
-            </p>
-
-          </div>
-
-          <p className="text-sm text-gray-600 dark:text-slate-400 mt-2">
-            Detects received payments automatically
-          </p>
-
-        </div>
-
-        <div className="bg-red-50 dark:bg-red-500/10 border border-red-100 dark:border-red-500/20 rounded-2xl p-4">
-
-          <div className="flex items-center gap-3">
-
-            <ArrowUpCircle className="w-5 h-5 text-red-600" />
-
-            <p className="text-sm text-red-600">
-              Expense SMS
-            </p>
-
-          </div>
-
-          <p className="text-sm text-gray-600 dark:text-slate-400 mt-2">
-            Detects spending and withdrawals automatically
-          </p>
-
-        </div>
-      </div>
 
       <button
         onClick={
           handleImport
         }
-        disabled={loading}
-        className="w-full mt-6 bg-gradient-to-r from-blue-600 to-cyan-500 hover:from-blue-700 hover:to-cyan-600 disabled:opacity-50 text-white rounded-2xl py-4 font-semibold transition"
+        className="w-full bg-gradient-to-r from-blue-600 to-cyan-500 text-white rounded-2xl py-4 font-semibold shadow-lg"
       >
-
-        {loading
-          ? "Importing..."
-          : "Import SMS"}
-
+        Import SMS
       </button>
     </div>
   );
