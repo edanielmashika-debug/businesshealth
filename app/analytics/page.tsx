@@ -431,7 +431,7 @@ export default function AnalyticsPage() {
         </div>
         <div className="grid grid-cols-1 xl:grid-cols-2 gap-6">
 
-          {/* New chart */}
+          {/* Revenue comparison */}
           <div className="bg-gradient-to-br from-cyan-500 to-blue-700 rounded-3xl p-6 text-white shadow-lg">
 
             <div className="flex items-center justify-between">
@@ -457,6 +457,47 @@ export default function AnalyticsPage() {
               </div>
             </div>
           </div>
+
+          {/*TODAY'S ANALYTICS*/}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+
+            <div className="bg-white rounded-3xl border p-6 shadow-sm">
+
+              <p className="text-sm text-blue-600">
+                Today's Revenue
+              </p>
+
+              <h2 className="text-3xl font-bold text-black mt-2">
+                TZS{" "}
+                {todayRevenue.toLocaleString()}
+              </h2>
+            </div>
+
+            <div className="bg-white rounded-3xl border p-6 shadow-sm">
+
+              <p className="text-sm text-green-600">
+                Today's Profit
+              </p>
+
+              <h2 className="text-3xl font-bold text-black mt-2">
+                TZS{" "}
+                {todayProfit.toLocaleString()}
+              </h2>
+            </div>
+
+            <div className="bg-white rounded-3xl border p-6 shadow-sm">
+
+              <p className="text-sm text-purple-600">
+                Today's Sales
+              </p>
+
+              <h2 className="text-3xl font-bold text-black mt-2">
+                {todaySalesCount}
+              </h2>
+            </div>
+          </div>
+
+
           {/* SALES CHART */}
 
           <div className="bg-white rounded-3xl p-6 shadow-sm border">
