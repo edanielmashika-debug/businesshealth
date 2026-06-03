@@ -131,7 +131,8 @@ export default function SmsImport() {
         "withdrawn"
       );
 
-    const type =
+    const type:
+      "revenue" | "expense" =
       isRevenue
         ? "revenue"
         : "expense";
@@ -164,8 +165,7 @@ export default function SmsImport() {
       source:
         "sms" as const,
 
-      paymentMethod:
-        "mpesa",
+
 
       createdAt:
         new Date().toISOString(),
