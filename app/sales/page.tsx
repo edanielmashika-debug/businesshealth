@@ -15,6 +15,14 @@ import {
   useSalesStore,
 } from "../../store/sales-store";
 
+import {
+  ShoppingCart,
+  DollarSign,
+  TrendingUp,
+  Package,
+  CalendarDays,
+} from "lucide-react";
+
 export default function SalesPage() {
 
   const products =
@@ -105,6 +113,7 @@ export default function SalesPage() {
       Number(quantity) >
       selectedProduct.stock
     ) {
+
       alert(
         "Not enough stock"
       );
@@ -142,194 +151,327 @@ export default function SalesPage() {
     setQuantity("");
   }
 
+  const totalRevenue =
+    sales.reduce(
+      (sum, sale) =>
+        sum + sale.total,
+      0
+    );
+
+  const totalProfit =
+    sales.reduce(
+      (sum, sale) =>
+        sum + sale.profit,
+      0
+    );
+
   return (
     <DashboardLayout>
-      <div className="p-4 space-y-8">
 
-        <div className="mb-6">
+      <div className="space-y-8">
 
-          <h2 className="text-2xl font-bold text-gray-800">
-            Record Sale
-          </h2>
+        {/* HEADER */}
 
-          <p className="text-sm text-gray-500 mt-1">
-            Create and track product sales
+        <div>
+          <h1 className="text-3xl font-bold text-gray-800 dark:text-white">
+            Sales
+          </h1>
+
+          <p className="text-gray-500 dark:text-slate-400 mt-1">
+            Record and track your business sales
           </p>
         </div>
 
-        <div className="bg-white rounded-3xl p-6 shadow-sm border">
+        {/* STATS */}
+
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+
+          <div className="bg-gradient-to-br from-blue-600 to-cyan-500 rounded-3xl p-6 text-white shadow-lg">
+
+            <div className="flex items-center justify-between">
+
+              <div>
+                <p className="text-sm opacity-80">
+                  Total Revenue
+                </p>
+
+                <h2 className="text-3xl font-bold mt-2">
+                  TZS{" "}
+                  {totalRevenue.toLocaleString()}
+                </h2>
+              </div>
+
+              <div className="bg-white/20 p-3 rounded-2xl">
+                <DollarSign />
+              </div>
+            </div>
+          </div>
+
+          <div className="bg-gradient-to-br from-green-500 to-emerald-700 rounded-3xl p-6 text-white shadow-lg">
+
+            <div className="flex items-center justify-between">
+
+              <div>
+                <p className="text-sm opacity-80">
+                  Total Profit
+                </p>
+
+                <h2 className="text-3xl font-bold mt-2">
+                  TZS{" "}
+                  {totalProfit.toLocaleString()}
+                </h2>
+              </div>
+
+              <div className="bg-white/20 p-3 rounded-2xl">
+                <TrendingUp />
+              </div>
+            </div>
+          </div>
+
+          <div className="bg-gradient-to-br from-purple-500 to-violet-700 rounded-3xl p-6 text-white shadow-lg">
+
+            <div className="flex items-center justify-between">
+
+              <div>
+                <p className="text-sm opacity-80">
+                  Sales Count
+                </p>
+
+                <h2 className="text-3xl font-bold mt-2">
+                  {sales.length}
+                </h2>
+              </div>
+
+              <div className="bg-white/20 p-3 rounded-2xl">
+                <ShoppingCart />
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* FORM */}
+
+        <div className="bg-white dark:bg-slate-900 rounded-3xl p-6 shadow-sm border border-gray-200 dark:border-slate-800">
+
+          <div className="mb-6">
+
+            <h2 className="text-2xl font-bold text-gray-800 dark:text-white">
+              Record Sale
+            </h2>
+
+            <p className="text-sm text-gray-500 dark:text-slate-400 mt-1">
+              Create and track product sales
+            </p>
+          </div>
 
           <form
             onSubmit={handleSubmit}
-            className="space-y-4"
+            className="space-y-5"
           >
 
-            <span className="text-sm font-medium text-gray-500">Product</span>
+            <div>
 
-            <select
-              value={
-                selectedProductId
-              }
-              onChange={(e) =>
-                setSelectedProductId(
-                  e.target.value
-                )
-              }
-              className="w-full rounded-2xl border border-gray-200 bg-gray-50 px-4 py-4 outline-none focus:ring-2 focus:ring-blue-500 focus:bg-white transition text-gray-500"
-            >
+              <span className="text-sm font-medium text-gray-500 dark:text-slate-400">
+                Product
+              </span>
 
-              <option
-                value=""
-                className="text-gray-500"
+              <select
+                value={
+                  selectedProductId
+                }
+                onChange={(e) =>
+                  setSelectedProductId(
+                    e.target.value
+                  )
+                }
+                className="mt-2 w-full rounded-2xl border border-gray-200 dark:border-slate-700 bg-gray-50 dark:bg-slate-800 px-4 py-4 outline-none focus:ring-2 focus:ring-blue-500 transition text-black dark:text-white"
               >
-                Select Product
-              </option>
 
-              {products.map(
-                (product) => (
-                  <option
-                    key={product.id}
-                    value={product.id}
-                  >
-                    {product.name}
-                    (
-                    {product.stock}
-                    {" "}
-                    left)
-                  </option>
-                )
-              )}
-            </select>
+                <option value="">
+                  Select Product
+                </option>
 
-            <input
-              type="number"
-              placeholder="Quantity"
-              value={quantity}
-              onChange={(e) =>
-                setQuantity(
-                  e.target.value
-                )
-              }
-              className="w-full rounded-2xl border border-gray-200 bg-gray-50 px-4 py-4 outline-none focus:ring-2 focus:ring-blue-500 focus:bg-white transition text-black"
-            />
-
-            <div className="bg-blue-50 border border-blue-100 rounded-3xl p-6">
-
-              <p className="text-sm text-blue-600">
-                Total Amount
-              </p>
-
-              <h2 className="text-4xl font-bold text-blue-700 mt-2">
-                TZS{" "}
-                {total.toLocaleString()}
-              </h2>
+                {products.map(
+                  (product) => (
+                    <option
+                      key={product.id}
+                      value={product.id}
+                    >
+                      {product.name}
+                      {" "}
+                      (
+                      {product.stock}
+                      {" "}
+                      left)
+                    </option>
+                  )
+                )}
+              </select>
             </div>
 
-            <div className="bg-blue-50 border border-blue-100 rounded-3xl p-6">
+            <div>
 
-              <p className="text-sm text-blue-600">
-                Total Profit
-              </p>
+              <span className="text-sm font-medium text-gray-500 dark:text-slate-400">
+                Quantity
+              </span>
 
-              <h2 className="text-4xl font-bold text-blue-700 mt-2">
-                TZS{" "}
-                {profit.toLocaleString()}
-              </h2>
+              <input
+                type="number"
+                placeholder="Enter quantity"
+                value={quantity}
+                onChange={(e) =>
+                  setQuantity(
+                    e.target.value
+                  )
+                }
+                className="mt-2 w-full rounded-2xl border border-gray-200 dark:border-slate-700 bg-gray-50 dark:bg-slate-800 px-4 py-4 outline-none focus:ring-2 focus:ring-blue-500 transition text-black dark:text-white placeholder:text-gray-400"
+              />
             </div>
+
+            {/* TOTAL */}
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+
+              <div className="bg-blue-50 dark:bg-blue-950/40 border border-blue-100 dark:border-blue-900 rounded-3xl p-6">
+
+                <p className="text-sm text-blue-600 dark:text-blue-400">
+                  Total Amount
+                </p>
+
+                <h2 className="text-4xl font-bold text-blue-700 dark:text-blue-300 mt-2">
+                  TZS{" "}
+                  {total.toLocaleString()}
+                </h2>
+              </div>
+
+              <div className="bg-green-50 dark:bg-green-950/40 border border-green-100 dark:border-green-900 rounded-3xl p-6">
+
+                <p className="text-sm text-green-600 dark:text-green-400">
+                  Total Profit
+                </p>
+
+                <h2 className="text-4xl font-bold text-green-700 dark:text-green-300 mt-2">
+                  TZS{" "}
+                  {profit.toLocaleString()}
+                </h2>
+              </div>
+            </div>
+
+            {/* STOCK STATUS */}
 
             {selectedProduct && (
-              <div className="ocean-card p-4">
 
-                <div>
-                  Stock Left:
-                  {" "}
-                  {selectedProduct.stock}
-                </div>
+              <div className="rounded-3xl border border-gray-200 dark:border-slate-700 bg-gray-50 dark:bg-slate-800 p-5">
 
-                {selectedProduct.stock <=
-                  5 && (
-                  <div className="text-red-500 text-sm mt-2">
-                    Low Stock Warning
+                <div className="flex items-center justify-between">
+
+                  <div className="flex items-center gap-3">
+
+                    <div className="bg-blue-100 dark:bg-blue-900 p-3 rounded-2xl">
+                      <Package className="w-5 h-5 text-blue-600 dark:text-blue-300" />
+                    </div>
+
+                    <div>
+
+                      <h3 className="font-semibold text-gray-800 dark:text-white">
+                        Stock Available
+                      </h3>
+
+                      <p className="text-sm text-gray-500 dark:text-slate-400">
+                        {selectedProduct.stock} items remaining
+                      </p>
+                    </div>
                   </div>
-                )}
+
+                  {selectedProduct.stock <= 5 && (
+
+                    <div className="bg-red-100 dark:bg-red-900/40 text-red-600 dark:text-red-300 px-4 py-2 rounded-full text-sm font-semibold">
+                      Low Stock
+                    </div>
+                  )}
+                </div>
               </div>
             )}
 
             <button
               type="submit"
-              className="w-full mt-4 bg-gradient-to-r from-blue-600 to-blue-700 text-white rounded-2xl py-4 font-semibold hover:scale-[1.01] transition"
+              className="w-full mt-2 bg-gradient-to-r from-blue-600 to-cyan-500 text-white rounded-2xl py-4 font-semibold hover:scale-[1.01] transition"
             >
               Record Sale
             </button>
           </form>
         </div>
 
-        <div className="space-y-3">
+        {/* SALES LIST */}
+
+        <div className="space-y-4">
 
           {sales.map((sale) => (
 
             <div
               key={sale.id}
-              className="bg-white rounded-3xl p-5 shadow-sm border hover:shadow-md transition"
+              className="bg-white dark:bg-slate-900 rounded-3xl p-6 shadow-sm border border-gray-200 dark:border-slate-800 hover:shadow-md transition"
             >
 
               <div className="flex items-start justify-between">
 
                 <div>
-                  <h2 className="text-xl font-bold text-gray-800">
+
+                  <h2 className="text-2xl font-bold text-gray-800 dark:text-white">
                     {sale.productName}
                   </h2>
 
-                  <p className="text-sm text-gray-500 mt-1">
+                  <p className="text-sm text-gray-500 dark:text-slate-400 mt-1">
                     Product Sale
                   </p>
                 </div>
 
                 <div className="text-right">
 
-                  <p className="text-sm text-gray-500">
+                  <p className="text-sm text-gray-500 dark:text-slate-400">
                     Revenue
                   </p>
 
-                  <h2 className="text-2xl font-bold text-blue-600">
+                  <h2 className="text-2xl font-bold text-blue-600 dark:text-blue-400">
                     TZS{" "}
                     {sale.total.toLocaleString()}
                   </h2>
                 </div>
               </div>
 
-              <div className="grid grid-cols-2 md:grid-cols-3 gap-4 mt-6">
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-6">
 
-                <div className="bg-gray-50 rounded-2xl p-4">
+                <div className="bg-gray-50 dark:bg-slate-800 rounded-2xl p-4">
 
-                  <p className="text-sm text-gray-500">
+                  <p className="text-sm text-gray-500 dark:text-slate-400">
                     Quantity
                   </p>
 
-                  <h3 className="text-lg font-bold mt-1 text-black">
+                  <h3 className="text-xl font-bold mt-1 text-black dark:text-white">
                     {sale.quantity}
                   </h3>
                 </div>
 
-                <div className="bg-gray-50 rounded-2xl p-4">
+                <div className="bg-gray-50 dark:bg-slate-800 rounded-2xl p-4">
 
-                  <p className="text-sm text-gray-500">
+                  <p className="text-sm text-gray-500 dark:text-slate-400">
                     Profit
                   </p>
 
-                  <h3 className="text-lg font-bold mt-1 text-green-600">
+                  <h3 className="text-xl font-bold mt-1 text-green-600 dark:text-green-400">
                     TZS{" "}
                     {sale.profit.toLocaleString()}
                   </h3>
                 </div>
 
-                <div className="bg-gray-50 rounded-2xl p-4">
+                <div className="bg-gray-50 dark:bg-slate-800 rounded-2xl p-4">
 
-                  <p className="text-sm text-gray-500">
+                  <p className="text-sm text-gray-500 dark:text-slate-400 flex items-center gap-2">
+                    <CalendarDays className="w-4 h-4" />
                     Date
                   </p>
 
-                  <h3 className="text-sm font-semibold mt-1 text-black">
+                  <h3 className="text-sm font-semibold mt-1 text-black dark:text-white">
                     {new Date(
                       sale.createdAt
                     ).toLocaleDateString()}
