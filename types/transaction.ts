@@ -1,20 +1,22 @@
-export type TransactionType = 
-| "income"
-| "expense";
+export type TransactionType =
+  | "revenue"
+  | "expense";
 
-export type PaymentMethod =
-| "cash"
-| "mpesa"
-| "airtel money"
-| "yas"
-| "halopesa"
+export interface Transaction {
 
-export interface Transaction{
-    id: string;
-    type: TransactionType;
-    amount: number,
-    category: string,
-    paymentMethod: PaymentMethod;
-    note?: string;
-    createdAt: string;
+  id: string;
+
+  title: string;
+
+  amount: number;
+
+  category: string;
+
+  type: TransactionType;
+
+  source?:
+    | "manual"
+    | "sms";
+
+  createdAt: string;
 }
