@@ -197,6 +197,88 @@ export default function AnalyticsPage() {
   const totalSales =
     sales.length;
 
+  const now =
+    new Date();
+
+  const currentMonth =
+    now.getMonth();
+
+  const currentYear =
+    now.getFullYear();
+
+  const currentMonthSales =
+    sales.filter(
+      (sale) => {
+
+        const date =
+          new Date(
+            sale.createdAt
+          );
+
+        return (
+          date.getMonth() ===
+          currentMonth &&
+
+          date.getFullYear() ===
+          currentYear
+        );
+      }
+    );
+
+  const lastMonthSales =
+    sales.filter(
+      (sale) => {
+
+        const date =
+          new Date(
+            sale.createdAt
+          );
+
+        const lastMonth =
+          currentMonth === 0
+            ? 11
+            : currentMonth - 1;
+
+        const lastMonthYear =
+          currentMonth === 0
+            ? currentYear - 1
+            : currentYear;
+
+        return (
+          date.getMonth() ===
+          lastMonth &&
+
+          date.getFullYear() ===
+          lastMonthYear
+        );
+      }
+    );
+
+  const currentRevenue =
+    currentMonthSales.reduce(
+      (sum, sale) =>
+        sum + sale.total,
+      0
+    );
+
+  const lastRevenue =
+    lastMonthSales.reduce(
+      (sum, sale) =>
+        sum + sale.total,
+      0
+    );
+
+  const revenueGrowth =
+    lastRevenue === 0
+      ? 100
+      : (
+        (
+          currentRevenue -
+          lastRevenue
+        ) /
+        lastRevenue
+      ) * 100;
+
 
   return (
     <DashboardLayout>
@@ -349,6 +431,32 @@ export default function AnalyticsPage() {
         </div>
         <div className="grid grid-cols-1 xl:grid-cols-2 gap-6">
 
+          {/* New chart */}
+          <div className="bg-gradient-to-br from-cyan-500 to-blue-700 rounded-3xl p-6 text-white shadow-lg">
+
+            <div className="flex items-center justify-between">
+
+              <div>
+
+                <p className="text-sm opacity-80">
+                  Monthly Growth
+                </p>
+
+                <h2 className="text-3xl font-bold mt-2">
+
+                  {revenueGrowth.toFixed(1)}%
+                </h2>
+
+                <p className="text-sm opacity-80 mt-2">
+                  Revenue vs last month
+                </p>
+              </div>
+
+              <div className="bg-white/20 p-3 rounded-2xl">
+                📊
+              </div>
+            </div>
+          </div>
           {/* SALES CHART */}
 
           <div className="bg-white rounded-3xl p-6 shadow-sm border">
