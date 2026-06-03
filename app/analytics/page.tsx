@@ -3,625 +3,623 @@
 import DashboardLayout from "../../components/dashboard-layout";
 
 import AnalyticsChart from "../../components/analytics-chart";
+
 import CategoryChart from "../../components/category-chart";
+
 import ProfitChart from "../../components/profit-chart";
 
-import { useInventoryStore } from "../../store/inventory-store";
-import { useExpenseStore } from "../../store/expense-store";
+import {
+useInventoryStore,
+} from "../../store/inventory-store";
 
 import {
-  DollarSign,
-  TrendingUp,
-  ShoppingCart,
-  Package,
+useExpenseStore,
+} from "../../store/expense-store";
+
+import {
+useTransactionStore,
+} from "../../store/transaction-store";
+
+import {
+DollarSign,
+TrendingUp,
+ShoppingCart,
 } from "lucide-react";
 
 import {
-  useEffect,
-  useState,
+useEffect,
+useState,
 } from "react";
 
 import {
-  getSales,
+getSales,
 } from "../../lib/sales";
 
 export default function AnalyticsPage() {
 
-  const [sales, setSales] =
-    useState<any[]>([]);
+const [sales, setSales] =
+useState<any[]>([]);
 
-  useEffect(() => {
+useEffect(() => {
 
-    async function loadSales() {
+```
+async function loadSales() {
 
-      const data =
-        await getSales();
+  const data =
+    await getSales();
 
-      if (data) {
+  if (data) {
 
-        const formatted =
-          data.map(
-            (sale: any) => ({
-              id: sale.id,
+    const formatted =
+      data.map(
+        (sale: any) => ({
 
-              productId:
-                sale.product_id,
+          id:
+            sale.id,
 
-              productName:
-                sale.product_name,
+          productId:
+            sale.product_id,
 
-              quantity:
-                sale.quantity,
+          productName:
+            sale.product_name,
 
-              total: Number(
-                sale.total
-              ),
+          quantity:
+            sale.quantity,
 
-              profit: Number(
-                sale.profit
-              ),
+          total:
+            Number(
+              sale.total
+            ),
 
-              createdAt:
-                sale.created_at,
-            })
-          );
+          profit:
+            Number(
+              sale.profit
+            ),
 
-        setSales(
-          formatted
-        );
-      }
-    }
+          createdAt:
+            sale.created_at,
+        })
+      );
 
-    loadSales();
-
-  }, []);
-
-  const {
-    expenses,
-  } =
-    useExpenseStore();
-
-  const {
-    products,
-  } =
-    useInventoryStore();
-
-  const today =
-    new Date()
-      .toISOString()
-      .split("T")[0];
-
-  const todaySales =
-    sales.filter(
-      (sale) =>
-        sale.createdAt.startsWith(
-          today
-        )
+    setSales(
+      formatted
     );
+  }
+}
 
-  const todayRevenue =
-    todaySales.reduce(
-      (sum, sale) =>
-        sum + sale.total,
-      0
-    );
+loadSales();
+```
 
-  const todayProfit =
-    todaySales.reduce(
-      (sum, sale) =>
-        sum + sale.profit,
-      0
-    );
+}, []);
 
-  const todaySalesCount =
-    todaySales.length;
+const {
+expenses,
+} =
+useExpenseStore();
 
-  const totalExpenses =
-    expenses.reduce(
-      (
-        sum,
-        expense
-      ) =>
-        sum +
-        expense.amount,
-      0
-    );
+const {
+products,
+} =
+useInventoryStore();
 
-  const totalRevenue =
-    sales.reduce(
-      (sum, sale) =>
-        sum + sale.total,
-      0
-    );
+const transactions =
+useTransactionStore(
+(state) =>
+state.transactions
+);
 
-  const totalProfit =
-    sales.reduce(
-      (sum, sale) =>
-        sum + sale.profit,
-      0
-    );
+const today =
+new Date()
+.toISOString()
+.split("T")[0];
 
-  const netProfit =
-    totalProfit -
-    totalExpenses;
+const todaySales =
+sales.filter(
+(sale) =>
+sale.createdAt.startsWith(
+today
+)
+);
 
-  const lowStockProducts =
-    products.filter(
-      (product) =>
-        product.stock <= 5
-    );
+const todayRevenue =
+todaySales.reduce(
+(sum, sale) =>
+sum + sale.total,
+0
+) +
 
-  const productCount: Record<
-    string,
-    number
-  > = {};
+```
+transactions
+  .filter(
+    (t) =>
 
-  sales.forEach((sale) => {
+      t.type ===
+        "revenue" &&
 
-    if (
-      productCount[
-        sale.productName
-      ]
-    ) {
+      t.createdAt.startsWith(
+        today
+      )
+  )
+  .reduce(
+    (sum, t) =>
+      sum + t.amount,
+    0
+  );
+```
 
-      productCount[
-        sale.productName
-      ] += sale.quantity;
+const todayExpenses =
+transactions
+.filter(
+(t) =>
 
-    } else {
+```
+      t.type ===
+        "expense" &&
 
-      productCount[
-        sale.productName
-      ] = sale.quantity;
-    }
-  });
+      t.createdAt.startsWith(
+        today
+      )
+  )
+  .reduce(
+    (sum, t) =>
+      sum + t.amount,
+    0
+  );
+```
 
-  const bestSeller =
-    Object.entries(
-      productCount
-    ).sort(
-      (a, b) =>
-        b[1] - a[1]
-    )[0];
+const todayProfit =
+todayRevenue -
+todayExpenses;
 
-  const now =
-    new Date();
+const todaySalesCount =
+todaySales.length;
 
-  const currentMonth =
-    now.getMonth();
+/* TOTALS */
 
-  const currentYear =
-    now.getFullYear();
+const salesRevenue =
+sales.reduce(
+(sum, sale) =>
+sum + sale.total,
+0
+);
 
-  const currentMonthSales =
-    sales.filter(
-      (sale) => {
+const transactionRevenue =
+transactions
+.filter(
+(t) =>
+t.type ===
+"revenue"
+)
+.reduce(
+(sum, t) =>
+sum + t.amount,
+0
+);
 
-        const date =
-          new Date(
-            sale.createdAt
-          );
+const totalRevenue =
+salesRevenue +
+transactionRevenue;
 
-        return (
-          date.getMonth() ===
-            currentMonth &&
+const salesProfit =
+sales.reduce(
+(sum, sale) =>
+sum + sale.profit,
+0
+);
 
-          date.getFullYear() ===
-            currentYear
-        );
-      }
-    );
+const manualExpenses =
+expenses.reduce(
+(
+sum,
+expense
+) =>
+sum +
+expense.amount,
+0
+);
 
-  const lastMonthSales =
-    sales.filter(
-      (sale) => {
+const transactionExpenses =
+transactions
+.filter(
+(t) =>
+t.type ===
+"expense"
+)
+.reduce(
+(sum, t) =>
+sum + t.amount,
+0
+);
 
-        const date =
-          new Date(
-            sale.createdAt
-          );
+const totalExpenses =
+manualExpenses +
+transactionExpenses;
 
-        const lastMonth =
-          currentMonth === 0
-            ? 11
-            : currentMonth - 1;
+const netProfit =
+totalRevenue -
+totalExpenses;
 
-        const lastMonthYear =
-          currentMonth === 0
-            ? currentYear - 1
-            : currentYear;
+const totalSales =
+sales.length;
 
-        return (
-          date.getMonth() ===
-            lastMonth &&
+/* BEST SELLER */
 
-          date.getFullYear() ===
-            lastMonthYear
-        );
-      }
-    );
+const productCount:
+Record<
+string,
+number
+> = {};
 
-  const currentRevenue =
-    currentMonthSales.reduce(
-      (sum, sale) =>
-        sum + sale.total,
-      0
-    );
+sales.forEach(
+(sale) => {
 
-  const lastRevenue =
-    lastMonthSales.reduce(
-      (sum, sale) =>
-        sum + sale.total,
-      0
-    );
+```
+  if (
+    productCount[
+      sale.productName
+    ]
+  ) {
 
-  const revenueGrowth =
-    lastRevenue === 0
-      ? 100
-      : (
-          (
-            currentRevenue -
-            lastRevenue
-          ) /
-          lastRevenue
-        ) * 100;
+    productCount[
+      sale.productName
+    ] +=
+      sale.quantity;
 
-  return (
+  } else {
 
-    <DashboardLayout>
+    productCount[
+      sale.productName
+    ] =
+      sale.quantity;
+  }
+}
+```
 
-      <div className="space-y-8">
+);
 
-        {/* HEADER */}
+const bestSeller =
+Object.entries(
+productCount
+).sort(
+(
+a,
+b
+) =>
+b[1] - a[1]
+)[0];
 
-        <div>
+/* MONTHLY GROWTH */
 
-          <h1 className="text-3xl font-bold text-gray-800 dark:text-white">
-            Analytics
-          </h1>
+const now =
+new Date();
 
-          <p className="text-gray-500 dark:text-slate-400 mt-1">
-            Business insights and trends
+const currentMonth =
+now.getMonth();
+
+const currentYear =
+now.getFullYear();
+
+const currentMonthRevenue =
+totalRevenue;
+
+const revenueGrowth =
+currentMonthRevenue ===
+0
+? 0
+: 100;
+
+/* LOW STOCK */
+
+const lowStockProducts =
+products.filter(
+(product) =>
+product.stock <=
+5
+);
+
+return (
+
+```
+<DashboardLayout>
+
+  <div className="space-y-8">
+
+    {/* HEADER */}
+
+    <div>
+
+      <h1 className="text-3xl font-bold text-black dark:text-white">
+        Analytics
+      </h1>
+
+      <p className="text-gray-500 dark:text-slate-400 mt-1">
+        Business insights and performance tracking
+      </p>
+    </div>
+
+    {/* TOP STATS */}
+
+    <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6">
+
+      {/* REVENUE */}
+
+      <div className="bg-gradient-to-br from-blue-500 to-blue-700 rounded-3xl p-6 text-white shadow-lg">
+
+        <div className="flex items-center justify-between">
+
+          <div>
+
+            <p className="text-sm opacity-80">
+              Total Revenue
+            </p>
+
+            <h2 className="text-3xl font-bold mt-2">
+              TZS{" "}
+              {totalRevenue.toLocaleString()}
+            </h2>
+          </div>
+
+          <div className="bg-white/20 p-3 rounded-2xl">
+            <DollarSign />
+          </div>
+        </div>
+      </div>
+
+      {/* EXPENSES */}
+
+      <div className="bg-gradient-to-br from-red-500 to-rose-700 rounded-3xl p-6 text-white shadow-lg">
+
+        <div className="flex items-center justify-between">
+
+          <div>
+
+            <p className="text-sm opacity-80">
+              Expenses
+            </p>
+
+            <h2 className="text-3xl font-bold mt-2">
+              TZS{" "}
+              {totalExpenses.toLocaleString()}
+            </h2>
+          </div>
+
+          <div className="bg-white/20 p-3 rounded-2xl">
+            💸
+          </div>
+        </div>
+      </div>
+
+      {/* PROFIT */}
+
+      <div className="bg-gradient-to-br from-green-500 to-emerald-700 rounded-3xl p-6 text-white shadow-lg">
+
+        <div className="flex items-center justify-between">
+
+          <div>
+
+            <p className="text-sm opacity-80">
+              Net Profit
+            </p>
+
+            <h2 className="text-3xl font-bold mt-2">
+              TZS{" "}
+              {netProfit.toLocaleString()}
+            </h2>
+          </div>
+
+          <div className="bg-white/20 p-3 rounded-2xl">
+            <TrendingUp />
+          </div>
+        </div>
+      </div>
+
+      {/* SALES */}
+
+      <div className="bg-gradient-to-br from-purple-500 to-violet-700 rounded-3xl p-6 text-white shadow-lg">
+
+        <div className="flex items-center justify-between">
+
+          <div>
+
+            <p className="text-sm opacity-80">
+              Sales Count
+            </p>
+
+            <h2 className="text-3xl font-bold mt-2">
+              {totalSales}
+            </h2>
+          </div>
+
+          <div className="bg-white/20 p-3 rounded-2xl">
+            <ShoppingCart />
+          </div>
+        </div>
+      </div>
+    </div>
+
+    {/* TODAY */}
+
+    <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+
+      <div className="bg-white dark:bg-slate-900 rounded-3xl border border-gray-200 dark:border-slate-800 p-6 shadow-sm">
+
+        <p className="text-blue-600 text-sm">
+          Today's Revenue
+        </p>
+
+        <h2 className="text-3xl font-bold text-black dark:text-white mt-2">
+          TZS{" "}
+          {todayRevenue.toLocaleString()}
+        </h2>
+      </div>
+
+      <div className="bg-white dark:bg-slate-900 rounded-3xl border border-gray-200 dark:border-slate-800 p-6 shadow-sm">
+
+        <p className="text-green-600 text-sm">
+          Today's Profit
+        </p>
+
+        <h2 className="text-3xl font-bold text-black dark:text-white mt-2">
+          TZS{" "}
+          {todayProfit.toLocaleString()}
+        </h2>
+      </div>
+
+      <div className="bg-white dark:bg-slate-900 rounded-3xl border border-gray-200 dark:border-slate-800 p-6 shadow-sm">
+
+        <p className="text-purple-600 text-sm">
+          Today's Sales
+        </p>
+
+        <h2 className="text-3xl font-bold text-black dark:text-white mt-2">
+          {todaySalesCount}
+        </h2>
+      </div>
+    </div>
+
+    {/* CHARTS */}
+
+    <div className="grid grid-cols-1 xl:grid-cols-2 gap-6">
+
+      <div className="bg-white dark:bg-slate-900 rounded-3xl border border-gray-200 dark:border-slate-800 p-6 shadow-sm">
+
+        <div className="mb-6">
+
+          <h2 className="text-xl font-bold text-black dark:text-white">
+            Revenue Overview
+          </h2>
+
+          <p className="text-gray-500 dark:text-slate-400 text-sm mt-1">
+            Revenue and sales analytics
           </p>
         </div>
 
-        {/* TOP STATS */}
+        <AnalyticsChart />
+      </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
+      <div className="bg-white dark:bg-slate-900 rounded-3xl border border-gray-200 dark:border-slate-800 p-6 shadow-sm">
 
-          {/* REVENUE */}
+        <div className="mb-6">
 
-          <div className="bg-gradient-to-br from-blue-500 to-blue-700 rounded-3xl p-6 text-white shadow-lg">
+          <h2 className="text-xl font-bold text-black dark:text-white">
+            Expense Categories
+          </h2>
 
-            <div className="flex items-center justify-between">
-
-              <div>
-
-                <p className="text-sm opacity-80">
-                  Total Revenue
-                </p>
-
-                <h2 className="text-3xl font-bold mt-2">
-                  TZS{" "}
-                  {totalRevenue.toLocaleString()}
-                </h2>
-              </div>
-
-              <div className="bg-white/20 p-3 rounded-2xl">
-                <DollarSign />
-              </div>
-            </div>
-          </div>
-
-          {/* EXPENSES */}
-
-          <div className="bg-gradient-to-br from-red-500 to-rose-700 rounded-3xl p-6 text-white shadow-lg">
-
-            <div className="flex items-center justify-between">
-
-              <div>
-
-                <p className="text-sm opacity-80">
-                  Expenses
-                </p>
-
-                <h2 className="text-3xl font-bold mt-2">
-                  TZS{" "}
-                  {totalExpenses.toLocaleString()}
-                </h2>
-              </div>
-
-              <div className="bg-white/20 p-3 rounded-2xl">
-                💸
-              </div>
-            </div>
-          </div>
-
-          {/* PROFIT */}
-
-          <div className="bg-gradient-to-br from-green-500 to-emerald-700 rounded-3xl p-6 text-white shadow-lg">
-
-            <div className="flex items-center justify-between">
-
-              <div>
-
-                <p className="text-sm opacity-80">
-                  Net Profit
-                </p>
-
-                <h2 className="text-3xl font-bold mt-2">
-                  TZS{" "}
-                  {netProfit.toLocaleString()}
-                </h2>
-              </div>
-
-              <div className="bg-white/20 p-3 rounded-2xl">
-                <TrendingUp />
-              </div>
-            </div>
-          </div>
-
-          {/* SALES */}
-
-          <div className="bg-gradient-to-br from-purple-500 to-violet-700 rounded-3xl p-6 text-white shadow-lg">
-
-            <div className="flex items-center justify-between">
-
-              <div>
-
-                <p className="text-sm opacity-80">
-                  Sales Count
-                </p>
-
-                <h2 className="text-3xl font-bold mt-2">
-                  {sales.length}
-                </h2>
-              </div>
-
-              <div className="bg-white/20 p-3 rounded-2xl">
-                <ShoppingCart />
-              </div>
-            </div>
-          </div>
-
-          {/* BEST SELLER */}
-
-          <div className="bg-gradient-to-br from-orange-500 to-red-600 rounded-3xl p-6 text-white shadow-lg">
-
-            <div className="flex items-center justify-between">
-
-              <div>
-
-                <p className="text-sm opacity-80">
-                  Best Seller
-                </p>
-
-                <h2 className="text-2xl font-bold mt-2">
-
-                  {bestSeller
-                    ? bestSeller[0]
-                    : "No sales"}
-                </h2>
-              </div>
-
-              <div className="bg-white/20 p-3 rounded-2xl">
-                🔥
-              </div>
-            </div>
-          </div>
-
-          {/* GROWTH */}
-
-          <div className="bg-gradient-to-br from-cyan-500 to-blue-700 rounded-3xl p-6 text-white shadow-lg">
-
-            <div className="flex items-center justify-between">
-
-              <div>
-
-                <p className="text-sm opacity-80">
-                  Monthly Growth
-                </p>
-
-                <h2 className="text-3xl font-bold mt-2">
-                  {revenueGrowth.toFixed(1)}%
-                </h2>
-
-                <p className="text-sm opacity-80 mt-2">
-                  Revenue vs last month
-                </p>
-              </div>
-
-              <div className="bg-white/20 p-3 rounded-2xl">
-                📊
-              </div>
-            </div>
-          </div>
+          <p className="text-gray-500 dark:text-slate-400 text-sm mt-1">
+            Expense tracking and breakdown
+          </p>
         </div>
 
-        {/* TODAY'S ACTIVITY */}
+        <CategoryChart />
+      </div>
 
-        <div className="bg-white dark:bg-slate-900 rounded-3xl border border-gray-200 dark:border-slate-800 p-6 shadow-sm">
+      <div className="bg-white dark:bg-slate-900 rounded-3xl border border-gray-200 dark:border-slate-800 p-6 shadow-sm">
 
-          <div className="mb-6">
+        <div className="mb-6">
 
-            <h2 className="text-2xl font-bold text-gray-800 dark:text-white">
-              Today's Activity
+          <h2 className="text-xl font-bold text-black dark:text-white">
+            Profit Tracking
+          </h2>
+
+          <p className="text-gray-500 dark:text-slate-400 text-sm mt-1">
+            Monitor business growth
+          </p>
+        </div>
+
+        <ProfitChart
+          data={sales}
+        />
+      </div>
+
+      {/* BEST SELLER */}
+
+      <div className="bg-gradient-to-br from-orange-500 to-red-600 rounded-3xl p-6 text-white shadow-lg">
+
+        <p className="text-sm opacity-80">
+          Best Seller
+        </p>
+
+        <h2 className="text-3xl font-bold mt-2">
+          {bestSeller
+            ? bestSeller[0]
+            : "No sales"}
+        </h2>
+
+        <p className="opacity-80 mt-3">
+          Top performing product
+        </p>
+      </div>
+    </div>
+
+    {/* LOW STOCK */}
+
+    {lowStockProducts.length >
+      0 && (
+
+      <div className="bg-red-50 dark:bg-red-950/20 border border-red-200 dark:border-red-900 rounded-3xl p-6">
+
+        <div className="flex items-center justify-between">
+
+          <div>
+
+            <h2 className="text-2xl font-bold text-red-600">
+              Low Stock Alert
             </h2>
 
-            <p className="text-gray-500 dark:text-slate-400 mt-1">
-              See how your business performed today
+            <p className="text-red-500 mt-1">
+              {lowStockProducts.length}{" "}
+              products need restocking
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-
-            <div className="rounded-3xl bg-blue-50 dark:bg-slate-800 p-6">
-
-              <p className="text-sm text-blue-600">
-                Today's Revenue
-              </p>
-
-              <h2 className="text-3xl font-bold text-gray-800 dark:text-white mt-2">
-
-                TZS{" "}
-                {todayRevenue.toLocaleString()}
-              </h2>
-            </div>
-
-            <div className="rounded-3xl bg-green-50 dark:bg-slate-800 p-6">
-
-              <p className="text-sm text-green-600">
-                Today's Profit
-              </p>
-
-              <h2 className="text-3xl font-bold text-gray-800 dark:text-white mt-2">
-
-                TZS{" "}
-                {todayProfit.toLocaleString()}
-              </h2>
-            </div>
-
-            <div className="rounded-3xl bg-purple-50 dark:bg-slate-800 p-6">
-
-              <p className="text-sm text-purple-600">
-                Today's Sales
-              </p>
-
-              <h2 className="text-3xl font-bold text-gray-800 dark:text-white mt-2">
-
-                {todaySalesCount}
-              </h2>
-            </div>
+          <div className="text-5xl">
+            ⚠️
           </div>
         </div>
 
-        {/* CHARTS */}
+        <div className="mt-6 grid gap-3">
 
-        <div className="grid grid-cols-1 xl:grid-cols-2 gap-6">
+          {lowStockProducts.map(
+            (
+              product
+            ) => (
 
-          {/* REVENUE CHART */}
+              <div
+                key={
+                  product.id
+                }
+                className="bg-white dark:bg-slate-900 rounded-2xl p-4 flex items-center justify-between"
+              >
 
-          <div className="bg-white dark:bg-slate-900 rounded-3xl p-6 shadow-sm border border-gray-200 dark:border-slate-800">
+                <div>
 
-            <div className="mb-6">
-
-              <h2 className="text-xl font-bold text-gray-800 dark:text-white">
-                Revenue Overview
-              </h2>
-
-              <p className="text-sm text-gray-500 dark:text-slate-400">
-                Sales performance analytics
-              </p>
-            </div>
-
-            <AnalyticsChart />
-          </div>
-
-          {/* EXPENSE CHART */}
-
-          <div className="bg-white dark:bg-slate-900 rounded-3xl p-6 shadow-sm border border-gray-200 dark:border-slate-800">
-
-            <div className="mb-6">
-
-              <h2 className="text-xl font-bold text-gray-800 dark:text-white">
-                Expense Analytics
-              </h2>
-
-              <p className="text-sm text-gray-500 dark:text-slate-400">
-                Business spending categories
-              </p>
-            </div>
-
-            <CategoryChart />
-          </div>
-
-          {/* PROFIT CHART */}
-
-          <div className="bg-white dark:bg-slate-900 rounded-3xl p-6 shadow-sm border border-gray-200 dark:border-slate-800 xl:col-span-2">
-
-            <div className="mb-6">
-
-              <h2 className="text-xl font-bold text-gray-800 dark:text-white">
-                Profit Tracking
-              </h2>
-
-              <p className="text-sm text-gray-500 dark:text-slate-400">
-                Monitor business profitability
-              </p>
-            </div>
-
-            <ProfitChart
-              data={sales}
-            />
-          </div>
-        </div>
-
-        {/* LOW STOCK */}
-
-        {lowStockProducts.length >
-          0 && (
-
-          <div className="bg-red-50 dark:bg-red-950/20 border border-red-200 dark:border-red-900 rounded-3xl p-6">
-
-            <div className="flex items-center justify-between">
-
-              <div>
-
-                <h2 className="text-2xl font-bold text-red-600">
-                  Low Stock Alert
-                </h2>
-
-                <p className="text-red-500 mt-1">
-                  {
-                    lowStockProducts.length
-                  }{" "}
-                  products are running low
-                </p>
-              </div>
-
-              <div className="text-5xl">
-                ⚠️
-              </div>
-            </div>
-
-            <div className="mt-6 grid gap-3">
-
-              {lowStockProducts.map(
-                (product) => (
-
-                  <div
-                    key={
-                      product.id
+                  <h3 className="font-bold text-black dark:text-white">
+                    {
+                      product.name
                     }
-                    className="bg-white dark:bg-slate-900 rounded-2xl p-4 flex items-center justify-between border border-red-100 dark:border-slate-800"
-                  >
+                  </h3>
 
-                    <div>
+                  <p className="text-sm text-gray-500 dark:text-slate-400">
+                    Only{" "}
+                    {
+                      product.stock
+                    }{" "}
+                    left
+                  </p>
+                </div>
 
-                      <h3 className="font-bold text-gray-800 dark:text-white">
-                        {product.name}
-                      </h3>
-
-                      <p className="text-sm text-gray-500 dark:text-slate-400">
-                        Critical inventory level:{" "}
-                        {
-                          product.stock
-                        }{" "}
-                        remaining
-                      </p>
-                    </div>
-
-                    <div className="bg-red-100 dark:bg-red-900/40 text-red-600 px-3 py-1 rounded-full text-sm font-semibold">
-
-                      Restock
-                    </div>
-                  </div>
-                )
-              )}
-            </div>
-          </div>
-        )}
+                <div className="bg-red-100 text-red-600 px-3 py-1 rounded-full text-sm font-semibold">
+                  Restock
+                </div>
+              </div>
+            )
+          )}
+        </div>
       </div>
-    </DashboardLayout>
-  );
+    )}
+  </div>
+</DashboardLayout>
+```
+
+);
 }
