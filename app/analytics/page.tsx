@@ -464,6 +464,8 @@ export default function AnalyticsPage() {
               <h1 className="font-bold text-3x1 text-black">
                 TODAY'S ACTIVITY
               </h1>
+
+              <p className="text-gray-500 mt-1">See how you have business has done today!</p>
             </div>
             <div className="bg-white rounded-3xl border p-6 shadow-sm">
 
