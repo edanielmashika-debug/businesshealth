@@ -1,26 +1,18 @@
 "use client";
 
 import {
-  PieChart,
-  Pie,
-  Cell,
   ResponsiveContainer,
+  BarChart,
+  Bar,
+  CartesianGrid,
+  XAxis,
+  YAxis,
   Tooltip,
-  Legend,
 } from "recharts";
 
 import {
   useExpenseStore,
 } from "@/store/expense-store";
-
-const COLORS = [
-  "#3b82f6",
-  "#06b6d4",
-  "#8b5cf6",
-  "#10b981",
-  "#f97316",
-  "#ef4444",
-];
 
 export default function CategoryChart() {
 
@@ -59,9 +51,9 @@ export default function CategoryChart() {
     Object.entries(
       categoryTotals
     ).map(
-      ([name, value]) => ({
+      ([name, amount]) => ({
         name,
-        value,
+        amount,
       })
     );
 
@@ -74,40 +66,37 @@ export default function CategoryChart() {
         height="100%"
       >
 
-        <PieChart>
+        <BarChart
+          data={data}
+        >
 
-          <Pie
-            data={data}
-            cx="50%"
-            cy="50%"
-            outerRadius={110}
-            dataKey="value"
-            label
-          >
+          <CartesianGrid
+            strokeDasharray="3 3"
+            stroke="#e5e7eb"
+          />
 
-            {data.map(
-              (
-                entry,
-                index
-              ) => (
+          <XAxis
+            dataKey="name"
+            stroke="#94a3b8"
+          />
 
-                <Cell
-                  key={`cell-${index}`}
-                  fill={
-                    COLORS[
-                    index %
-                    COLORS.length
-                    ]
-                  }
-                />
-              )
-            )}
-          </Pie>
+          <YAxis
+            stroke="#94a3b8"
+          />
 
           <Tooltip />
 
-          <Legend />
-        </PieChart>
+          <Bar
+            dataKey="amount"
+            fill="#ef4444"
+            radius={[
+              10,
+              10,
+              0,
+              0,
+            ]}
+          />
+        </BarChart>
       </ResponsiveContainer>
     </div>
   );
