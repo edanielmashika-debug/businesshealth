@@ -2,15 +2,14 @@
 
 import {
   useEffect,
+  useMemo,
   useState,
 } from "react";
 
 import DashboardLayout from "../../components/dashboard-layout";
 
 import AnalyticsChart from "../../components/analytics-chart";
-
 import CategoryChart from "../../components/category-chart";
-
 import ProfitChart from "../../components/profit-chart";
 
 import {
@@ -29,6 +28,7 @@ import {
   DollarSign,
   TrendingUp,
   ShoppingCart,
+  Wallet,
 } from "lucide-react";
 
 import {
@@ -99,9 +99,27 @@ export default function AnalyticsPage() {
         state.transactions
     );
 
-  /* =========================
-      TRANSACTION ANALYTICS
-  ========================= */
+  /* =================================
+      SALES DATA
+  ================================= */
+
+  const salesRevenue =
+    sales.reduce(
+      (sum, sale) =>
+        sum + sale.total,
+      0
+    );
+
+  const salesProfit =
+    sales.reduce(
+      (sum, sale) =>
+        sum + sale.profit,
+      0
+    );
+
+  /* =================================
+      TRANSACTION DATA
+  ================================= */
 
   const revenueTransactions =
     transactions.filter(
@@ -117,7 +135,7 @@ export default function AnalyticsPage() {
         "expense"
     );
 
-  const totalRevenue =
+  const transactionRevenue =
     revenueTransactions.reduce(
       (sum, transaction) =>
         sum +
@@ -133,6 +151,10 @@ export default function AnalyticsPage() {
       0
     );
 
+  /* =================================
+      MANUAL EXPENSES
+  ================================= */
+
   const manualExpenses =
     expenses.reduce(
       (sum, expense) =>
@@ -141,22 +163,38 @@ export default function AnalyticsPage() {
       0
     );
 
+  /* =================================
+      FINAL BUSINESS NUMBERS
+  ================================= */
+
+  const totalRevenue =
+    salesRevenue +
+    transactionRevenue;
+
   const totalExpenses =
-    transactionExpenses +
-    manualExpenses;
+    manualExpenses +
+    transactionExpenses;
 
   const netProfit =
     totalRevenue -
     totalExpenses;
 
-  /* =========================
-      TODAY ANALYTICS
-  ========================= */
+  /* =================================
+      TODAY STATS
+  ================================= */
 
   const today =
     new Date()
       .toISOString()
       .split("T")[0];
+
+  const todaySales =
+    sales.filter(
+      (sale) =>
+        sale.createdAt.startsWith(
+          today
+        )
+    );
 
   const todayTransactions =
     transactions.filter(
@@ -167,6 +205,11 @@ export default function AnalyticsPage() {
     );
 
   const todayRevenue =
+    todaySales.reduce(
+      (sum, sale) =>
+        sum + sale.total,
+      0
+    ) +
     todayTransactions
       .filter(
         (transaction) =>
@@ -181,6 +224,19 @@ export default function AnalyticsPage() {
       );
 
   const todayExpenses =
+    expenses
+      .filter(
+        (expense) =>
+          expense.createdAt.startsWith(
+            today
+          )
+      )
+      .reduce(
+        (sum, expense) =>
+          sum +
+          expense.amount,
+        0
+      ) +
     todayTransactions
       .filter(
         (transaction) =>
@@ -198,12 +254,170 @@ export default function AnalyticsPage() {
     todayRevenue -
     todayExpenses;
 
-  const todaySalesCount =
-    todayTransactions.length;
+  /* =================================
+      MONTHLY GROWTH
+  ================================= */
 
-  /* =========================
+  const monthlyGrowth =
+    useMemo(() => {
+
+      const now =
+        new Date();
+
+      const currentMonth =
+        now.getMonth();
+
+      const currentYear =
+        now.getFullYear();
+
+      const lastMonth =
+        currentMonth === 0
+          ? 11
+          : currentMonth - 1;
+
+      const lastMonthYear =
+        currentMonth === 0
+          ? currentYear - 1
+          : currentYear;
+
+      const currentRevenue =
+        transactions
+          .filter(
+            (transaction) => {
+
+              const date =
+                new Date(
+                  transaction.createdAt
+                );
+
+              return (
+                transaction.type ===
+                  "revenue" &&
+                date.getMonth() ===
+                  currentMonth &&
+                date.getFullYear() ===
+                  currentYear
+              );
+            }
+          )
+          .reduce(
+            (
+              sum,
+              transaction
+            ) =>
+              sum +
+              transaction.amount,
+            0
+          ) +
+        sales
+          .filter(
+            (sale) => {
+
+              const date =
+                new Date(
+                  sale.createdAt
+                );
+
+              return (
+                date.getMonth() ===
+                  currentMonth &&
+                date.getFullYear() ===
+                  currentYear
+              );
+            }
+          )
+          .reduce(
+            (sum, sale) =>
+              sum +
+              sale.total,
+            0
+          );
+
+      const previousRevenue =
+        transactions
+          .filter(
+            (transaction) => {
+
+              const date =
+                new Date(
+                  transaction.createdAt
+                );
+
+              return (
+                transaction.type ===
+                  "revenue" &&
+                date.getMonth() ===
+                  lastMonth &&
+                date.getFullYear() ===
+                  lastMonthYear
+              );
+            }
+          )
+          .reduce(
+            (
+              sum,
+              transaction
+            ) =>
+              sum +
+              transaction.amount,
+            0
+          ) +
+        sales
+          .filter(
+            (sale) => {
+
+              const date =
+                new Date(
+                  sale.createdAt
+                );
+
+              return (
+                date.getMonth() ===
+                  lastMonth &&
+                date.getFullYear() ===
+                  lastMonthYear
+              );
+            }
+          )
+          .reduce(
+            (sum, sale) =>
+              sum +
+              sale.total,
+            0
+          );
+
+      if (
+        previousRevenue === 0
+      ) {
+        return 100;
+      }
+
+      return (
+        (
+          currentRevenue -
+          previousRevenue
+        ) /
+        previousRevenue
+      ) * 100;
+
+    }, [
+      transactions,
+      sales,
+    ]);
+
+  /* =================================
+      LOW STOCK
+  ================================= */
+
+  const lowStockProducts =
+    products.filter(
+      (product) =>
+        product.stock <= 5
+    );
+
+  /* =================================
       BEST SELLER
-  ========================= */
+  ================================= */
 
   const productCount:
     Record<
@@ -241,102 +455,6 @@ export default function AnalyticsPage() {
         b[1] - a[1]
     )[0];
 
-  /* =========================
-      MONTHLY GROWTH
-  ========================= */
-
-  const now =
-    new Date();
-
-  const currentMonth =
-    now.getMonth();
-
-  const currentYear =
-    now.getFullYear();
-
-  const currentMonthTransactions =
-    revenueTransactions.filter(
-      (transaction) => {
-
-        const date =
-          new Date(
-            transaction.createdAt
-          );
-
-        return (
-          date.getMonth() ===
-            currentMonth &&
-          date.getFullYear() ===
-            currentYear
-        );
-      }
-    );
-
-  const lastMonthTransactions =
-    revenueTransactions.filter(
-      (transaction) => {
-
-        const date =
-          new Date(
-            transaction.createdAt
-          );
-
-        const lastMonth =
-          currentMonth === 0
-            ? 11
-            : currentMonth - 1;
-
-        const lastMonthYear =
-          currentMonth === 0
-            ? currentYear - 1
-            : currentYear;
-
-        return (
-          date.getMonth() ===
-            lastMonth &&
-          date.getFullYear() ===
-            lastMonthYear
-        );
-      }
-    );
-
-  const currentRevenue =
-    currentMonthTransactions.reduce(
-      (sum, transaction) =>
-        sum +
-        transaction.amount,
-      0
-    );
-
-  const lastRevenue =
-    lastMonthTransactions.reduce(
-      (sum, transaction) =>
-        sum +
-        transaction.amount,
-      0
-    );
-
-  const revenueGrowth =
-    lastRevenue === 0
-      ? 100
-      : (
-          (
-            currentRevenue -
-            lastRevenue
-          ) /
-          lastRevenue
-        ) * 100;
-
-  /* =========================
-      LOW STOCK
-  ========================= */
-
-  const lowStockProducts =
-    products.filter(
-      (product) =>
-        product.stock <= 5
-    );
-
   return (
 
     <DashboardLayout>
@@ -352,7 +470,7 @@ export default function AnalyticsPage() {
           </h1>
 
           <p className="text-gray-500 dark:text-slate-400 mt-1">
-            Business insights and trends
+            Full business money flow overview
           </p>
 
         </div>
@@ -363,7 +481,7 @@ export default function AnalyticsPage() {
 
           {/* REVENUE */}
 
-          <div className="bg-gradient-to-br from-blue-500 to-blue-700 rounded-3xl p-6 text-white shadow-lg">
+          <div className="bg-gradient-to-br from-blue-500 to-cyan-600 rounded-3xl p-6 text-white shadow-lg">
 
             <div className="flex items-center justify-between">
 
@@ -399,7 +517,7 @@ export default function AnalyticsPage() {
               <div>
 
                 <p className="text-sm opacity-80">
-                  Expenses
+                  Total Expenses
                 </p>
 
                 <h2 className="text-3xl font-bold mt-2">
@@ -417,7 +535,7 @@ export default function AnalyticsPage() {
 
           </div>
 
-          {/* NET PROFIT */}
+          {/* PROFIT */}
 
           <div className="bg-gradient-to-br from-green-500 to-emerald-700 rounded-3xl p-6 text-white shadow-lg">
 
@@ -446,7 +564,7 @@ export default function AnalyticsPage() {
 
           </div>
 
-          {/* TRANSACTIONS */}
+          {/* SALES */}
 
           <div className="bg-gradient-to-br from-purple-500 to-violet-700 rounded-3xl p-6 text-white shadow-lg">
 
@@ -455,11 +573,11 @@ export default function AnalyticsPage() {
               <div>
 
                 <p className="text-sm opacity-80">
-                  Transactions
+                  Total Sales
                 </p>
 
                 <h2 className="text-3xl font-bold mt-2">
-                  {transactions.length}
+                  {sales.length}
                 </h2>
 
               </div>
@@ -476,39 +594,9 @@ export default function AnalyticsPage() {
 
         </div>
 
-        {/* GROWTH */}
+        {/* SECOND ROW */}
 
-        <div className="bg-gradient-to-br from-cyan-500 to-blue-700 rounded-3xl p-6 text-white shadow-lg">
-
-          <div className="flex items-center justify-between">
-
-            <div>
-
-              <p className="text-sm opacity-80">
-                Monthly Growth
-              </p>
-
-              <h2 className="text-4xl font-bold mt-2">
-                {revenueGrowth.toFixed(1)}%
-              </h2>
-
-              <p className="text-sm opacity-80 mt-2">
-                Revenue vs last month
-              </p>
-
-            </div>
-
-            <div className="bg-white/20 p-4 rounded-2xl text-4xl">
-              📈
-            </div>
-
-          </div>
-
-        </div>
-
-        {/* TODAY */}
-
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
 
           <div className="bg-white dark:bg-slate-900 rounded-3xl border dark:border-slate-800 p-6 shadow-sm">
 
@@ -519,6 +607,19 @@ export default function AnalyticsPage() {
             <h2 className="text-3xl font-bold text-black dark:text-white mt-2">
               TZS{" "}
               {todayRevenue.toLocaleString()}
+            </h2>
+
+          </div>
+
+          <div className="bg-white dark:bg-slate-900 rounded-3xl border dark:border-slate-800 p-6 shadow-sm">
+
+            <p className="text-sm text-red-500">
+              Today's Expenses
+            </p>
+
+            <h2 className="text-3xl font-bold text-black dark:text-white mt-2">
+              TZS{" "}
+              {todayExpenses.toLocaleString()}
             </h2>
 
           </div>
@@ -536,15 +637,33 @@ export default function AnalyticsPage() {
 
           </div>
 
-          <div className="bg-white dark:bg-slate-900 rounded-3xl border dark:border-slate-800 p-6 shadow-sm">
+        </div>
 
-            <p className="text-sm text-purple-600">
-              Today's Transactions
-            </p>
+        {/* MONTHLY GROWTH */}
 
-            <h2 className="text-3xl font-bold text-black dark:text-white mt-2">
-              {todaySalesCount}
-            </h2>
+        <div className="bg-gradient-to-r from-cyan-500 to-blue-700 rounded-3xl p-6 text-white shadow-lg">
+
+          <div className="flex items-center justify-between">
+
+            <div>
+
+              <p className="text-sm opacity-80">
+                Monthly Revenue Growth
+              </p>
+
+              <h2 className="text-5xl font-bold mt-3">
+                {monthlyGrowth.toFixed(
+                  1
+                )}%
+              </h2>
+
+            </div>
+
+            <div className="bg-white/20 p-5 rounded-3xl">
+
+              <Wallet size={40} />
+
+            </div>
 
           </div>
 
@@ -563,7 +682,7 @@ export default function AnalyticsPage() {
               </h2>
 
               <p className="text-sm text-gray-500 dark:text-slate-400">
-                Sales performance analytics
+                Combined sales and transaction revenue
               </p>
 
             </div>
@@ -581,7 +700,7 @@ export default function AnalyticsPage() {
               </h2>
 
               <p className="text-sm text-gray-500 dark:text-slate-400">
-                Most costly expenditures
+                Track where money is going
               </p>
 
             </div>
@@ -599,11 +718,11 @@ export default function AnalyticsPage() {
           <div className="mb-6">
 
             <h2 className="text-xl font-bold text-gray-800 dark:text-white">
-              Profit Tracking
+              Profit Performance
             </h2>
 
             <p className="text-sm text-gray-500 dark:text-slate-400">
-              Check how your business is growing
+              Business growth analytics
             </p>
 
           </div>
@@ -611,6 +730,39 @@ export default function AnalyticsPage() {
           <ProfitChart data={sales} />
 
         </div>
+
+        {/* BEST SELLER */}
+
+        {bestSeller && (
+
+          <div className="bg-gradient-to-r from-amber-400 to-orange-500 rounded-3xl p-6 text-white shadow-lg">
+
+            <div className="flex items-center justify-between">
+
+              <div>
+
+                <p className="text-sm opacity-80">
+                  Best Selling Product
+                </p>
+
+                <h2 className="text-4xl font-bold mt-2">
+                  {bestSeller[0]}
+                </h2>
+
+                <p className="mt-2 opacity-90">
+                  {bestSeller[1]} items sold
+                </p>
+
+              </div>
+
+              <div className="text-6xl">
+                🏆
+              </div>
+
+            </div>
+
+          </div>
+        )}
 
         {/* LOW STOCK */}
 
@@ -628,7 +780,7 @@ export default function AnalyticsPage() {
                 </h2>
 
                 <p className="text-red-500 mt-1">
-                  {lowStockProducts.length} products are running low
+                  {lowStockProducts.length} products need restocking
                 </p>
 
               </div>
@@ -656,7 +808,7 @@ export default function AnalyticsPage() {
                       </h3>
 
                       <p className="text-sm text-gray-500 dark:text-slate-400">
-                        Only {product.stock} items remaining
+                        Only {product.stock} items left
                       </p>
 
                     </div>
