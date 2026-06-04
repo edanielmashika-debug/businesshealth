@@ -49,7 +49,8 @@ export default function AddTransactionForm() {
 
     const newTransaction = {
 
-      id: crypto.randomUUID(),
+      id:
+        crypto.randomUUID(),
 
       title,
 
@@ -60,28 +61,41 @@ export default function AddTransactionForm() {
 
       type,
 
-      source: "manual" as const,
+      source:
+        "manual" as const,
 
       createdAt:
         new Date().toISOString(),
     };
 
+    /*
+      LOCAL STORE
+    */
+
     addTransaction(
       newTransaction
     );
+
+    /*
+      SUPABASE SYNC
+    */
 
     await createTransaction(
       newTransaction
     );
 
     /*
-      AUTO SYNC TO EXPENSES
+      AUTO SYNC TO EXPENSE STORE
     */
 
-    if (type === "expense") {
+    if (
+      type === "expense"
+    ) {
 
       addExpense({
-        id: crypto.randomUUID(),
+
+        id:
+          crypto.randomUUID(),
 
         title,
 
@@ -95,13 +109,23 @@ export default function AddTransactionForm() {
       });
     }
 
+    /*
+      RESET FORM
+    */
+
     setTitle("");
+
     setAmount("");
+
     setCategory("");
-    setType("revenue");
+
+    setType(
+      "revenue"
+    );
   }
 
   return (
+
     <form
       onSubmit={handleSubmit}
       className="bg-white dark:bg-slate-900 rounded-3xl border border-gray-200 dark:border-slate-800 p-6 shadow-sm space-y-5"
@@ -118,6 +142,7 @@ export default function AddTransactionForm() {
         <p className="text-sm text-gray-500 dark:text-slate-400 mt-1">
           Record revenue and expenses
         </p>
+
       </div>
 
       {/* TITLE */}
@@ -139,6 +164,7 @@ export default function AddTransactionForm() {
           placeholder="Shop Sale"
           className="w-full mt-2 rounded-2xl border border-gray-200 dark:border-slate-700 bg-gray-50 dark:bg-slate-800 px-4 py-4 outline-none focus:ring-2 focus:ring-blue-500 text-black dark:text-white placeholder:text-gray-400"
         />
+
       </div>
 
       {/* AMOUNT */}
@@ -160,6 +186,7 @@ export default function AddTransactionForm() {
           placeholder="50000"
           className="w-full mt-2 rounded-2xl border border-gray-200 dark:border-slate-700 bg-gray-50 dark:bg-slate-800 px-4 py-4 outline-none focus:ring-2 focus:ring-blue-500 text-black dark:text-white placeholder:text-gray-400"
         />
+
       </div>
 
       {/* CATEGORY */}
@@ -181,6 +208,7 @@ export default function AddTransactionForm() {
           placeholder="Sales"
           className="w-full mt-2 rounded-2xl border border-gray-200 dark:border-slate-700 bg-gray-50 dark:bg-slate-800 px-4 py-4 outline-none focus:ring-2 focus:ring-blue-500 text-black dark:text-white placeholder:text-gray-400"
         />
+
       </div>
 
       {/* TYPE */}
@@ -211,7 +239,9 @@ export default function AddTransactionForm() {
           <option value="expense">
             Expense
           </option>
+
         </select>
+
       </div>
 
       {/* BUTTON */}
@@ -222,6 +252,7 @@ export default function AddTransactionForm() {
       >
         Save Transaction
       </button>
+
     </form>
   );
 }
