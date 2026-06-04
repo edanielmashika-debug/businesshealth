@@ -93,7 +93,7 @@ export default function ProfilePage() {
 
     const { error } =
       await supabase.storage
-        .from("logos")
+        .from("profiles")
         .upload(
           fileName,
           file,
