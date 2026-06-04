@@ -27,7 +27,7 @@ import {
 } from "lucide-react";
 
 import {
-    useState,useEffect
+    useState, useEffect
 } from "react";
 
 export default function DashboardLayout({
@@ -98,50 +98,49 @@ export default function DashboardLayout({
     ];
 
 
-const [logoUrl, setLogoUrl] =
-  useState("");
+    const [logoUrl, setLogoUrl] =
+        useState("");
 
-const [
-  businessName,
-  setBusinessName,
-] = useState("");
 
-useEffect(() => {
 
-  async function loadProfile() {
+    useEffect(() => {
 
-    const {
-      data: { user },
-    } =
-      await supabase.auth.getUser();
+        async function loadProfile() {
 
-    if (!user) return;
+            const {
+                data: { user },
+            } =
+                await supabase.auth.getUser();
 
-    const { data } =
-      await supabase
-        .from("profiles")
-        .select("*")
-        .eq(
-          "id",
-          user.id
-        )
-        .single();
+            if (!user) return;
 
-    if (data) {
+            const { data } =
+                await supabase
+                    .from("profiles")
+                    .select("*")
+                    .eq(
+                        "id",
+                        user.id
+                    )
+                    .single();
 
-      setLogoUrl(
-        data.logo_url || ""
-      );
+            if (data) {
 
-      setBusinessName(
-        data.business_name || ""
-      );
-    }
-  }
+                setLogoUrl(
+                    data.logo_url || ""
+                );
 
-  loadProfile();
+                setBusinessName(
+                    data.business_name || ""
+                );
+            }
+        }
 
-}, []);
+        loadProfile();
+
+    }, []);
+
+    const [businessName, setBusinessName,] = useState("");
 
 
 
@@ -273,9 +272,12 @@ ${pathname === link.href
                             </Link>
 
                             <div>
-                                <div className="font-semibold">
-                                    Emmanuel
+
+                                <div className="font-semibold text-gray-800 dark:text-white">
+                                    {businessName || "My Business"}
                                 </div>
+
+
 
                                 <div className="text-sm text-gray-500">
                                     Admin
@@ -322,8 +324,26 @@ ${pathname === link.href
 
                         <div className="flex items-center gap-3">
                             <Link href="/profile">
-                                <div className="w-10 h-10 rounded-full bg-blue-600 text-white flex items-center justify-center font-bold">
-                                    ED
+                                <div className="w-12 h-12 rounded-full overflow-hidden bg-blue-600 flex items-center justify-center">
+
+                                    {logoUrl ? (
+
+                                        <img
+                                            src={logoUrl}
+                                            alt="Profile"
+                                            className="w-full h-full object-cover"
+                                        />
+
+                                    ) : (
+
+                                        <span className="text-white font-bold">
+                                            {businessName
+                                                ?.charAt(0)
+                                                ?.toUpperCase() || "B"}
+                                        </span>
+
+                                    )}
+
                                 </div>
                             </Link>
 
