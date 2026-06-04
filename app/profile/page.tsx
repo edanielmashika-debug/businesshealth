@@ -1,38 +1,76 @@
-
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
+
+import { useRouter } from "next/navigation";
 
 import DashboardLayout from "../../components/dashboard-layout";
 
+import { supabase } from "../../lib/supabase";
+
 import {
   Camera,
-  Mail,
-  Lock,
   LogOut,
   Trash2,
-  User,
-  Building2,
+  Save,
 } from "lucide-react";
 
 export default function ProfilePage() {
 
-  const [businessName, setBusinessName] =
-    useState("Mashika Store");
+  const router =
+    useRouter();
+
+  const [loading, setLoading] =
+    useState(false);
 
   const [email, setEmail] =
-    useState("business@email.com");
-
-  const [password, setPassword] =
     useState("");
 
-  const [confirmPassword, setConfirmPassword] =
+  const [
+    businessName,
+    setBusinessName,
+  ] = useState("");
+
+  const [logoUrl, setLogoUrl] =
     useState("");
 
-  const [imagePreview, setImagePreview] =
-    useState<string | null>(null);
+  useEffect(() => {
 
-  function handleImageChange(
+    async function loadProfile() {
+
+      const {
+        data: { user },
+      } =
+        await supabase.auth.getUser();
+
+      if (!user) return;
+
+      setEmail(user.email || "");
+
+      const { data } =
+        await supabase
+          .from("profiles")
+          .select("*")
+          .eq("id", user.id)
+          .single();
+
+      if (data) {
+
+        setBusinessName(
+          data.business_name || ""
+        );
+
+        setLogoUrl(
+          data.logo_url || ""
+        );
+      }
+    }
+
+    loadProfile();
+
+  }, []);
+
+  async function handleUpload(
     e: React.ChangeEvent<HTMLInputElement>
   ) {
 
@@ -41,78 +79,122 @@ export default function ProfilePage() {
 
     if (!file) return;
 
-    const imageUrl =
-      URL.createObjectURL(file);
+    setLoading(true);
 
-    setImagePreview(imageUrl);
-  }
+    const {
+      data: { user },
+    } =
+      await supabase.auth.getUser();
 
-  async function handleSaveProfile() {
+    if (!user) return;
 
-    // TODO:
-    // connect to supabase later
+    const fileName =
+      `${user.id}-${Date.now()}`;
 
-    alert("Profile updated");
-  }
+    const { error } =
+      await supabase.storage
+        .from("logos")
+        .upload(
+          fileName,
+          file,
+          {
+            upsert: true,
+          }
+        );
 
-  async function handlePasswordChange() {
+    if (error) {
 
-    if (
-      !password ||
-      !confirmPassword
-    ) {
-      alert("Fill all fields");
+      console.log(error);
+
+      setLoading(false);
+
       return;
     }
 
-    if (
-      password !==
-      confirmPassword
-    ) {
-      alert(
-        "Passwords do not match"
+    const {
+      data: publicUrlData,
+    } = supabase.storage
+      .from("profiles")
+      .getPublicUrl(
+        fileName
       );
 
-      return;
-    }
+    const publicUrl =
+      publicUrlData.publicUrl;
 
-    // TODO:
-    // supabase password update
+    setLogoUrl(publicUrl);
 
-    alert("Password updated");
+    await supabase
+      .from("profiles")
+      .upsert({
+        id: user.id,
 
-    setPassword("");
-    setConfirmPassword("");
+        business_name:
+          businessName,
+
+        logo_url:
+          publicUrl,
+      });
+
+    setLoading(false);
+  }
+
+  async function handleSave() {
+
+    setLoading(true);
+
+    const {
+      data: { user },
+    } =
+      await supabase.auth.getUser();
+
+    if (!user) return;
+
+    await supabase
+      .from("profiles")
+      .upsert({
+        id: user.id,
+
+        business_name:
+          businessName,
+
+        logo_url:
+          logoUrl,
+      });
+
+    setLoading(false);
+
+    alert(
+      "Profile updated"
+    );
   }
 
   async function handleLogout() {
 
-    // TODO:
-    // await supabase.auth.signOut()
+    await supabase.auth.signOut();
 
-    alert("Logged out");
+    router.push("/login");
   }
 
   async function handleDeleteAccount() {
 
     const confirmed =
       confirm(
-        "Are you sure you want to delete your account?"
+        "Delete your account permanently?"
       );
 
     if (!confirmed) return;
 
-    // TODO:
-    // delete account logic
-
-    alert("Account deleted");
+    alert(
+      "You can later connect this to edge functions/admin delete logic."
+    );
   }
 
   return (
 
     <DashboardLayout>
 
-      <div className="space-y-8">
+      <div className="max-w-3xl mx-auto space-y-8">
 
         {/* HEADER */}
 
@@ -130,92 +212,60 @@ export default function ProfilePage() {
 
         {/* PROFILE CARD */}
 
-        <div className="bg-white dark:bg-slate-900 rounded-3xl border border-gray-200 dark:border-slate-800 p-8 shadow-sm">
+        <div className="bg-white dark:bg-slate-900 border border-gray-200 dark:border-slate-800 rounded-3xl p-8 shadow-sm">
 
-          <div className="flex flex-col items-center text-center">
+          <div className="flex flex-col items-center">
+
+            {/* LOGO */}
 
             <div className="relative">
 
-              <div className="w-32 h-32 rounded-full overflow-hidden border-4 border-blue-500 bg-gray-100 dark:bg-slate-800 flex items-center justify-center">
+              <div className="w-32 h-32 rounded-full overflow-hidden bg-gradient-to-br from-blue-600 to-cyan-500 flex items-center justify-center">
 
-                {imagePreview ? (
+                {logoUrl ? (
 
                   <img
-                    src={imagePreview}
-                    alt="Profile"
+                    src={logoUrl}
+                    alt="Logo"
                     className="w-full h-full object-cover"
                   />
 
                 ) : (
 
-                  <Building2
-                    size={50}
-                    className="text-gray-400"
-                  />
+                  <span className="text-white text-4xl font-bold">
+                    {businessName
+                      ?.charAt(0)
+                      ?.toUpperCase() || "B"}
+                  </span>
 
                 )}
 
               </div>
 
-              <label className="absolute bottom-0 right-0 bg-blue-600 hover:bg-blue-700 text-white p-3 rounded-full cursor-pointer shadow-lg transition">
+              <label className="absolute bottom-1 right-1 bg-blue-600 hover:bg-blue-700 text-white p-3 rounded-full cursor-pointer transition shadow-lg">
 
                 <Camera size={18} />
 
                 <input
                   type="file"
                   accept="image/*"
-                  onChange={handleImageChange}
-                  className="hidden"
+                  onChange={handleUpload}
+                  hidden
                 />
 
               </label>
 
             </div>
 
-            <h2 className="text-2xl font-bold text-gray-800 dark:text-white mt-5">
-              {businessName}
-            </h2>
+            {/* INFO */}
 
-            <p className="text-gray-500 dark:text-slate-400 mt-1">
-              {email}
-            </p>
+            <div className="w-full mt-8 space-y-5">
 
-          </div>
+              <div>
 
-        </div>
-
-        {/* BUSINESS INFO */}
-
-        <div className="bg-white dark:bg-slate-900 rounded-3xl border border-gray-200 dark:border-slate-800 p-6 shadow-sm">
-
-          <div className="mb-6">
-
-            <h2 className="text-2xl font-bold text-gray-800 dark:text-white">
-              Business Information
-            </h2>
-
-            <p className="text-sm text-gray-500 dark:text-slate-400 mt-1">
-              Update your account details
-            </p>
-
-          </div>
-
-          <div className="space-y-5">
-
-            {/* BUSINESS NAME */}
-
-            <div>
-
-              <label className="text-sm font-medium text-gray-600 dark:text-slate-300 mb-2 block">
-                Business Name
-              </label>
-
-              <div className="relative">
-
-                <User
-                  size={18}
-                  className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400"
-                />
+                <label className="text-sm font-medium text-gray-500 dark:text-slate-400">
+                  Business Name
+                </label>
 
                 <input
                   type="text"
@@ -225,164 +275,71 @@ export default function ProfilePage() {
                       e.target.value
                     )
                   }
-                  className="w-full rounded-2xl border border-gray-200 dark:border-slate-700 bg-gray-50 dark:bg-slate-800 px-12 py-4 outline-none focus:ring-2 focus:ring-blue-500 text-black dark:text-white"
-                  placeholder="Business Name"
+                  placeholder="My Business"
+                  className="w-full mt-2 rounded-2xl border border-gray-200 dark:border-slate-700 bg-gray-50 dark:bg-slate-950 px-5 py-4 outline-none focus:ring-2 focus:ring-blue-500 text-black dark:text-white"
                 />
 
               </div>
 
-            </div>
+              <div>
 
-            {/* EMAIL */}
+                <label className="text-sm font-medium text-gray-500 dark:text-slate-400">
+                  Email Address
+                </label>
 
-            <div>
-
-              <label className="text-sm font-medium text-gray-600 dark:text-slate-300 mb-2 block">
-                Email Address
-              </label>
-
-              <div className="relative">
-
-                <Mail
-                  size={18}
-                  className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400"
-                />
-
-                <input
-                  type="email"
-                  value={email}
-                  onChange={(e) =>
-                    setEmail(
-                      e.target.value
-                    )
-                  }
-                  className="w-full rounded-2xl border border-gray-200 dark:border-slate-700 bg-gray-50 dark:bg-slate-800 px-12 py-4 outline-none focus:ring-2 focus:ring-blue-500 text-black dark:text-white"
-                  placeholder="Email Address"
-                />
+                <div className="w-full mt-2 rounded-2xl border border-gray-200 dark:border-slate-700 bg-gray-100 dark:bg-slate-950 px-5 py-4 text-gray-600 dark:text-slate-300">
+                  {email}
+                </div>
 
               </div>
 
-            </div>
+              {/* SAVE */}
 
-            <button
-              onClick={
-                handleSaveProfile
-              }
-              className="w-full bg-gradient-to-r from-blue-600 to-cyan-500 text-white rounded-2xl py-4 font-semibold shadow-lg hover:scale-[1.01] transition"
-            >
-              Save Changes
-            </button>
+              <button
+                onClick={handleSave}
+                disabled={loading}
+                className="w-full mt-4 bg-gradient-to-r from-blue-600 to-cyan-500 text-white rounded-2xl py-4 font-semibold shadow-lg hover:scale-[1.01] transition flex items-center justify-center gap-2"
+              >
+
+                <Save size={18} />
+
+                {loading
+                  ? "Saving..."
+                  : "Save Changes"}
+
+              </button>
+
+            </div>
 
           </div>
 
         </div>
 
-        {/* PASSWORD */}
+        {/* ACCOUNT ACTIONS */}
 
-        <div className="bg-white dark:bg-slate-900 rounded-3xl border border-gray-200 dark:border-slate-800 p-6 shadow-sm">
-
-          <div className="mb-6">
-
-            <h2 className="text-2xl font-bold text-gray-800 dark:text-white">
-              Security
-            </h2>
-
-            <p className="text-sm text-gray-500 dark:text-slate-400 mt-1">
-              Change your password
-            </p>
-
-          </div>
-
-          <div className="space-y-5">
-
-            <div className="relative">
-
-              <Lock
-                size={18}
-                className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400"
-              />
-
-              <input
-                type="password"
-                value={password}
-                onChange={(e) =>
-                  setPassword(
-                    e.target.value
-                  )
-                }
-                className="w-full rounded-2xl border border-gray-200 dark:border-slate-700 bg-gray-50 dark:bg-slate-800 px-12 py-4 outline-none focus:ring-2 focus:ring-blue-500 text-black dark:text-white"
-                placeholder="New Password"
-              />
-
-            </div>
-
-            <div className="relative">
-
-              <Lock
-                size={18}
-                className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400"
-              />
-
-              <input
-                type="password"
-                value={confirmPassword}
-                onChange={(e) =>
-                  setConfirmPassword(
-                    e.target.value
-                  )
-                }
-                className="w-full rounded-2xl border border-gray-200 dark:border-slate-700 bg-gray-50 dark:bg-slate-800 px-12 py-4 outline-none focus:ring-2 focus:ring-blue-500 text-black dark:text-white"
-                placeholder="Confirm Password"
-              />
-
-            </div>
-
-            <button
-              onClick={
-                handlePasswordChange
-              }
-              className="w-full bg-gradient-to-r from-green-600 to-emerald-500 text-white rounded-2xl py-4 font-semibold shadow-lg hover:scale-[1.01] transition"
-            >
-              Update Password
-            </button>
-
-          </div>
-
-        </div>
-
-        {/* ACTIONS */}
-
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-
-          {/* LOGOUT */}
+        <div className="bg-white dark:bg-slate-900 border border-gray-200 dark:border-slate-800 rounded-3xl p-6 shadow-sm space-y-4">
 
           <button
             onClick={handleLogout}
-            className="bg-white dark:bg-slate-900 border border-gray-200 dark:border-slate-800 rounded-3xl p-6 flex items-center justify-center gap-3 hover:shadow-md transition"
+            className="w-full flex items-center justify-center gap-3 bg-gray-100 dark:bg-slate-800 hover:bg-gray-200 dark:hover:bg-slate-700 rounded-2xl py-4 font-semibold text-black dark:text-white transition"
           >
 
-            <LogOut className="text-orange-500" />
+            <LogOut size={18} />
 
-            <span className="font-semibold text-gray-800 dark:text-white">
-              Logout
-            </span>
+            Logout
 
           </button>
-
-          {/* DELETE */}
 
           <button
             onClick={
               handleDeleteAccount
             }
-            className="bg-red-500 hover:bg-red-600 rounded-3xl p-6 flex items-center justify-center gap-3 text-white transition shadow-lg"
+            className="w-full flex items-center justify-center gap-3 bg-red-500 hover:bg-red-600 rounded-2xl py-4 font-semibold text-white transition"
           >
 
-            <Trash2 />
+            <Trash2 size={18} />
 
-            <span className="font-semibold">
-              Delete Account
-            </span>
+            Delete Account
 
           </button>
 
