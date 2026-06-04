@@ -27,43 +27,41 @@ export async function createTransaction(
     return;
   }
 
-  const { error } =
-    await supabase
-      .from("transactions")
-      .insert({
+const { error } =
+  await supabase
+    .from("transactions")
+    .insert({
 
-        id:
-          transaction.id,
+      id:
+        transaction.id,
 
-        user_id:
-          user.id,
+      user_id:
+        user.id,
 
-        title:
-          transaction.title,
+      title:
+        transaction.title,
 
-        amount:
-          transaction.amount,
+      amount:
+        transaction.amount,
 
-        category:
-          transaction.category,
+      category:
+        transaction.category,
 
-        type:
-          transaction.type,
+      type:
+        transaction.type,
 
-        source:
-          transaction.source,
+      source:
+        transaction.source,
+    });
 
-        created_at:
-          transaction.createdAt,
-      });
+if (error) {
 
-  if (error) {
+  console.error(
+    "SUPABASE TRANSACTION ERROR:",
+    error
+  );
+}
 
-    console.error(
-      "SUPABASE TRANSACTION ERROR:",
-      error.message
-    );
-  }
 }
 
 
