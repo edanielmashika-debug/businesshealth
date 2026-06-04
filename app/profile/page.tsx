@@ -11,7 +11,6 @@ import { supabase } from "../../lib/supabase";
 import {
   Camera,
   LogOut,
-  Trash2,
   Save,
 } from "lucide-react";
 
@@ -34,6 +33,8 @@ export default function ProfilePage() {
   const [logoUrl, setLogoUrl] =
     useState("");
 
+  /* LOAD PROFILE */
+
   useEffect(() => {
 
     async function loadProfile() {
@@ -43,101 +44,61 @@ export default function ProfilePage() {
       } =
         await supabase.auth.getUser();
 
-      if (!user) return;
+      if (!user) {
 
-      setEmail(user.email || "");
+        router.push("/login");
 
-      const { data } =
+        return;
+      }
+
+      setEmail(
+        user.email || ""
+      );
+
+      const { data, error } =
         await supabase
           .from("profiles")
           .select("*")
-          .eq("id", user.id)
+          .eq(
+            "id",
+            user.id
+          )
           .single();
 
-      if (data) {
+      /* IF PROFILE DOESN'T EXIST */
 
-        setBusinessName(
-          data.business_name || ""
-        );
+      if (
+        error ||
+        !data
+      ) {
 
-        setLogoUrl(
-          data.logo_url || ""
-        );
+        await supabase
+          .from("profiles")
+          .insert({
+            id: user.id,
+
+            business_name: "",
+
+            logo_url: "",
+          });
+
+        return;
       }
+
+      setBusinessName(
+        data.business_name || ""
+      );
+
+      setLogoUrl(
+        data.logo_url || ""
+      );
     }
 
     loadProfile();
 
-  }, []);
+  }, [router]);
 
-  async function handleUpload(
-    e: React.ChangeEvent<HTMLInputElement>
-  ) {
-
-    const file =
-      e.target.files?.[0];
-
-    if (!file) return;
-
-    setLoading(true);
-
-    const {
-      data: { user },
-    } =
-      await supabase.auth.getUser();
-
-    if (!user) return;
-
-    const fileName =
-      `${user.id}-${Date.now()}`;
-
-    const { error } =
-      await supabase.storage
-        .from("profiles")
-        .upload(
-          fileName,
-          file,
-          {
-            upsert: true,
-          }
-        );
-
-    if (error) {
-
-      console.log(error);
-
-      setLoading(false);
-
-      return;
-    }
-
-    const {
-      data: publicUrlData,
-    } = supabase.storage
-      .from("profiles")
-      .getPublicUrl(
-        fileName
-      );
-
-    const publicUrl =
-      publicUrlData.publicUrl;
-
-    setLogoUrl(publicUrl);
-
-    await supabase
-      .from("profiles")
-      .upsert({
-        id: user.id,
-
-        business_name:
-          businessName,
-
-        logo_url:
-          publicUrl,
-      });
-
-    setLoading(false);
-  }
+  /* SAVE PROFILE */
 
   async function handleSave() {
 
@@ -150,44 +111,146 @@ export default function ProfilePage() {
 
     if (!user) return;
 
-    await supabase
-      .from("profiles")
-      .upsert({
-        id: user.id,
+    const { error } =
+      await supabase
+        .from("profiles")
+        .upsert({
+          id: user.id,
 
-        business_name:
-          businessName,
+          business_name:
+            businessName,
 
-        logo_url:
-          logoUrl,
-      });
+          logo_url:
+            logoUrl,
+        });
+
+    if (error) {
+
+      console.log(error);
+
+      alert(
+        error.message
+      );
+    } else {
+
+      alert(
+        "Profile updated"
+      );
+    }
 
     setLoading(false);
-
-    alert(
-      "Profile updated"
-    );
   }
+
+  /* UPLOAD LOGO */
+
+  async function handleUpload(
+    e: React.ChangeEvent<HTMLInputElement>
+  ) {
+
+    try {
+
+      const file =
+        e.target.files?.[0];
+
+      if (!file) return;
+
+      setLoading(true);
+
+      const {
+        data: { user },
+      } =
+        await supabase.auth.getUser();
+
+      if (!user) return;
+
+      const ext =
+        file.name
+          .split(".")
+          .pop();
+
+      const fileName =
+        `${user.id}.${ext}`;
+
+      await supabase.storage
+        .from("profiles")
+        .remove([
+          fileName,
+        ]);
+
+      const {
+        error:
+          uploadError,
+      } =
+        await supabase.storage
+          .from("profiles")
+          .upload(
+            fileName,
+            file,
+            {
+              upsert: true,
+            }
+          );
+
+      if (uploadError) {
+
+        console.log(
+          uploadError
+        );
+
+        alert(
+          uploadError.message
+        );
+
+        setLoading(false);
+
+        return;
+      }
+
+      const {
+        data: publicUrlData,
+      } =
+        supabase.storage
+          .from("profiles")
+          .getPublicUrl(
+            fileName
+          );
+
+      const publicUrl =
+        `${publicUrlData.publicUrl}?t=${Date.now()}`;
+
+      setLogoUrl(
+        publicUrl
+      );
+
+      await supabase
+        .from("profiles")
+        .upsert({
+          id: user.id,
+
+          business_name:
+            businessName,
+
+          logo_url:
+            publicUrl,
+        });
+
+      setLoading(false);
+
+    } catch (error) {
+
+      console.log(error);
+
+      setLoading(false);
+    }
+  }
+
+  /* LOGOUT */
 
   async function handleLogout() {
 
     await supabase.auth.signOut();
 
     router.push("/login");
-  }
-
-  async function handleDeleteAccount() {
-
-    const confirmed =
-      confirm(
-        "Delete your account permanently?"
-      );
-
-    if (!confirmed) return;
-
-    alert(
-      "You can later connect this to edge functions/admin delete logic."
-    );
   }
 
   return (
@@ -216,7 +279,7 @@ export default function ProfilePage() {
 
           <div className="flex flex-col items-center">
 
-            {/* LOGO */}
+            {/* IMAGE */}
 
             <div className="relative">
 
@@ -242,14 +305,16 @@ export default function ProfilePage() {
 
               </div>
 
-              <label className="absolute bottom-1 right-1 bg-blue-600 hover:bg-blue-700 text-white p-3 rounded-full cursor-pointer transition shadow-lg">
+              <label className="absolute bottom-0 right-0 bg-blue-600 hover:bg-blue-700 text-white p-3 rounded-full cursor-pointer shadow-lg transition">
 
                 <Camera size={18} />
 
                 <input
                   type="file"
                   accept="image/*"
-                  onChange={handleUpload}
+                  onChange={
+                    handleUpload
+                  }
                   hidden
                 />
 
@@ -257,7 +322,7 @@ export default function ProfilePage() {
 
             </div>
 
-            {/* INFO */}
+            {/* FORM */}
 
             <div className="w-full mt-8 space-y-5">
 
@@ -269,7 +334,9 @@ export default function ProfilePage() {
 
                 <input
                   type="text"
-                  value={businessName}
+                  value={
+                    businessName
+                  }
                   onChange={(e) =>
                     setBusinessName(
                       e.target.value
@@ -293,12 +360,14 @@ export default function ProfilePage() {
 
               </div>
 
-              {/* SAVE */}
-
               <button
-                onClick={handleSave}
-                disabled={loading}
-                className="w-full mt-4 bg-gradient-to-r from-blue-600 to-cyan-500 text-white rounded-2xl py-4 font-semibold shadow-lg hover:scale-[1.01] transition flex items-center justify-center gap-2"
+                onClick={
+                  handleSave
+                }
+                disabled={
+                  loading
+                }
+                className="w-full bg-gradient-to-r from-blue-600 to-cyan-500 text-white rounded-2xl py-4 font-semibold shadow-lg hover:scale-[1.01] transition flex items-center justify-center gap-2"
               >
 
                 <Save size={18} />
@@ -315,35 +384,20 @@ export default function ProfilePage() {
 
         </div>
 
-        {/* ACCOUNT ACTIONS */}
+        {/* LOGOUT */}
 
-        <div className="bg-white dark:bg-slate-900 border border-gray-200 dark:border-slate-800 rounded-3xl p-6 shadow-sm space-y-4">
+        <button
+          onClick={
+            handleLogout
+          }
+          className="w-full bg-red-500 hover:bg-red-600 text-white rounded-2xl py-4 font-semibold transition flex items-center justify-center gap-2"
+        >
 
-          <button
-            onClick={handleLogout}
-            className="w-full flex items-center justify-center gap-3 bg-gray-100 dark:bg-slate-800 hover:bg-gray-200 dark:hover:bg-slate-700 rounded-2xl py-4 font-semibold text-black dark:text-white transition"
-          >
+          <LogOut size={18} />
 
-            <LogOut size={18} />
+          Logout
 
-            Logout
-
-          </button>
-
-          <button
-            onClick={
-              handleDeleteAccount
-            }
-            className="w-full flex items-center justify-center gap-3 bg-red-500 hover:bg-red-600 rounded-2xl py-4 font-semibold text-white transition"
-          >
-
-            <Trash2 size={18} />
-
-            Delete Account
-
-          </button>
-
-        </div>
+        </button>
 
       </div>
 
