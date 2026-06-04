@@ -7,6 +7,14 @@ import AddTransactionForm from "@/components/add-transaction-form";
 import TransactionList from "@/components/transaction-list";
 
 import SMSImport from "@/components/sms-import";
+import { useEffect } from "react";
+
+import {
+  getTransactions,
+  deleteTransactionFromDB,
+} from "@/services/transaction-service";
+
+
 
 import {
   useTransactionStore,
@@ -22,17 +30,87 @@ export default function TransactionsPage() {
     useTransactionStore();
 
 
-    const transactions =
-  useTransactionStore(
-    (state) =>
-      state.transactions
-  );
+  const transactions =
+    useTransactionStore(
+      (state) =>
+        state.transactions
+    );
 
-const deleteTransaction =
-  useTransactionStore(
-    (state) =>
-      state.deleteTransaction
-  );
+  const deleteTransaction =
+    useTransactionStore(
+      (state) =>
+        state.deleteTransaction
+    );
+
+
+  const setTransactions =
+    useTransactionStore(
+      (state) =>
+        state.setTransactions
+    );
+
+
+
+
+  useEffect(() => {
+
+    async function loadTransactions() {
+
+      const data =
+        await getTransactions();
+
+      if (!data) return;
+
+      const formatted =
+        data.map(
+          (transaction: any) => ({
+            id: transaction.id,
+
+            title:
+              transaction.title,
+
+            amount:
+              Number(
+                transaction.amount
+              ),
+
+            category:
+              transaction.category,
+
+            type:
+              transaction.type,
+
+            source:
+              transaction.source,
+
+            createdAt:
+              transaction.created_at,
+          })
+        );
+
+      setTransactions(
+        formatted
+      );
+    }
+
+
+    async function handleDelete(
+      id: string
+    ) {
+
+      deleteTransaction(id);
+
+      await deleteTransactionFromDB(
+        id
+      );
+    }
+
+
+    loadTransactions();
+
+  }, []);
+
+
 
   return (
 

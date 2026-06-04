@@ -6,7 +6,17 @@ import {
   ArrowUpCircle,
 } from "lucide-react";
 
-import { Transaction } from "@/types/transaction";
+import { useEffect } from "react";
+
+import { Transaction } from "../types/transaction";
+import {
+  getTransactions,
+  deleteTransactionFromDB,
+} from "../services/transaction-service";
+
+import {
+  useTransactionStore,
+} from "../store/transaction-store";
 
 type TransactionCardProps = {
   transaction: Transaction;
@@ -25,6 +35,83 @@ export default function TransactionCard({
     transaction.type ===
     "revenue";
 
+  const transactions =
+    useTransactionStore(
+      (state) =>
+        state.transactions
+    );
+
+  const deleteTransaction =
+    useTransactionStore(
+      (state) =>
+        state.deleteTransaction
+    );
+
+
+  const setTransactions =
+    useTransactionStore(
+      (state) =>
+        state.setTransactions
+    );
+
+  useEffect(() => {
+
+    async function loadTransactions() {
+
+      const data =
+        await getTransactions();
+
+      if (!data) return;
+
+      const formatted =
+        data.map(
+          (transaction: any) => ({
+            id: transaction.id,
+
+            title:
+              transaction.title,
+
+            amount:
+              Number(
+                transaction.amount
+              ),
+
+            category:
+              transaction.category,
+
+            type:
+              transaction.type,
+
+            source:
+              transaction.source,
+
+            createdAt:
+              transaction.created_at,
+          })
+        );
+
+      setTransactions(
+        formatted
+      );
+    }
+
+
+    async function handleDelete(
+      id: string
+    ) {
+
+      deleteTransaction(id);
+
+      await deleteTransactionFromDB(
+        id
+      );
+    }
+
+
+    loadTransactions();
+
+  }, []);
+
   return (
 
     <div className="bg-white dark:bg-slate-900 border border-gray-200 dark:border-slate-800 rounded-3xl p-5 shadow-sm hover:shadow-md transition">
@@ -36,11 +123,10 @@ export default function TransactionCard({
         <div className="flex items-start gap-4">
 
           <div
-            className={`p-3 rounded-2xl ${
-              isRevenue
-                ? "bg-green-100 dark:bg-green-500/20"
-                : "bg-red-100 dark:bg-red-500/20"
-            }`}
+            className={`p-3 rounded-2xl ${isRevenue
+              ? "bg-green-100 dark:bg-green-500/20"
+              : "bg-red-100 dark:bg-red-500/20"
+              }`}
           >
 
             {isRevenue ? (
@@ -68,11 +154,10 @@ export default function TransactionCard({
             <div className="flex items-center gap-2 mt-3">
 
               <span
-                className={`px-3 py-1 rounded-full text-xs font-semibold capitalize ${
-                  isRevenue
-                    ? "bg-green-100 text-green-700 dark:bg-green-500/20 dark:text-green-400"
-                    : "bg-red-100 text-red-700 dark:bg-red-500/20 dark:text-red-400"
-                }`}
+                className={`px-3 py-1 rounded-full text-xs font-semibold capitalize ${isRevenue
+                  ? "bg-green-100 text-green-700 dark:bg-green-500/20 dark:text-green-400"
+                  : "bg-red-100 text-red-700 dark:bg-red-500/20 dark:text-red-400"
+                  }`}
               >
                 {transaction.type}
               </span>
@@ -102,11 +187,10 @@ export default function TransactionCard({
             </p>
 
             <h2
-              className={`text-2xl font-bold mt-1 ${
-                isRevenue
-                  ? "text-green-600"
-                  : "text-red-600"
-              }`}
+              className={`text-2xl font-bold mt-1 ${isRevenue
+                ? "text-green-600"
+                : "text-red-600"
+                }`}
             >
 
               {isRevenue

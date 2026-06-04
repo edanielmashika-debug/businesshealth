@@ -1,56 +1,76 @@
-import { supabase } from "@/lib/supabase";
 
-import { Transaction } from "@/types/transaction";
+import { supabase } from "../lib/supabase";
 
 export async function createTransaction(
-  transaction: Transaction
+  transaction: any
 ) {
+
   const {
     data: { user },
   } =
     await supabase.auth.getUser();
 
-  if (!user) {
-    return;
-  }
+  if (!user) return;
 
-  const { data, error } =
-    await supabase
-      .from("transactions")
-      .insert({
-        id: transaction.id,
+  return await supabase
+    .from("transactions")
+    .insert({
+      id: transaction.id,
 
-        user_id: user.id,
+      user_id: user.id,
 
-        type: transaction.type,
+      title: transaction.title,
 
-        amount: transaction.amount,
+      amount:
+        transaction.amount,
 
-        category:
-          transaction.category,
+      category:
+        transaction.category,
 
-        source:
-          transaction.source,
-      });
+      type: transaction.type,
 
-  if (error) {
-    console.error(error);
-  }
+      source:
+        transaction.source,
 
-  return data;
+      created_at:
+        transaction.createdAt,
+    });
 }
 
 export async function getTransactions() {
-  const { data, error } =
+
+  const {
+    data: { user },
+  } =
+    await supabase.auth.getUser();
+
+  if (!user) return [];
+
+  const { data } =
     await supabase
       .from("transactions")
       .select("*")
-      .order("created_at", { ascending: false });
-  if (error) {
-    console.error(error);
+      .eq(
+        "user_id",
+        user.id
+      )
+      .order(
+        "created_at",
+        {
+          ascending: false,
+        }
+      );
 
-    return [];
-  }
-
-  return data;
+  return data || [];
 }
+
+export async function deleteTransactionFromDB(
+  id: string
+) {
+
+  return await supabase
+    .from("transactions")
+    .delete()
+    .eq("id", id);
+}
+
