@@ -1,41 +1,71 @@
 
 import { supabase } from "../lib/supabase";
 
+
+
 export async function createTransaction(
-  transaction: any
+  transaction: {
+    id: string;
+    title: string;
+    amount: number;
+    category: string;
+    type: "revenue" | "expense";
+    source?: "manual" | "sms";
+    createdAt: string;
+  }
 ) {
 
   const {
     data: { user },
-  } =
-    await supabase.auth.getUser();
+  } = await supabase.auth.getUser();
 
-  if (!user) return;
+  if (!user) {
+    console.error(
+      "No authenticated user"
+    );
 
-  return await supabase
-    .from("transactions")
-    .insert({
-      id: transaction.id,
+    return;
+  }
 
-      user_id: user.id,
+  const { error } =
+    await supabase
+      .from("transactions")
+      .insert({
 
-      title: transaction.title,
+        id:
+          transaction.id,
 
-      amount:
-        transaction.amount,
+        user_id:
+          user.id,
 
-      category:
-        transaction.category,
+        title:
+          transaction.title,
 
-      type: transaction.type,
+        amount:
+          transaction.amount,
 
-      source:
-        transaction.source,
+        category:
+          transaction.category,
 
-      created_at:
-        transaction.createdAt,
-    });
+        type:
+          transaction.type,
+
+        source:
+          transaction.source,
+
+        created_at:
+          transaction.createdAt,
+      });
+
+  if (error) {
+
+    console.error(
+      "SUPABASE TRANSACTION ERROR:",
+      error.message
+    );
+  }
 }
+
 
 export async function getTransactions() {
 
