@@ -6,6 +6,12 @@ import {
     usePathname,
 } from "next/navigation";
 
+
+
+import { supabase } from "../lib/supabase";
+
+
+
 import {
     Home,
     BarChart3,
@@ -21,7 +27,7 @@ import {
 } from "lucide-react";
 
 import {
-    useState,
+    useState,useEffect
 } from "react";
 
 export default function DashboardLayout({
@@ -90,6 +96,54 @@ export default function DashboardLayout({
             icon: FileText,
         },
     ];
+
+
+const [logoUrl, setLogoUrl] =
+  useState("");
+
+const [
+  businessName,
+  setBusinessName,
+] = useState("");
+
+useEffect(() => {
+
+  async function loadProfile() {
+
+    const {
+      data: { user },
+    } =
+      await supabase.auth.getUser();
+
+    if (!user) return;
+
+    const { data } =
+      await supabase
+        .from("profiles")
+        .select("*")
+        .eq(
+          "id",
+          user.id
+        )
+        .single();
+
+    if (data) {
+
+      setLogoUrl(
+        data.logo_url || ""
+      );
+
+      setBusinessName(
+        data.business_name || ""
+      );
+    }
+  }
+
+  loadProfile();
+
+}, []);
+
+
 
     return (
         <div className="flex min-h-screen bg-[#f5f7fb] dark:bg-[#0f172a]">
@@ -190,23 +244,45 @@ ${pathname === link.href
                 {/* PROFILE */}
 
                 <div className="border-t p-4">
-                    <div className="flex items-center gap-3">
-                        <Link href="/profile">
-                        <div className="w-12 h-12 rounded-full bg-blue-600 text-white flex items-center justify-center font-bold">
-                            ED
-                        </div>
-                        </Link>
+                    <Link href="/profile">
+                        <div className="flex items-center gap-3">
+                            <Link href="/profile">
 
-                        <div>
-                            <div className="font-semibold">
-                                Emmanuel
-                            </div>
+                                <div className="w-12 h-12 rounded-full overflow-hidden bg-blue-600 flex items-center justify-center">
 
-                            <div className="text-sm text-gray-500">
-                                Admin
+                                    {logoUrl ? (
+
+                                        <img
+                                            src={logoUrl}
+                                            alt="Profile"
+                                            className="w-full h-full object-cover"
+                                        />
+
+                                    ) : (
+
+                                        <span className="text-white font-bold">
+                                            {businessName
+                                                ?.charAt(0)
+                                                ?.toUpperCase() || "B"}
+                                        </span>
+
+                                    )}
+
+                                </div>
+
+                            </Link>
+
+                            <div>
+                                <div className="font-semibold">
+                                    Emmanuel
+                                </div>
+
+                                <div className="text-sm text-gray-500">
+                                    Admin
+                                </div>
                             </div>
                         </div>
-                    </div>
+                    </Link>
 
                     <button className="mt-4 w-full border rounded-xl py-3 text-red-500 hover:bg-red-50 transition">
                         Logout
@@ -223,7 +299,7 @@ ${pathname === link.href
                 <header className="h-20 bg-white dark:bg-slate-900 border-b dark:border-slate-800 flex items-center justify-between px-6 sticky top-0 z-30">
 
                     <div>
-                       <h1 className="text-2xl font-bold text-gray-800 dark:text-white">
+                        <h1 className="text-2xl font-bold text-gray-800 dark:text-white">
                             Dashboard
                         </h1>
 
@@ -246,9 +322,9 @@ ${pathname === link.href
 
                         <div className="flex items-center gap-3">
                             <Link href="/profile">
-                            <div className="w-10 h-10 rounded-full bg-blue-600 text-white flex items-center justify-center font-bold">
-                                ED
-                            </div>
+                                <div className="w-10 h-10 rounded-full bg-blue-600 text-white flex items-center justify-center font-bold">
+                                    ED
+                                </div>
                             </Link>
 
                             <div className="hidden md:block">
