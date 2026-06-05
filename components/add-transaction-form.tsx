@@ -7,6 +7,9 @@ import { useTransactionStore } from "@/store/transaction-store";
 import { createTransaction } from "@/services/transaction-service";
 
 import { useExpenseStore } from "@/store/expense-store";
+import SmsImport from "@/components/sms-import";
+
+import { X } from "lucide-react";
 
 export default function AddTransactionForm() {
 
@@ -33,6 +36,9 @@ export default function AddTransactionForm() {
     useState<
       "revenue" | "expense"
     >("revenue");
+
+  const [showSmsImport, setShowSmsImport] =
+    useState(false);
 
   async function handleSubmit(
     e: React.FormEvent
@@ -125,7 +131,7 @@ export default function AddTransactionForm() {
   }
 
   return (
-
+    <>
     <form
       onSubmit={handleSubmit}
       className="bg-white dark:bg-slate-900 rounded-3xl border border-gray-200 dark:border-slate-800 p-6 shadow-sm space-y-5"
@@ -225,8 +231,8 @@ export default function AddTransactionForm() {
             setType(
               e.target
                 .value as
-                | "revenue"
-                | "expense"
+              | "revenue"
+              | "expense"
             )
           }
           className="w-full mt-2 rounded-2xl border border-gray-200 dark:border-slate-700 bg-gray-50 dark:bg-slate-800 px-4 py-4 outline-none focus:ring-2 focus:ring-blue-500 text-black dark:text-white"
@@ -253,6 +259,67 @@ export default function AddTransactionForm() {
         Save Transaction
       </button>
 
+      {/* SMS IMPORT LINK */}
+
+      <div className="text-center pt-2">
+
+        <button
+          type="button"
+          onClick={() =>
+            setShowSmsImport(true)
+          }
+          className="text-blue-600 dark:text-cyan-400 font-medium hover:underline"
+        >
+          Or import from SMS
+        </button>
+
+      </div>
+
     </form>
+    {
+      showSmsImport && (
+
+        <div className="fixed inset-0 z-[60] bg-black/50 backdrop-blur-sm flex items-center justify-center p-4">
+
+          <div className="w-full max-w-2xl bg-white dark:bg-slate-900 rounded-3xl border border-gray-200 dark:border-slate-800 shadow-2xl relative overflow-hidden">
+
+            {/* CLOSE BUTTON */}
+
+            <button
+              type="button"
+              onClick={() =>
+                setShowSmsImport(false)
+              }
+              className="absolute top-5 right-5 w-10 h-10 rounded-full bg-gray-100 dark:bg-slate-800 text-black dark:text-white flex items-center justify-center hover:scale-110 transition"
+            >
+
+              <X size={20} />
+
+            </button>
+
+            <div className="p-6">
+
+              <div className="mb-6">
+
+                <h2 className="text-2xl font-bold text-gray-800 dark:text-white">
+                  Import SMS
+                </h2>
+
+                <p className="text-gray-500 dark:text-slate-400 mt-1">
+                  Paste mobile money SMS messages
+                </p>
+
+              </div>
+
+              <SmsImport />
+
+            </div>
+
+          </div>
+
+        </div>
+      )
+    }
+    </>
   );
 }
