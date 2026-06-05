@@ -206,24 +206,6 @@ export default function TransactionsPage() {
 
           {/* ADD TRANSACTION */}
 
-          <div className="w-fit bg-white dark:bg-slate-900 rounded-xl border border-gray-200 dark:border-slate-700 shadow-sm flex items-center gap-4 px-4 py-1">
-
-            <button
-              onClick={() =>
-                setShowForm(true)
-              }
-              className=" w-10 h-10 flex items-center justify-center bg-gradient-to-r from-blue-600 to-cyan-500 text-white rounded-full font-semibold shadow-lg hover:scale-[1.02] transition"
-            >
-              <Plus size={28} />
-            </button>
-
-            <button
-              className="bg-gradient-to-r from-blue-600 to-cyan-500 text-white px-5 py-3 rounded-2xl font-semibold shadow-lg hover:scale-[1.02] transition"
-            >
-              Import from SMS
-            </button>
-
-          </div>
 
           {/* SMS IMPORT */}
 
