@@ -125,27 +125,30 @@ export default function TransactionsPage() {
 
         {/* HEADER */}
 
-        <div>
+        <div className="flex items-start justify-between gap-4">
+          <div>
+            <h1 className="text-3xl font-bold text-gray-800 dark:text-white">
+              Transactions
+            </h1>
 
-          <h1 className="text-3xl font-bold text-gray-800 dark:text-white">
-            Transactions
-          </h1>
+            <p className="text-gray-500 dark:text-slate-400 mt-1">
+              Manage your business cashflow
+            </p>
+          </div>
 
-          <p className="text-gray-500 dark:text-slate-400 mt-1">
-            Manage your business cashflow
-          </p>
+          <button
+            onClick={() =>
+              setShowForm(true)
+            }
+            className="w-14 h-14 rounded-2xl bg-gradient-to-r from-blue-600 to-cyan-500 text-white shadow-xl flex items-center justify-center hover:scale-110 active:scale-95 transition"
+          >
+
+            <Plus size={28} />
+
+          </button>
         </div>
 
-        <button
-          onClick={() =>
-            setShowForm(true)
-          }
-          className="w-14 h-14 rounded-2xl bg-gradient-to-r from-blue-600 to-cyan-500 text-white shadow-xl flex items-center justify-center hover:scale-110 active:scale-95 transition"
-        >
 
-          <Plus size={28} />
-
-        </button>
 
         {/* ANALYTICS */}
 
