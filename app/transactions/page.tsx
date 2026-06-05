@@ -190,7 +190,7 @@ export default function TransactionsPage() {
 
           {/* ADD TRANSACTION */}
 
-          <div className="bg-white dark:bg-slate-900 rounded-3xl border border-gray-200 dark:border-slate-700 p-6 shadow-sm">
+          <div className="bg-white dark:bg-slate-900 rounded-3xl border border-gray-200 dark:border-slate-700 p-6 shadow-sm  flex justify-between items-center p-4">
 
             <button
               onClick={() =>
@@ -201,15 +201,12 @@ export default function TransactionsPage() {
               + Add Transaction
             </button>
 
-
-
-          </div>
-          <div>
             <button
               className="bg-gradient-to-r from-blue-600 to-cyan-500 text-white px-5 py-3 rounded-2xl font-semibold shadow-lg hover:scale-[1.02] transition"
-            >
-              Import from SMS
-            </button>
+              >
+                 Import from SMS
+              </button>
+
           </div>
 
           {/* SMS IMPORT */}
