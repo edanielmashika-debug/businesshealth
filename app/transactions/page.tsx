@@ -198,7 +198,7 @@ export default function TransactionsPage() {
               onClick={() =>
                 setShowForm(true)
               }
-              className=" w-10 h-10 bg-gradient-to-r from-blue-600 to-cyan-500 text-white px-5 py-3 rounded-full font-semibold shadow-lg hover:scale-[1.02] transition"
+              className=" w-10 h-10 flex items-center justify-center bg-gradient-to-r from-blue-600 to-cyan-500 text-white px-5 py-3 rounded-full font-semibold shadow-lg hover:scale-[1.02] transition"
             >
                 <Plus size={28} />
             </button>
