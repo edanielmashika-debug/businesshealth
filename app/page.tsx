@@ -88,7 +88,7 @@ export default function HomePage() {
       if (!user) {
 
         router.push(
-          "/login"
+          "/signup"
         );
 
         return;
