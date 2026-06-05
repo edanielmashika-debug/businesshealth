@@ -190,7 +190,7 @@ export default function TransactionsPage() {
 
           {/* ADD TRANSACTION */}
 
-          <div className="w-fit bg-white dark:bg-slate-900 rounded-3xl border border-gray-200 dark:border-slate-700 shadow-sm flex items-center gap-4 px-4 py-2">
+          <div className="w-fit bg-white dark:bg-slate-900 rounded-xl border border-gray-200 dark:border-slate-700 shadow-sm flex items-center gap-4 px-4 py-1">
 
             <button
               onClick={() =>
