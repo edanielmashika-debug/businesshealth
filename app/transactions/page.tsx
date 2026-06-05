@@ -201,6 +201,12 @@ export default function TransactionsPage() {
               + Add Transaction
             </button>
 
+            <button
+              className="bg-gradient-to-r from-blue-600 to-cyan-500 text-white px-5 py-3 rounded-2xl font-semibold shadow-lg hover:scale-[1.02] transition"
+              >
+                 Import from SMS
+              </button>
+
           </div>
 
           {/* SMS IMPORT */}
