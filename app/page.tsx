@@ -93,6 +93,33 @@ export default function HomePage() {
 
         return;
       }
+
+      /*
+        LOAD PROFILE
+      */
+
+      const { data: profile } =
+        await supabase
+          .from("profiles")
+          .select("*")
+          .eq("id", user.id)
+          .single();
+
+      /*
+        ONBOARDING CHECK
+      */
+
+      if (
+        profile &&
+        !profile.onboarding_completed
+      ) {
+
+        router.push(
+          "/onboarding"
+        );
+
+        return;
+      }
     }
 
     async function loadTransactions() {
@@ -102,31 +129,31 @@ export default function HomePage() {
 
       if (!data) return;
 
-const formatted =
-  data.map(
-    (transaction: any) => ({
-      id: transaction.id,
+      const formatted =
+        data.map(
+          (transaction: any) => ({
+            id: transaction.id,
 
-      title:
-        transaction.title,
+            title:
+              transaction.title,
 
-      amount: Number(
-        transaction.amount
-      ),
+            amount: Number(
+              transaction.amount
+            ),
 
-      category:
-        transaction.category,
+            category:
+              transaction.category,
 
-      type:
-        transaction.type,
+            type:
+              transaction.type,
 
-      source:
-        transaction.source,
+            source:
+              transaction.source,
 
-      createdAt:
-        transaction.created_at,
-    })
-  );
+            createdAt:
+              transaction.created_at,
+          })
+        );
 
       setTransactions(
         formatted
@@ -254,7 +281,7 @@ const formatted =
           <DashboardCard
             title="Revenue"
             amount={`TZS ${totalRevenue.toLocaleString()}`}
-            
+
           />
 
           <DashboardCard
@@ -393,7 +420,7 @@ const formatted =
           <div className="space-y-4">
 
             {lowStockProducts.length ===
-            0 ? (
+              0 ? (
 
               <div className="text-gray-500 dark:text-slate-400 text-sm">
                 No low stock alerts
