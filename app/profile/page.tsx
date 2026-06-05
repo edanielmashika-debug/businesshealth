@@ -44,6 +44,9 @@ export default function ProfilePage() {
       } =
         await supabase.auth.getUser();
 
+    
+
+
       if (!user) {
 
         router.push("/login");
@@ -64,6 +67,8 @@ export default function ProfilePage() {
             user.id
           )
           .single();
+
+        
 
       /* IF PROFILE DOESN'T EXIST */
 

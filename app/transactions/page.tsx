@@ -7,7 +7,7 @@ import AddTransactionForm from "@/components/add-transaction-form";
 import TransactionList from "@/components/transaction-list";
 
 import SMSImport from "@/components/sms-import";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 import {
   getTransactions,
@@ -110,6 +110,9 @@ export default function TransactionsPage() {
 
   }, []);
 
+  const [showForm, setShowForm] =
+    useState(false);
+
 
 
   return (
@@ -189,7 +192,15 @@ export default function TransactionsPage() {
 
           <div className="bg-white dark:bg-slate-900 rounded-3xl border border-gray-200 dark:border-slate-700 p-6 shadow-sm">
 
-            <AddTransactionForm />
+            <button
+              onClick={() =>
+                setShowForm(true)
+              }
+              className="bg-gradient-to-r from-blue-600 to-cyan-500 text-white px-5 py-3 rounded-2xl font-semibold shadow-lg hover:scale-[1.02] transition"
+            >
+              + Add Transaction
+            </button>
+
           </div>
 
           {/* SMS IMPORT */}
@@ -210,4 +221,33 @@ export default function TransactionsPage() {
       </div>
     </DashboardLayout>
   );
+
+  {
+  showForm && (
+
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm p-4">
+
+      <div className="w-full max-w-2xl bg-white dark:bg-slate-900 rounded-3xl border border-gray-200 dark:border-slate-800 shadow-2xl relative overflow-hidden">
+
+        {/* CLOSE BUTTON */}
+
+        <button
+          onClick={() =>
+            setShowForm(false)
+          }
+          className="absolute top-4 right-4 w-10 h-10 rounded-full bg-gray-100 dark:bg-slate-800 text-black dark:text-white flex items-center justify-center hover:scale-110 transition"
+        >
+          ✕
+        </button>
+
+        <div className="p-6">
+          <AddTransactionForm />
+        </div>
+
+      </div>
+
+    </div>
+  )
 }
+}
+
