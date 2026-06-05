@@ -1,25 +1,34 @@
 "use client";
 
-import { useEffect, useState } from "react";
-
 import DashboardLayout from "@/components/dashboard-layout";
 
 import AddTransactionForm from "@/components/add-transaction-form";
 
-import SmsImport from "@/components/sms-import";
-
 import TransactionList from "@/components/transaction-list";
 
-import { useTransactionStore } from "@/store/transaction-store";
+import SMSImport from "@/components/sms-import";
+import { useEffect, useState } from "react";
 
 import {
   getTransactions,
-  deleteTransaction,
+  deleteTransactionFromDB,
 } from "@/services/transaction-service";
 
-import { X } from "lucide-react";
+
+
+import {
+  useTransactionStore,
+} from "@/store/transaction-store";
 
 export default function TransactionsPage() {
+
+  const {
+    totalRevenue,
+    totalExpenses,
+    netBalance,
+  } =
+    useTransactionStore();
+
 
   const transactions =
     useTransactionStore(
@@ -27,20 +36,21 @@ export default function TransactionsPage() {
         state.transactions
     );
 
+  const deleteTransaction =
+    useTransactionStore(
+      (state) =>
+        state.deleteTransaction
+    );
+
+
   const setTransactions =
     useTransactionStore(
       (state) =>
         state.setTransactions
     );
 
-  const removeTransaction =
-    useTransactionStore(
-      (state) =>
-        state.removeTransaction
-    );
 
-  const [showForm, setShowForm] =
-    useState(false);
+
 
   useEffect(() => {
 
@@ -51,49 +61,59 @@ export default function TransactionsPage() {
 
       if (!data) return;
 
-      setTransactions(data);
+      const formatted =
+        data.map(
+          (transaction: any) => ({
+            id: transaction.id,
+
+            title:
+              transaction.title,
+
+            amount:
+              Number(
+                transaction.amount
+              ),
+
+            category:
+              transaction.category,
+
+            type:
+              transaction.type,
+
+            source:
+              transaction.source,
+
+            createdAt:
+              transaction.created_at,
+          })
+        );
+
+      setTransactions(
+        formatted
+      );
     }
+
+
+    async function handleDelete(
+      id: string
+    ) {
+
+      deleteTransaction(id);
+
+      await deleteTransactionFromDB(
+        id
+      );
+    }
+
 
     loadTransactions();
 
-  }, [setTransactions]);
+  }, []);
 
-  async function handleDelete(
-    id: string
-  ) {
+  const [showForm, setShowForm] =
+    useState(false);
 
-    removeTransaction(id);
 
-    await deleteTransaction(id);
-  }
-
-  const totalRevenue =
-    transactions
-      .filter(
-        (transaction) =>
-          transaction.type ===
-          "revenue"
-      )
-      .reduce(
-        (sum, transaction) =>
-          sum +
-          transaction.amount,
-        0
-      );
-
-  const totalExpenses =
-    transactions
-      .filter(
-        (transaction) =>
-          transaction.type ===
-          "expense"
-      )
-      .reduce(
-        (sum, transaction) =>
-          sum +
-          transaction.amount,
-        0
-      );
 
   return (
 
@@ -103,34 +123,22 @@ export default function TransactionsPage() {
 
         {/* HEADER */}
 
-        <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+        <div>
 
-          <div>
+          <h1 className="text-3xl font-bold text-gray-800 dark:text-white">
+            Transactions
+          </h1>
 
-            <h1 className="text-3xl font-bold text-gray-800 dark:text-white">
-              Transactions
-            </h1>
-
-            <p className="text-gray-500 dark:text-slate-400 mt-1">
-              Manage your business money flow
-            </p>
-
-          </div>
-
-          <button
-            onClick={() =>
-              setShowForm(true)
-            }
-            className="bg-gradient-to-r from-blue-600 to-cyan-500 text-white px-6 py-4 rounded-2xl font-semibold shadow-lg hover:scale-[1.02] transition"
-          >
-            + Add Transaction
-          </button>
-
+          <p className="text-gray-500 dark:text-slate-400 mt-1">
+            Manage your business cashflow
+          </p>
         </div>
 
-        {/* STATS */}
+        {/* ANALYTICS */}
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+
+          {/* REVENUE */}
 
           <div className="bg-gradient-to-br from-green-500 to-emerald-700 rounded-3xl p-6 text-white shadow-lg">
 
@@ -138,12 +146,14 @@ export default function TransactionsPage() {
               Revenue
             </p>
 
-            <h2 className="text-4xl font-bold mt-3">
-              TZS{" "}
-              {totalRevenue.toLocaleString()}
-            </h2>
+            <h2 className="text-3xl font-bold mt-2">
 
+              TZS{" "}
+              {totalRevenue().toLocaleString()}
+            </h2>
           </div>
+
+          {/* EXPENSES */}
 
           <div className="bg-gradient-to-br from-red-500 to-rose-700 rounded-3xl p-6 text-white shadow-lg">
 
@@ -151,70 +161,69 @@ export default function TransactionsPage() {
               Expenses
             </p>
 
-            <h2 className="text-4xl font-bold mt-3">
+            <h2 className="text-3xl font-bold mt-2">
+
               TZS{" "}
-              {totalExpenses.toLocaleString()}
+              {totalExpenses().toLocaleString()}
             </h2>
-
           </div>
 
-        </div>
+          {/* BALANCE */}
 
-        {/* SMS IMPORT */}
+          <div className="bg-gradient-to-br from-blue-500 to-cyan-700 rounded-3xl p-6 text-white shadow-lg">
 
-        <div className="bg-white dark:bg-slate-900 rounded-3xl border border-gray-200 dark:border-slate-800 p-6 shadow-sm">
-
-          <div className="mb-5">
-
-            <h2 className="text-2xl font-bold text-gray-800 dark:text-white">
-              SMS Import
-            </h2>
-
-            <p className="text-gray-500 dark:text-slate-400 mt-1">
-              Import M-Pesa and mobile money transactions
+            <p className="text-sm opacity-80">
+              Net Balance
             </p>
 
-          </div>
+            <h2 className="text-3xl font-bold mt-2">
 
-          <SmsImport />
-
-        </div>
-
-        {/* TRANSACTION LIST */}
-
-        <div className="bg-white dark:bg-slate-900 rounded-3xl border border-gray-200 dark:border-slate-800 p-6 shadow-sm">
-
-          <div className="mb-5">
-
-            <h2 className="text-2xl font-bold text-gray-800 dark:text-white">
-              Recent Transactions
+              TZS{" "}
+              {netBalance().toLocaleString()}
             </h2>
+          </div>
+        </div>
 
-            <p className="text-gray-500 dark:text-slate-400 mt-1">
-              Your latest business activity
-            </p>
+        {/* MAIN CONTENT */}
+
+        <div className="grid grid-cols-1 xl:grid-cols-2 gap-6">
+
+          {/* ADD TRANSACTION */}
+
+          <div className="bg-white dark:bg-slate-900 rounded-3xl border border-gray-200 dark:border-slate-700 p-6 shadow-sm">
+
+            <button
+              onClick={() =>
+                setShowForm(true)
+              }
+              className="bg-gradient-to-r from-blue-600 to-cyan-500 text-white px-5 py-3 rounded-2xl font-semibold shadow-lg hover:scale-[1.02] transition"
+            >
+              + Add Transaction
+            </button>
 
           </div>
 
-          <TransactionList
-            transactions={
-              transactions
-            }
-            onDelete={
-              handleDelete
-            }
-          />
+          {/* SMS IMPORT */}
 
+          <div className="bg-white dark:bg-slate-900 rounded-3xl border border-gray-200 dark:border-slate-700 p-6 shadow-sm">
+
+            <SMSImport />
+          </div>
+
+          {/* TRANSACTIONS LIST */}
+
+          <div className="xl:col-span-2 bg-white dark:bg-slate-900 rounded-3xl border border-gray-200 dark:border-slate-700 p-6 shadow-sm">
+
+            <TransactionList transactions={transactions}
+              onDelete={deleteTransaction} />
+          </div>
         </div>
-
       </div>
-
-      {/* POPUP FORM */}
-
+      {/* show it inside */}
       {
         showForm && (
 
-          <div className="fixed inset-0 z-50 bg-black/50 backdrop-blur-sm flex items-center justify-center p-4">
+          <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm p-4">
 
             <div className="w-full max-w-2xl bg-white dark:bg-slate-900 rounded-3xl border border-gray-200 dark:border-slate-800 shadow-2xl relative overflow-hidden">
 
@@ -224,17 +233,13 @@ export default function TransactionsPage() {
                 onClick={() =>
                   setShowForm(false)
                 }
-                className="absolute top-5 right-5 w-10 h-10 rounded-full bg-gray-100 dark:bg-slate-800 text-black dark:text-white flex items-center justify-center hover:scale-110 transition"
+                className="absolute top-4 right-4 w-10 h-10 rounded-full bg-gray-100 dark:bg-slate-800 text-black dark:text-white flex items-center justify-center hover:scale-110 transition"
               >
-
-                <X size={20} />
-
+                ✕
               </button>
 
               <div className="p-6">
-
                 <AddTransactionForm />
-
               </div>
 
             </div>
@@ -242,7 +247,10 @@ export default function TransactionsPage() {
           </div>
         )
       }
-
+      {/* end it here now! */}
     </DashboardLayout>
   );
+
+
 }
+
