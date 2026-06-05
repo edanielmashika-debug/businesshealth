@@ -14,6 +14,8 @@ import {
   deleteTransactionFromDB,
 } from "@/services/transaction-service";
 
+import { Plus } from "lucide-react";
+
 
 
 import {
@@ -198,7 +200,7 @@ export default function TransactionsPage() {
               }
               className="bg-gradient-to-r from-blue-600 to-cyan-500 text-white px-5 py-3 rounded-2xl font-semibold shadow-lg hover:scale-[1.02] transition"
             >
-              + Add Transaction
+                <Plus size={28} />
             </button>
 
             <button
