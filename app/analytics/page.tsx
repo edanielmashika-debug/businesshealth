@@ -455,379 +455,315 @@ export default function AnalyticsPage() {
         b[1] - a[1]
     )[0];
 
-  return (
+return (
 
-    <DashboardLayout>
+  <DashboardLayout>
 
-      <div className="space-y-8">
+    <div className="space-y-8 pb-10">
 
-        {/* HEADER */}
+      {/* HERO HEADER */}
 
-        <div>
+      <div className="relative overflow-hidden rounded-[2rem] bg-gradient-to-br from-blue-600 via-cyan-500 to-indigo-700 p-8 text-white shadow-2xl">
 
-          <h1 className="text-3xl font-bold text-gray-800 dark:text-white">
-            Analytics
-          </h1>
+        <div className="absolute inset-0 opacity-10 bg-[radial-gradient(circle_at_top_right,white,transparent_40%)]" />
 
-          <p className="text-gray-500 dark:text-slate-400 mt-1">
-            Full business money flow overview
-          </p>
+        <div className="relative z-10 flex flex-col lg:flex-row lg:items-center lg:justify-between gap-6">
 
-        </div>
+          <div>
 
-        {/* TOP CARDS */}
+            <div className="inline-flex items-center gap-2 bg-white/15 backdrop-blur-md px-4 py-2 rounded-full text-sm font-medium">
 
-        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6">
+              <TrendingUp className="w-4 h-4" />
 
-          {/* REVENUE */}
-
-          <div className="bg-gradient-to-br from-blue-500 to-cyan-600 rounded-3xl p-6 text-white shadow-lg">
-
-            <div className="flex items-center justify-between">
-
-              <div>
-
-                <p className="text-sm opacity-80">
-                  Total Revenue
-                </p>
-
-                <h2 className="text-3xl font-bold mt-2">
-                  TZS{" "}
-                  {totalRevenue.toLocaleString()}
-                </h2>
-
-              </div>
-
-              <div className="bg-white/20 p-3 rounded-2xl">
-
-                <DollarSign />
-
-              </div>
+              Business Analytics
 
             </div>
 
-          </div>
+            <h1 className="text-4xl lg:text-5xl font-black mt-5 leading-tight">
+              Financial
+              <br />
+              Overview
+            </h1>
 
-          {/* EXPENSES */}
-
-          <div className="bg-gradient-to-br from-red-500 to-rose-700 rounded-3xl p-6 text-white shadow-lg">
-
-            <div className="flex items-center justify-between">
-
-              <div>
-
-                <p className="text-sm opacity-80">
-                  Total Expenses
-                </p>
-
-                <h2 className="text-3xl font-bold mt-2">
-                  TZS{" "}
-                  {totalExpenses.toLocaleString()}
-                </h2>
-
-              </div>
-
-              <div className="bg-white/20 p-3 rounded-2xl">
-                💸
-              </div>
-
-            </div>
-
-          </div>
-
-          {/* PROFIT */}
-
-          <div className="bg-gradient-to-br from-green-500 to-emerald-700 rounded-3xl p-6 text-white shadow-lg">
-
-            <div className="flex items-center justify-between">
-
-              <div>
-
-                <p className="text-sm opacity-80">
-                  Net Profit
-                </p>
-
-                <h2 className="text-3xl font-bold mt-2">
-                  TZS{" "}
-                  {netProfit.toLocaleString()}
-                </h2>
-
-              </div>
-
-              <div className="bg-white/20 p-3 rounded-2xl">
-
-                <TrendingUp />
-
-              </div>
-
-            </div>
-
-          </div>
-
-          {/* SALES */}
-
-          <div className="bg-gradient-to-br from-purple-500 to-violet-700 rounded-3xl p-6 text-white shadow-lg">
-
-            <div className="flex items-center justify-between">
-
-              <div>
-
-                <p className="text-sm opacity-80">
-                  Total Sales
-                </p>
-
-                <h2 className="text-3xl font-bold mt-2">
-                  {sales.length}
-                </h2>
-
-              </div>
-
-              <div className="bg-white/20 p-3 rounded-2xl">
-
-                <ShoppingCart />
-
-              </div>
-
-            </div>
-
-          </div>
-
-        </div>
-
-        {/* SECOND ROW */}
-
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-
-          <div className="bg-white dark:bg-slate-900 rounded-3xl border dark:border-slate-800 p-6 shadow-sm">
-
-            <p className="text-sm text-blue-600">
-              Today's Revenue
+            <p className="text-blue-100 mt-4 max-w-2xl text-lg">
+              Monitor revenue, expenses, profits and growth
+              across your business in real time.
             </p>
 
-            <h2 className="text-3xl font-bold text-black dark:text-white mt-2">
-              TZS{" "}
-              {todayRevenue.toLocaleString()}
-            </h2>
-
           </div>
 
-          <div className="bg-white dark:bg-slate-900 rounded-3xl border dark:border-slate-800 p-6 shadow-sm">
+          <div className="grid grid-cols-2 gap-4 min-w-[260px]">
 
-            <p className="text-sm text-red-500">
-              Today's Expenses
-            </p>
+            <div className="bg-white/10 backdrop-blur-xl rounded-3xl p-5 border border-white/10">
 
-            <h2 className="text-3xl font-bold text-black dark:text-white mt-2">
-              TZS{" "}
-              {todayExpenses.toLocaleString()}
-            </h2>
-
-          </div>
-
-          <div className="bg-white dark:bg-slate-900 rounded-3xl border dark:border-slate-800 p-6 shadow-sm">
-
-            <p className="text-sm text-green-600">
-              Today's Profit
-            </p>
-
-            <h2 className="text-3xl font-bold text-black dark:text-white mt-2">
-              TZS{" "}
-              {todayProfit.toLocaleString()}
-            </h2>
-
-          </div>
-
-        </div>
-
-        {/* MONTHLY GROWTH */}
-
-        <div className="bg-gradient-to-r from-cyan-500 to-blue-700 rounded-3xl p-6 text-white shadow-lg">
-
-          <div className="flex items-center justify-between">
-
-            <div>
-
-              <p className="text-sm opacity-80">
-                Monthly Revenue Growth
+              <p className="text-sm text-blue-100">
+                Revenue
               </p>
 
-              <h2 className="text-5xl font-bold mt-3">
-                {monthlyGrowth.toFixed(
-                  1
-                )}%
+              <h2 className="text-2xl font-black mt-2">
+                TZS {totalRevenue.toLocaleString()}
               </h2>
 
             </div>
 
-            <div className="bg-white/20 p-5 rounded-3xl">
+            <div className="bg-white/10 backdrop-blur-xl rounded-3xl p-5 border border-white/10">
 
-              <Wallet size={40} />
-
-            </div>
-
-          </div>
-
-        </div>
-
-        {/* CHARTS */}
-
-        <div className="grid grid-cols-1 xl:grid-cols-2 gap-6">
-
-          <div className="bg-white dark:bg-slate-900 rounded-3xl p-6 shadow-sm border dark:border-slate-800">
-
-            <div className="mb-6">
-
-              <h2 className="text-xl font-bold text-gray-800 dark:text-white">
-                Revenue Overview
-              </h2>
-
-              <p className="text-sm text-gray-500 dark:text-slate-400">
-                Combined sales and transaction revenue
+              <p className="text-sm text-blue-100">
+                Profit
               </p>
 
-            </div>
-
-            <AnalyticsChart />
-
-          </div>
-
-          <div className="bg-white dark:bg-slate-900 rounded-3xl p-6 shadow-sm border dark:border-slate-800">
-
-            <div className="mb-6">
-
-              <h2 className="text-xl font-bold text-gray-800 dark:text-white">
-                Expense Categories
+              <h2 className="text-2xl font-black mt-2">
+                TZS {netProfit.toLocaleString()}
               </h2>
 
-              <p className="text-sm text-gray-500 dark:text-slate-400">
-                Track where money is going
-              </p>
-
             </div>
-
-            <CategoryChart />
 
           </div>
 
         </div>
-
-        {/* PROFIT CHART */}
-
-        <div className="bg-white dark:bg-slate-900 rounded-3xl p-6 shadow-sm border dark:border-slate-800">
-
-          <div className="mb-6">
-
-            <h2 className="text-xl font-bold text-gray-800 dark:text-white">
-              Profit Performance
-            </h2>
-
-            <p className="text-sm text-gray-500 dark:text-slate-400">
-              Business growth analytics
-            </p>
-
-          </div>
-
-          <ProfitChart data={sales} />
-
-        </div>
-
-        {/* BEST SELLER */}
-
-        {bestSeller && (
-
-          <div className="bg-gradient-to-r from-amber-400 to-orange-500 rounded-3xl p-6 text-white shadow-lg">
-
-            <div className="flex items-center justify-between">
-
-              <div>
-
-                <p className="text-sm opacity-80">
-                  Best Selling Product
-                </p>
-
-                <h2 className="text-4xl font-bold mt-2">
-                  {bestSeller[0]}
-                </h2>
-
-                <p className="mt-2 opacity-90">
-                  {bestSeller[1]} items sold
-                </p>
-
-              </div>
-
-              <div className="text-6xl">
-                🏆
-              </div>
-
-            </div>
-
-          </div>
-        )}
-
-        {/* LOW STOCK */}
-
-        {lowStockProducts.length >
-          0 && (
-
-          <div className="bg-red-50 dark:bg-red-500/10 border border-red-200 dark:border-red-500/20 rounded-3xl p-6">
-
-            <div className="flex items-center justify-between">
-
-              <div>
-
-                <h2 className="text-2xl font-bold text-red-600">
-                  Low Stock Alert
-                </h2>
-
-                <p className="text-red-500 mt-1">
-                  {lowStockProducts.length} products need restocking
-                </p>
-
-              </div>
-
-              <div className="text-5xl">
-                ⚠️
-              </div>
-
-            </div>
-
-            <div className="mt-6 grid gap-3">
-
-              {lowStockProducts.map(
-                (product) => (
-
-                  <div
-                    key={product.id}
-                    className="bg-white dark:bg-slate-900 rounded-2xl p-4 flex items-center justify-between border dark:border-slate-800"
-                  >
-
-                    <div>
-
-                      <h3 className="font-bold text-gray-800 dark:text-white">
-                        {product.name}
-                      </h3>
-
-                      <p className="text-sm text-gray-500 dark:text-slate-400">
-                        Only {product.stock} items left
-                      </p>
-
-                    </div>
-
-                    <div className="bg-red-100 dark:bg-red-500/20 text-red-600 px-3 py-1 rounded-full text-sm font-semibold">
-                      Restock
-                    </div>
-
-                  </div>
-                )
-              )}
-
-            </div>
-
-          </div>
-        )}
 
       </div>
 
-    </DashboardLayout>
-  );
+      {/* TOP CARDS */}
+
+      <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6">
+
+        {/* REVENUE */}
+
+        <div className="group relative overflow-hidden bg-white dark:bg-slate-900 rounded-[2rem] p-6 border border-gray-200 dark:border-slate-800 shadow-sm hover:shadow-xl transition-all duration-300">
+
+          <div className="absolute top-0 right-0 w-40 h-40 bg-blue-500/10 rounded-full blur-3xl" />
+
+          <div className="relative z-10 flex items-start justify-between">
+
+            <div>
+
+              <p className="text-sm font-medium text-gray-500 dark:text-slate-400">
+                Total Revenue
+              </p>
+
+              <h2 className="text-3xl font-black mt-3 text-gray-900 dark:text-white">
+                TZS {totalRevenue.toLocaleString()}
+              </h2>
+
+            </div>
+
+            <div className="w-14 h-14 rounded-2xl bg-blue-100 dark:bg-blue-500/20 flex items-center justify-center">
+
+              <DollarSign className="text-blue-600 dark:text-blue-300" />
+
+            </div>
+
+          </div>
+
+        </div>
+
+        {/* EXPENSES */}
+
+        <div className="group relative overflow-hidden bg-white dark:bg-slate-900 rounded-[2rem] p-6 border border-gray-200 dark:border-slate-800 shadow-sm hover:shadow-xl transition-all duration-300">
+
+          <div className="absolute top-0 right-0 w-40 h-40 bg-red-500/10 rounded-full blur-3xl" />
+
+          <div className="relative z-10 flex items-start justify-between">
+
+            <div>
+
+              <p className="text-sm font-medium text-gray-500 dark:text-slate-400">
+                Total Expenses
+              </p>
+
+              <h2 className="text-3xl font-black mt-3 text-gray-900 dark:text-white">
+                TZS {totalExpenses.toLocaleString()}
+              </h2>
+
+            </div>
+
+            <div className="w-14 h-14 rounded-2xl bg-red-100 dark:bg-red-500/20 flex items-center justify-center text-2xl">
+              💸
+            </div>
+
+          </div>
+
+        </div>
+
+        {/* PROFIT */}
+
+        <div className="group relative overflow-hidden bg-white dark:bg-slate-900 rounded-[2rem] p-6 border border-gray-200 dark:border-slate-800 shadow-sm hover:shadow-xl transition-all duration-300">
+
+          <div className="absolute top-0 right-0 w-40 h-40 bg-green-500/10 rounded-full blur-3xl" />
+
+          <div className="relative z-10 flex items-start justify-between">
+
+            <div>
+
+              <p className="text-sm font-medium text-gray-500 dark:text-slate-400">
+                Net Profit
+              </p>
+
+              <h2 className="text-3xl font-black mt-3 text-gray-900 dark:text-white">
+                TZS {netProfit.toLocaleString()}
+              </h2>
+
+            </div>
+
+            <div className="w-14 h-14 rounded-2xl bg-green-100 dark:bg-green-500/20 flex items-center justify-center">
+
+              <TrendingUp className="text-green-600 dark:text-green-300" />
+
+            </div>
+
+          </div>
+
+        </div>
+
+        {/* SALES */}
+
+        <div className="group relative overflow-hidden bg-white dark:bg-slate-900 rounded-[2rem] p-6 border border-gray-200 dark:border-slate-800 shadow-sm hover:shadow-xl transition-all duration-300">
+
+          <div className="absolute top-0 right-0 w-40 h-40 bg-purple-500/10 rounded-full blur-3xl" />
+
+          <div className="relative z-10 flex items-start justify-between">
+
+            <div>
+
+              <p className="text-sm font-medium text-gray-500 dark:text-slate-400">
+                Total Sales
+              </p>
+
+              <h2 className="text-3xl font-black mt-3 text-gray-900 dark:text-white">
+                {sales.length}
+              </h2>
+
+            </div>
+
+            <div className="w-14 h-14 rounded-2xl bg-purple-100 dark:bg-purple-500/20 flex items-center justify-center">
+
+              <ShoppingCart className="text-purple-600 dark:text-purple-300" />
+
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+      {/* TODAY STATS */}
+
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+
+        <div className="bg-white dark:bg-slate-900 rounded-[2rem] border border-gray-200 dark:border-slate-800 p-6 shadow-sm">
+
+          <p className="text-sm font-medium text-blue-600">
+            Today's Revenue
+          </p>
+
+          <h2 className="text-4xl font-black text-gray-900 dark:text-white mt-3">
+            TZS {todayRevenue.toLocaleString()}
+          </h2>
+
+        </div>
+
+        <div className="bg-white dark:bg-slate-900 rounded-[2rem] border border-gray-200 dark:border-slate-800 p-6 shadow-sm">
+
+          <p className="text-sm font-medium text-red-500">
+            Today's Expenses
+          </p>
+
+          <h2 className="text-4xl font-black text-gray-900 dark:text-white mt-3">
+            TZS {todayExpenses.toLocaleString()}
+          </h2>
+
+        </div>
+
+        <div className="bg-white dark:bg-slate-900 rounded-[2rem] border border-gray-200 dark:border-slate-800 p-6 shadow-sm">
+
+          <p className="text-sm font-medium text-green-600">
+            Today's Profit
+          </p>
+
+          <h2 className="text-4xl font-black text-gray-900 dark:text-white mt-3">
+            TZS {todayProfit.toLocaleString()}
+          </h2>
+
+        </div>
+
+      </div>
+
+      {/* MONTHLY GROWTH */}
+
+      <div className="relative overflow-hidden rounded-[2rem] bg-gradient-to-r from-cyan-500 via-blue-600 to-indigo-700 p-8 text-white shadow-2xl">
+
+        <div className="absolute inset-0 opacity-10 bg-[radial-gradient(circle_at_top_left,white,transparent_40%)]" />
+
+        <div className="relative z-10 flex items-center justify-between">
+
+          <div>
+
+            <p className="text-sm uppercase tracking-widest opacity-80">
+              Monthly Growth
+            </p>
+
+            <h2 className="text-6xl font-black mt-3">
+              {monthlyGrowth.toFixed(1)}%
+            </h2>
+
+          </div>
+
+          <div className="w-24 h-24 rounded-[2rem] bg-white/15 backdrop-blur-xl flex items-center justify-center">
+
+            <Wallet size={42} />
+
+          </div>
+
+        </div>
+
+      </div>
+
+      {/* CHARTS */}
+
+      <div className="grid grid-cols-1 xl:grid-cols-2 gap-6">
+
+        <div className="bg-white dark:bg-slate-900 rounded-[2rem] p-6 shadow-sm border border-gray-200 dark:border-slate-800">
+
+          <div className="mb-6">
+
+            <h2 className="text-2xl font-bold text-gray-800 dark:text-white">
+              Revenue Overview
+            </h2>
+
+            <p className="text-sm text-gray-500 dark:text-slate-400 mt-1">
+              Combined sales and transaction revenue
+            </p>
+
+          </div>
+
+          <AnalyticsChart />
+
+        </div>
+
+        <div className="bg-white dark:bg-slate-900 rounded-[2rem] p-6 shadow-sm border border-gray-200 dark:border-slate-800">
+
+          <div className="mb-6">
+
+            <h2 className="text-2xl font-bold text-gray-800 dark:text-white">
+              Expense Categories
+            </h2>
+
+            <p className="text-sm text-gray-500 dark:text-slate-400 mt-1">
+              Track where money is going
+            </p>
+
+          </div>
+
+          <CategoryChart />
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </DashboardLayout>
+);
 }
