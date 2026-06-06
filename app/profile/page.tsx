@@ -12,6 +12,9 @@ import {
   Camera,
   LogOut,
   Save,
+  Building2,
+  Mail,
+  ShieldCheck,
 } from "lucide-react";
 
 export default function ProfilePage() {
@@ -44,9 +47,6 @@ export default function ProfilePage() {
       } =
         await supabase.auth.getUser();
 
-    
-
-
       if (!user) {
 
         router.push("/login");
@@ -68,9 +68,7 @@ export default function ProfilePage() {
           )
           .single();
 
-        
-
-      /* IF PROFILE DOESN'T EXIST */
+      /* CREATE EMPTY PROFILE */
 
       if (
         error ||
@@ -136,10 +134,11 @@ export default function ProfilePage() {
       alert(
         error.message
       );
+
     } else {
 
       alert(
-        "Profile updated"
+        "Profile updated successfully"
       );
     }
 
@@ -262,80 +261,139 @@ export default function ProfilePage() {
 
     <DashboardLayout>
 
-      <div className="max-w-3xl mx-auto space-y-8">
+      <div className="max-w-5xl mx-auto space-y-8 pb-10">
 
-        {/* HEADER */}
+        {/* HERO */}
 
-        <div>
+        <div className="relative overflow-hidden rounded-[2rem] bg-gradient-to-br from-blue-600 via-cyan-500 to-indigo-700 p-8 md:p-10 text-white shadow-2xl">
 
-          <h1 className="text-3xl font-bold text-gray-800 dark:text-white">
-            Profile
-          </h1>
+          <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,white,transparent_40%)] opacity-10" />
 
-          <p className="text-gray-500 dark:text-slate-400 mt-1">
-            Manage your business account
-          </p>
+          <div className="relative z-10 flex flex-col lg:flex-row lg:items-center lg:justify-between gap-8">
 
-        </div>
+            {/* LEFT */}
 
-        {/* PROFILE CARD */}
+            <div>
 
-        <div className="bg-white dark:bg-slate-900 border border-gray-200 dark:border-slate-800 rounded-3xl p-8 shadow-sm">
+              <div className="inline-flex items-center gap-2 bg-white/15 backdrop-blur-md px-4 py-2 rounded-full text-sm font-medium">
 
-          <div className="flex flex-col items-center">
+                <ShieldCheck className="w-4 h-4" />
 
-            {/* IMAGE */}
-
-            <div className="relative">
-
-              <div className="w-32 h-32 rounded-full overflow-hidden bg-gradient-to-br from-blue-600 to-cyan-500 flex items-center justify-center">
-
-                {logoUrl ? (
-
-                  <img
-                    src={logoUrl}
-                    alt="Logo"
-                    className="w-full h-full object-cover"
-                  />
-
-                ) : (
-
-                  <span className="text-white text-4xl font-bold">
-                    {businessName
-                      ?.charAt(0)
-                      ?.toUpperCase() || "B"}
-                  </span>
-
-                )}
+                Business Profile
 
               </div>
 
-              <label className="absolute bottom-0 right-0 bg-blue-600 hover:bg-blue-700 text-white p-3 rounded-full cursor-pointer shadow-lg transition">
+              <h1 className="text-4xl lg:text-5xl font-black mt-5 leading-tight">
 
-                <Camera size={18} />
+                Manage
+                <br />
+                Your Account
 
-                <input
-                  type="file"
-                  accept="image/*"
-                  onChange={
-                    handleUpload
-                  }
-                  hidden
-                />
+              </h1>
 
-              </label>
+              <p className="text-blue-100 mt-4 max-w-2xl text-lg">
+
+                Customize your business identity, upload your logo,
+                and manage account information.
+
+              </p>
 
             </div>
 
-            {/* FORM */}
+            {/* RIGHT */}
 
-            <div className="w-full mt-8 space-y-5">
+            <div className="flex flex-col items-center">
 
-              <div>
+              <div className="relative">
 
-                <label className="text-sm font-medium text-gray-500 dark:text-slate-400">
-                  Business Name
+                <div className="w-36 h-36 rounded-[2rem] overflow-hidden bg-white/15 backdrop-blur-md border border-white/20 shadow-2xl flex items-center justify-center">
+
+                  {logoUrl ? (
+
+                    <img
+                      src={logoUrl}
+                      alt="Business Logo"
+                      className="w-full h-full object-cover"
+                    />
+
+                  ) : (
+
+                    <span className="text-white text-5xl font-black">
+                      {businessName
+                        ?.charAt(0)
+                        ?.toUpperCase() || "B"}
+                    </span>
+
+                  )}
+
+                </div>
+
+                <label className="absolute -bottom-2 -right-2 w-14 h-14 rounded-2xl bg-white text-blue-700 shadow-xl flex items-center justify-center cursor-pointer hover:scale-110 transition">
+
+                  <Camera className="w-5 h-5" />
+
+                  <input
+                    type="file"
+                    accept="image/*"
+                    onChange={
+                      handleUpload
+                    }
+                    hidden
+                  />
+
                 </label>
+
+              </div>
+
+              <p className="text-sm text-blue-100 mt-5">
+                Upload business logo
+              </p>
+
+            </div>
+
+          </div>
+
+        </div>
+
+        {/* PROFILE FORM */}
+
+        <div className="bg-white dark:bg-slate-900 border border-gray-200 dark:border-slate-800 rounded-[2rem] p-6 md:p-8 shadow-sm">
+
+          <div className="flex items-center gap-3 mb-8">
+
+            <div className="w-14 h-14 rounded-2xl bg-blue-100 dark:bg-blue-500/20 flex items-center justify-center">
+
+              <Building2 className="w-7 h-7 text-blue-600 dark:text-blue-400" />
+
+            </div>
+
+            <div>
+
+              <h2 className="text-2xl font-bold text-gray-800 dark:text-white">
+                Business Information
+              </h2>
+
+              <p className="text-gray-500 dark:text-slate-400 mt-1">
+                Update your business identity and account details
+              </p>
+
+            </div>
+
+          </div>
+
+          <div className="space-y-6">
+
+            {/* BUSINESS NAME */}
+
+            <div>
+
+              <label className="text-sm font-semibold text-gray-600 dark:text-slate-300">
+                Business Name
+              </label>
+
+              <div className="relative mt-2">
+
+                <Building2 className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
 
                 <input
                   type="text"
@@ -348,65 +406,96 @@ export default function ProfilePage() {
                     )
                   }
                   placeholder="My Business"
-                  className="w-full mt-2 rounded-2xl border border-gray-200 dark:border-slate-700 bg-gray-50 dark:bg-slate-950 px-5 py-4 outline-none focus:ring-2 focus:ring-blue-500 text-black dark:text-white"
+                  className="w-full rounded-2xl border border-gray-200 dark:border-slate-700 bg-gray-50 dark:bg-slate-950 pl-12 pr-5 py-4 outline-none focus:ring-2 focus:ring-blue-500 text-black dark:text-white placeholder:text-gray-400"
                 />
 
               </div>
 
-              <div>
+            </div>
 
-                <label className="text-sm font-medium text-gray-500 dark:text-slate-400">
-                  Email Address
-                </label>
+            {/* EMAIL */}
 
-                <div className="w-full mt-2 rounded-2xl border border-gray-200 dark:border-slate-700 bg-gray-100 dark:bg-slate-950 px-5 py-4 text-gray-600 dark:text-slate-300">
+            <div>
+
+              <label className="text-sm font-semibold text-gray-600 dark:text-slate-300">
+                Email Address
+              </label>
+
+              <div className="relative mt-2">
+
+                <Mail className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
+
+                <div className="w-full rounded-2xl border border-gray-200 dark:border-slate-700 bg-gray-100 dark:bg-slate-950 pl-12 pr-5 py-4 text-gray-700 dark:text-slate-300">
+
                   {email}
+
                 </div>
 
               </div>
 
-              <button
-                onClick={
-                  handleSave
-                }
-                disabled={
-                  loading
-                }
-                className="w-full bg-gradient-to-r from-blue-600 to-cyan-500 text-white rounded-2xl py-4 font-semibold shadow-lg hover:scale-[1.01] transition flex items-center justify-center gap-2"
-              >
-
-                <Save size={18} />
-
-                {loading
-                  ? "Saving..."
-                  : "Save Changes"}
-
-              </button>
-
             </div>
+
+            {/* SAVE BUTTON */}
+
+            <button
+              onClick={
+                handleSave
+              }
+              disabled={
+                loading
+              }
+              className="w-full bg-gradient-to-r from-blue-600 via-cyan-500 to-indigo-600 hover:opacity-95 text-white rounded-2xl py-4 font-semibold shadow-lg transition-all duration-300 hover:scale-[1.01] flex items-center justify-center gap-3"
+            >
+
+              <Save size={18} />
+
+              {loading
+                ? "Saving..."
+                : "Save Changes"}
+
+            </button>
 
           </div>
 
         </div>
 
-        {/* LOGOUT */}
+        {/* LOGOUT CARD */}
 
-        <button
-          onClick={
-            handleLogout
-          }
-          className="w-full bg-red-500 hover:bg-red-600 text-white rounded-2xl py-4 font-semibold transition flex items-center justify-center gap-2"
-        >
+        <div className="bg-white dark:bg-slate-900 border border-red-200 dark:border-red-900/40 rounded-[2rem] p-6 shadow-sm">
 
-          <LogOut size={18} />
+          <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-5">
 
-          Logout
+            <div>
 
-        </button>
+              <h2 className="text-xl font-bold text-gray-800 dark:text-white">
+                Logout Session
+              </h2>
+
+              <p className="text-gray-500 dark:text-slate-400 mt-1">
+                Securely sign out from your business dashboard
+              </p>
+
+            </div>
+
+            <button
+              onClick={
+                handleLogout
+              }
+              className="bg-red-500 hover:bg-red-600 text-white rounded-2xl px-6 py-4 font-semibold transition-all duration-300 hover:scale-[1.02] flex items-center justify-center gap-3 shadow-lg"
+            >
+
+              <LogOut size={18} />
+
+              Logout
+
+            </button>
+
+          </div>
+
+        </div>
 
       </div>
 
     </DashboardLayout>
   );
 }
-
