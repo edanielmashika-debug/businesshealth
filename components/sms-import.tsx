@@ -7,11 +7,11 @@ import {
 } from "@/store/transaction-store";
 
 import {
-  Sparkles,
   Smartphone,
-  CheckCircle2,
+  Sparkles,
   ArrowDownCircle,
   ArrowUpCircle,
+  CheckCircle2,
 } from "lucide-react";
 
 export default function SmsImport() {
@@ -87,63 +87,40 @@ export default function SmsImport() {
     return "Mobile Money";
   }
 
+  function detectType(
+    text: string
+  ) {
+
+    const lower =
+      text.toLowerCase();
+
+    const isRevenue =
+
+      lower.includes(
+        "received"
+      ) ||
+
+      lower.includes(
+        "umepokea"
+      ) ||
+
+      lower.includes(
+        "cash received"
+      ) ||
+
+      lower.includes(
+        "paid to you"
+      );
+
+    return isRevenue
+      ? "revenue"
+      : "expense";
+  }
+
   function handleImport() {
 
     if (!sms)
       return;
-
-    const lowerMessage =
-      sms.toLowerCase();
-
-    const isRevenue =
-
-      lowerMessage.includes(
-        "received"
-      ) ||
-
-      lowerMessage.includes(
-        "umepokea"
-      ) ||
-
-      lowerMessage.includes(
-        "cash received"
-      ) ||
-
-      lowerMessage.includes(
-        "paid to you"
-      );
-
-    const isExpense =
-
-      lowerMessage.includes(
-        "sent"
-      ) ||
-
-      lowerMessage.includes(
-        "umetuma"
-      ) ||
-
-      lowerMessage.includes(
-        "umetoa"
-      ) ||
-
-      lowerMessage.includes(
-        "payment"
-      ) ||
-
-      lowerMessage.includes(
-        "withdraw"
-      ) ||
-
-      lowerMessage.includes(
-        "withdrawn"
-      );
-
-    const type:
-      "revenue" | "expense" =
-      isRevenue
-        ? "revenue"
-        : "expense";
 
     const amount =
       extractAmount(
@@ -152,6 +129,11 @@ export default function SmsImport() {
 
     const provider =
       detectProvider(
+        sms
+      );
+
+    const type =
+      detectType(
         sms
       );
 
@@ -180,31 +162,20 @@ export default function SmsImport() {
     setSms("");
   }
 
-  const detectedProvider =
-    sms
-      ? detectProvider(
-          sms
-        )
-      : null;
+  const previewAmount =
+    extractAmount(
+      sms
+    );
 
-  const detectedAmount =
-    sms
-      ? extractAmount(
-          sms
-        )
-      : 0;
+  const previewProvider =
+    detectProvider(
+      sms
+    );
 
-  const detectedType =
-    sms.toLowerCase().includes(
-      "received"
-    ) ||
-    sms.toLowerCase().includes(
-      "umepokea"
-    )
-      ? "revenue"
-      : sms
-      ? "expense"
-      : null;
+  const previewType =
+    detectType(
+      sms
+    );
 
   return (
 
@@ -229,13 +200,13 @@ export default function SmsImport() {
             </div>
 
             <h2 className="text-3xl font-black mt-5 leading-tight">
-              Paste Mobile
+              Import
               <br />
-              Money SMS
+              Mobile Money SMS
             </h2>
 
             <p className="text-blue-100 mt-3 max-w-xl">
-              Automatically extract amount, provider, and transaction type from SMS messages.
+              Paste transaction messages and automatically extract amount, provider and transaction type.
             </p>
 
           </div>
@@ -250,27 +221,19 @@ export default function SmsImport() {
 
       </div>
 
-      {/* TEXTAREA */}
+      {/* INPUT */}
 
       <div className="bg-white dark:bg-slate-900 border border-gray-200 dark:border-slate-800 rounded-[2rem] p-5 shadow-sm">
 
-        <div className="flex items-center justify-between mb-4">
+        <div className="mb-5">
 
-          <div>
+          <h3 className="text-xl font-bold text-gray-800 dark:text-white">
+            SMS Message
+          </h3>
 
-            <h3 className="text-xl font-bold text-gray-800 dark:text-white">
-              SMS Message
-            </h3>
-
-            <p className="text-sm text-gray-500 dark:text-slate-400 mt-1">
-              Paste the full mobile money message below
-            </p>
-
-          </div>
-
-          <div className="bg-blue-100 dark:bg-blue-500/20 text-blue-700 dark:text-blue-300 px-4 py-2 rounded-2xl text-sm font-semibold">
-            Auto Detect
-          </div>
+          <p className="text-sm text-gray-500 dark:text-slate-400 mt-1">
+            Paste the full message from M-Pesa, Airtel Money or Tigo Pesa.
+          </p>
 
         </div>
 
@@ -288,7 +251,7 @@ Umepokea TZS 50,000 kutoka kwa John kupitia M-Pesa..."
 
       </div>
 
-      {/* DETECTED PREVIEW */}
+      {/* LIVE PREVIEW */}
 
       {
         sms && (
@@ -308,7 +271,7 @@ Umepokea TZS 50,000 kutoka kwa John kupitia M-Pesa..."
                 </p>
 
                 <h2 className="text-2xl font-black text-blue-600 dark:text-blue-400 mt-3">
-                  {detectedProvider}
+                  {previewProvider}
                 </h2>
 
               </div>
@@ -329,7 +292,7 @@ Umepokea TZS 50,000 kutoka kwa John kupitia M-Pesa..."
 
                 <h2 className="text-2xl font-black text-green-600 mt-3">
                   TZS{" "}
-                  {detectedAmount.toLocaleString()}
+                  {previewAmount.toLocaleString()}
                 </h2>
 
               </div>
@@ -342,7 +305,7 @@ Umepokea TZS 50,000 kutoka kwa John kupitia M-Pesa..."
 
               <div
                 className={`absolute top-0 right-0 w-32 h-32 rounded-full blur-3xl ${
-                  detectedType ===
+                  previewType ===
                   "revenue"
                     ? "bg-green-500/10"
                     : "bg-red-500/10"
@@ -359,14 +322,14 @@ Umepokea TZS 50,000 kutoka kwa John kupitia M-Pesa..."
 
                   <div
                     className={`w-12 h-12 rounded-2xl flex items-center justify-center ${
-                      detectedType ===
+                      previewType ===
                       "revenue"
                         ? "bg-green-100 dark:bg-green-500/20 text-green-600"
                         : "bg-red-100 dark:bg-red-500/20 text-red-600"
                     }`}
                   >
 
-                    {detectedType ===
+                    {previewType ===
                     "revenue" ? (
 
                       <ArrowDownCircle className="w-6 h-6" />
@@ -381,13 +344,13 @@ Umepokea TZS 50,000 kutoka kwa John kupitia M-Pesa..."
 
                   <h2
                     className={`text-xl font-black capitalize ${
-                      detectedType ===
+                      previewType ===
                       "revenue"
                         ? "text-green-600"
                         : "text-red-500"
                     }`}
                   >
-                    {detectedType}
+                    {previewType}
                   </h2>
 
                 </div>
