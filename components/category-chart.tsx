@@ -59,7 +59,7 @@ export default function CategoryChart() {
 
   return (
 
-    <div className="h-[350px]">
+    <div className="h-[380px] w-full">
 
       <ResponsiveContainer
         width="100%"
@@ -68,30 +68,52 @@ export default function CategoryChart() {
 
         <BarChart
           data={data}
+          margin={{
+            top: 10,
+            right: 20,
+            left: -10,
+            bottom: 0,
+          }}
         >
 
           <CartesianGrid
-            strokeDasharray="3 3"
-            stroke="#e5e7eb"
+            strokeDasharray="4 4"
+            stroke="#1e293b"
+            vertical={false}
           />
 
           <XAxis
             dataKey="name"
             stroke="#94a3b8"
+            tickLine={false}
+            axisLine={false}
           />
 
           <YAxis
             stroke="#94a3b8"
+            tickLine={false}
+            axisLine={false}
           />
 
-          <Tooltip />
+          <Tooltip
+            contentStyle={{
+              background:
+                "#0f172a",
+              border:
+                "1px solid #1e293b",
+              borderRadius:
+                "16px",
+              color:
+                "white",
+            }}
+          />
 
           <Bar
             dataKey="amount"
             fill="#ef4444"
             radius={[
-              10,
-              10,
+              14,
+              14,
               0,
               0,
             ]}

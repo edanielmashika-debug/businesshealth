@@ -65,7 +65,7 @@ export default function AnalyticsChart() {
 
   return (
 
-    <div className="h-[350px]">
+    <div className="h-[380px] w-full">
 
       <ResponsiveContainer
         width="100%"
@@ -74,12 +74,18 @@ export default function AnalyticsChart() {
 
         <AreaChart
           data={data}
+          margin={{
+            top: 10,
+            right: 20,
+            left: -10,
+            bottom: 0,
+          }}
         >
 
           <defs>
 
             <linearGradient
-              id="colorRevenue"
+              id="revenueGradient"
               x1="0"
               y1="0"
               x2="0"
@@ -88,41 +94,56 @@ export default function AnalyticsChart() {
 
               <stop
                 offset="5%"
-                stopColor="#3b82f6"
-                stopOpacity={0.4}
+                stopColor="#06b6d4"
+                stopOpacity={0.5}
               />
 
               <stop
                 offset="95%"
-                stopColor="#3b82f6"
+                stopColor="#06b6d4"
                 stopOpacity={0}
               />
             </linearGradient>
           </defs>
 
           <CartesianGrid
-            strokeDasharray="3 3"
-            stroke="#e5e7eb"
+            strokeDasharray="4 4"
+            stroke="#1e293b"
+            vertical={false}
           />
 
           <XAxis
             dataKey="date"
             stroke="#94a3b8"
+            tickLine={false}
+            axisLine={false}
           />
 
           <YAxis
             stroke="#94a3b8"
+            tickLine={false}
+            axisLine={false}
           />
 
-          <Tooltip />
+          <Tooltip
+            contentStyle={{
+              background:
+                "#0f172a",
+              border:
+                "1px solid #1e293b",
+              borderRadius:
+                "16px",
+              color:
+                "white",
+            }}
+          />
 
           <Area
             type="monotone"
             dataKey="revenue"
-            stroke="#2563eb"
+            stroke="#06b6d4"
             strokeWidth={4}
-            fillOpacity={1}
-            fill="url(#colorRevenue)"
+            fill="url(#revenueGradient)"
           />
         </AreaChart>
       </ResponsiveContainer>
