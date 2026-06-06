@@ -185,7 +185,7 @@ export default function DashboardLayout({
 
                 <div className="p-6 border-b">
                     <h1 className="text-2xl font-bold">
-                        BusinessHealth
+                        Biashara Nova.
                     </h1>
 
                     <p className="text-sm text-gray-500 dark:text-slate-400">
@@ -193,11 +193,7 @@ export default function DashboardLayout({
                     </p>
                 </div>
 
-                {/* SEARCH */}
-
-                <div className="p-4">
-                   <h1>BIASHARA NOVA!</h1>
-                </div>
+         
 
                 {/* LINKS */}
 
