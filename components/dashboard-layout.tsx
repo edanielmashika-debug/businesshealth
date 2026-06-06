@@ -196,10 +196,7 @@ export default function DashboardLayout({
                 {/* SEARCH */}
 
                 <div className="p-4">
-                    <input
-                        placeholder="Search..."
-                        className="w-full border rounded-xl px-4 py-3 outline-none"
-                    />
+                   <h1>BIASHARA NOVA!</h1>
                 </div>
 
                 {/* LINKS */}
