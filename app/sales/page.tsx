@@ -23,6 +23,7 @@ import {
   CalendarDays,
   Plus,
   X,
+  Sparkles,
 } from "lucide-react";
 
 export default function SalesPage() {
@@ -71,10 +72,15 @@ export default function SalesPage() {
   const [quantity, setQuantity] =
     useState("");
 
+  const [showForm, setShowForm] =
+    useState(false);
+
   useEffect(() => {
+
     fetchProducts();
 
     fetchSales();
+
   }, []);
 
   const selectedProduct =
@@ -124,7 +130,9 @@ export default function SalesPage() {
     }
 
     await createSale({
-      id: crypto.randomUUID(),
+
+      id:
+        crypto.randomUUID(),
 
       productId:
         selectedProduct.id,
@@ -151,6 +159,8 @@ export default function SalesPage() {
     setSelectedProductId("");
 
     setQuantity("");
+
+    setShowForm(false);
   }
 
   const totalRevenue =
@@ -167,42 +177,58 @@ export default function SalesPage() {
       0
     );
 
-  const [showForm, setShowForm] =
-    useState(false);
-
   return (
+
     <DashboardLayout>
 
-      <div className="space-y-8">
+      <div className="space-y-8 pb-10">
 
-        {/* HEADER */}
+        {/* HERO */}
 
-        <div className="flex items-start justify-between gap-4">
+        <div className="relative overflow-hidden rounded-[2rem] bg-gradient-to-br from-blue-600 via-cyan-500 to-indigo-700 p-8 text-white shadow-2xl">
 
-          <div>
+          <div className="absolute inset-0 opacity-10 bg-[radial-gradient(circle_at_top_right,white,transparent_40%)]" />
 
-            <h1 className="text-3xl font-bold text-gray-800 dark:text-white">
-              Sales
-            </h1>
+          <div className="relative z-10 flex flex-col lg:flex-row lg:items-center lg:justify-between gap-6">
 
-            <p className="text-gray-500 dark:text-slate-400 mt-1">
-              Record and track your business sales
-            </p>
+            <div>
+
+              <div className="inline-flex items-center gap-2 bg-white/15 backdrop-blur-md px-4 py-2 rounded-full text-sm font-medium">
+
+                <Sparkles className="w-4 h-4" />
+
+                Sales Dashboard
+
+              </div>
+
+              <h1 className="text-4xl lg:text-5xl font-black mt-5 leading-tight">
+
+                Track
+                <br />
+                Product Sales
+
+              </h1>
+
+              <p className="text-blue-100 mt-4 max-w-2xl text-lg">
+
+                Record sales, monitor revenue, and analyze business growth in real time.
+
+              </p>
+
+            </div>
+
+            <button
+              onClick={() =>
+                setShowForm(true)
+              }
+              className="w-20 h-20 rounded-[2rem] bg-white text-blue-700 shadow-2xl flex items-center justify-center hover:scale-110 active:scale-95 transition-all duration-300"
+            >
+
+              <Plus size={40} />
+
+            </button>
 
           </div>
-
-          {/* ADD BUTTON */}
-
-          <button
-            onClick={() =>
-              setShowForm(true)
-            }
-            className="w-14 h-14 rounded-2xl bg-gradient-to-r from-blue-600 to-cyan-500 text-white flex items-center justify-center shadow-lg hover:scale-105 transition"
-          >
-
-            <Plus size={26} />
-
-          </button>
 
         </div>
 
@@ -210,115 +236,236 @@ export default function SalesPage() {
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
 
-          <div className="bg-gradient-to-br from-blue-600 to-cyan-500 rounded-3xl p-6 text-white shadow-lg">
+          {/* REVENUE */}
 
-            <div className="flex items-center justify-between">
+          <div className="relative overflow-hidden bg-white dark:bg-slate-900 rounded-[2rem] p-6 border border-gray-200 dark:border-slate-800 shadow-sm hover:shadow-xl transition">
 
-              <div>
-                <p className="text-sm opacity-80">
-                  Total Revenue
-                </p>
+            <div className="absolute top-0 right-0 w-40 h-40 bg-blue-500/10 rounded-full blur-3xl" />
 
-                <h2 className="text-3xl font-bold mt-2">
-                  TZS{" "}
-                  {totalRevenue.toLocaleString()}
-                </h2>
-              </div>
+            <div className="relative z-10">
 
-              <div className="bg-white/20 p-3 rounded-2xl">
-                <DollarSign />
-              </div>
+              <p className="text-sm text-gray-500 dark:text-slate-400">
+                Total Revenue
+              </p>
+
+              <h2 className="text-4xl font-black mt-3 text-blue-600 dark:text-blue-400">
+                TZS {totalRevenue.toLocaleString()}
+              </h2>
+
             </div>
+
           </div>
 
-          <div className="bg-gradient-to-br from-green-500 to-emerald-700 rounded-3xl p-6 text-white shadow-lg">
+          {/* PROFIT */}
 
-            <div className="flex items-center justify-between">
+          <div className="relative overflow-hidden bg-white dark:bg-slate-900 rounded-[2rem] p-6 border border-gray-200 dark:border-slate-800 shadow-sm hover:shadow-xl transition">
 
-              <div>
-                <p className="text-sm opacity-80">
-                  Total Profit
-                </p>
+            <div className="absolute top-0 right-0 w-40 h-40 bg-green-500/10 rounded-full blur-3xl" />
 
-                <h2 className="text-3xl font-bold mt-2">
-                  TZS{" "}
-                  {totalProfit.toLocaleString()}
-                </h2>
-              </div>
+            <div className="relative z-10">
 
-              <div className="bg-white/20 p-3 rounded-2xl">
-                <TrendingUp />
-              </div>
+              <p className="text-sm text-gray-500 dark:text-slate-400">
+                Total Profit
+              </p>
+
+              <h2 className="text-4xl font-black mt-3 text-green-600">
+                TZS {totalProfit.toLocaleString()}
+              </h2>
+
             </div>
+
           </div>
 
-          <div className="bg-gradient-to-br from-purple-500 to-violet-700 rounded-3xl p-6 text-white shadow-lg">
+          {/* SALES COUNT */}
 
-            <div className="flex items-center justify-between">
+          <div className="relative overflow-hidden bg-white dark:bg-slate-900 rounded-[2rem] p-6 border border-gray-200 dark:border-slate-800 shadow-sm hover:shadow-xl transition">
 
-              <div>
-                <p className="text-sm opacity-80">
-                  Sales Count
-                </p>
+            <div className="absolute top-0 right-0 w-40 h-40 bg-purple-500/10 rounded-full blur-3xl" />
 
-                <h2 className="text-3xl font-bold mt-2">
-                  {sales.length}
-                </h2>
-              </div>
+            <div className="relative z-10">
 
-              <div className="bg-white/20 p-3 rounded-2xl">
-                <ShoppingCart />
-              </div>
+              <p className="text-sm text-gray-500 dark:text-slate-400">
+                Sales Count
+              </p>
+
+              <h2 className="text-4xl font-black mt-3 text-purple-600 dark:text-purple-400">
+                {sales.length}
+              </h2>
+
             </div>
+
           </div>
+
         </div>
 
-        {/* FORM */}
+        {/* SALES LIST */}
 
-        {/* FORM POPUP */}
+        <div className="space-y-5">
 
-        {
-          showForm && (
+          {sales.map((sale) => (
 
-            <div className="fixed inset-0 z-50 bg-black/50 backdrop-blur-sm flex items-center justify-center p-4">
+            <div
+              key={sale.id}
+              className="relative overflow-hidden bg-white dark:bg-slate-900 rounded-[2rem] border border-gray-200 dark:border-slate-800 p-6 shadow-sm hover:shadow-xl transition"
+            >
 
-              <div className="w-full max-w-3xl bg-white dark:bg-slate-900 rounded-3xl p-6 shadow-2xl border border-gray-200 dark:border-slate-800 relative max-h-[90vh] overflow-y-auto">
+              <div className="absolute top-0 right-0 w-40 h-40 bg-blue-500/5 rounded-full blur-3xl" />
 
-                {/* CLOSE BUTTON */}
+              <div className="relative z-10">
 
-                <button
-                  onClick={() =>
-                    setShowForm(false)
-                  }
-                  className="absolute top-5 right-5 w-11 h-11 rounded-full bg-gray-100 dark:bg-slate-800 text-black dark:text-white flex items-center justify-center hover:scale-110 transition"
-                >
+                <div className="flex flex-col lg:flex-row lg:items-start lg:justify-between gap-6">
 
-                  <X size={22} />
+                  <div>
 
-                </button>
+                    <div className="inline-flex items-center gap-2 bg-blue-100 dark:bg-blue-500/20 text-blue-700 dark:text-blue-300 px-4 py-2 rounded-full text-sm font-semibold">
 
-                <div className="mb-6">
+                      <ShoppingCart className="w-4 h-4" />
 
-                  <h2 className="text-2xl font-bold text-gray-800 dark:text-white">
-                    Record Sale
-                  </h2>
+                      Product Sale
 
-                  <p className="text-sm text-gray-500 dark:text-slate-400 mt-1">
-                    Create and track product sales
-                  </p>
+                    </div>
+
+                    <h2 className="text-3xl font-black text-gray-800 dark:text-white mt-4">
+
+                      {sale.productName}
+
+                    </h2>
+
+                  </div>
+
+                  <div className="text-left lg:text-right">
+
+                    <p className="text-sm text-gray-500 dark:text-slate-400">
+                      Revenue
+                    </p>
+
+                    <h2 className="text-4xl font-black text-blue-600 dark:text-blue-400 mt-2">
+
+                      TZS {sale.total.toLocaleString()}
+
+                    </h2>
+
+                  </div>
 
                 </div>
 
+                {/* DETAILS */}
+
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-8">
+
+                  <div className="bg-gray-50 dark:bg-slate-800 rounded-3xl p-5">
+
+                    <p className="text-sm text-gray-500 dark:text-slate-400">
+                      Quantity Sold
+                    </p>
+
+                    <h3 className="text-2xl font-bold mt-2 text-black dark:text-white">
+
+                      {sale.quantity}
+
+                    </h3>
+
+                  </div>
+
+                  <div className="bg-green-50 dark:bg-green-950/30 rounded-3xl p-5 border border-green-100 dark:border-green-900">
+
+                    <p className="text-sm text-green-600 dark:text-green-400">
+                      Profit Earned
+                    </p>
+
+                    <h3 className="text-2xl font-bold mt-2 text-green-600 dark:text-green-400">
+
+                      TZS {sale.profit.toLocaleString()}
+
+                    </h3>
+
+                  </div>
+
+                  <div className="bg-gray-50 dark:bg-slate-800 rounded-3xl p-5">
+
+                    <p className="text-sm text-gray-500 dark:text-slate-400 flex items-center gap-2">
+
+                      <CalendarDays className="w-4 h-4" />
+
+                      Sale Date
+
+                    </p>
+
+                    <h3 className="text-sm font-semibold mt-2 text-black dark:text-white">
+
+                      {new Date(
+                        sale.createdAt
+                      ).toLocaleDateString()}
+
+                    </h3>
+
+                  </div>
+
+                </div>
+
+              </div>
+
+            </div>
+          ))}
+
+        </div>
+
+      </div>
+
+      {/* POPUP */}
+
+      {
+        showForm && (
+
+          <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-md flex items-center justify-center p-4">
+
+            <div className="w-full max-w-3xl max-h-[92vh] overflow-hidden bg-white dark:bg-slate-900 rounded-[2rem] border border-gray-200 dark:border-slate-800 shadow-2xl relative">
+
+              {/* SCROLLABLE */}
+
+              <div className="max-h-[92vh] overflow-y-auto">
+
+                {/* HEADER */}
+
+                <div className="sticky top-0 z-20 bg-white/95 dark:bg-slate-900/95 backdrop-blur-md border-b border-gray-200 dark:border-slate-800 p-6 flex items-center justify-between">
+
+                  <div>
+
+                    <h2 className="text-2xl font-black text-gray-800 dark:text-white">
+                      Record Sale
+                    </h2>
+
+                    <p className="text-sm text-gray-500 dark:text-slate-400 mt-1">
+                      Create and track product sales
+                    </p>
+
+                  </div>
+
+                  <button
+                    onClick={() =>
+                      setShowForm(false)
+                    }
+                    className="w-11 h-11 rounded-full bg-gray-100 dark:bg-slate-800 text-black dark:text-white flex items-center justify-center hover:scale-110 transition"
+                  >
+
+                    <X size={22} />
+
+                  </button>
+
+                </div>
+
+                {/* FORM */}
+
                 <form
                   onSubmit={handleSubmit}
-                  className="space-y-5"
+                  className="p-6 space-y-6"
                 >
 
                   <div>
 
-                    <span className="text-sm font-medium text-gray-500 dark:text-slate-400">
+                    <label className="text-sm font-medium text-gray-500 dark:text-slate-400">
                       Product
-                    </span>
+                    </label>
 
                     <select
                       value={selectedProductId}
@@ -327,7 +474,7 @@ export default function SalesPage() {
                           e.target.value
                         )
                       }
-                      className="mt-2 w-full rounded-2xl border border-gray-200 dark:border-slate-700 bg-gray-50 dark:bg-slate-800 px-4 py-4 outline-none focus:ring-2 focus:ring-blue-500 transition text-black dark:text-white"
+                      className="mt-2 w-full rounded-3xl border border-gray-200 dark:border-slate-700 bg-gray-50 dark:bg-slate-800 px-5 py-5 outline-none focus:ring-2 focus:ring-blue-500 text-black dark:text-white"
                     >
 
                       <option value="">
@@ -352,9 +499,9 @@ export default function SalesPage() {
 
                   <div>
 
-                    <span className="text-sm font-medium text-gray-500 dark:text-slate-400">
+                    <label className="text-sm font-medium text-gray-500 dark:text-slate-400">
                       Quantity
-                    </span>
+                    </label>
 
                     <input
                       type="number"
@@ -365,65 +512,69 @@ export default function SalesPage() {
                           e.target.value
                         )
                       }
-                      className="mt-2 w-full rounded-2xl border border-gray-200 dark:border-slate-700 bg-gray-50 dark:bg-slate-800 px-4 py-4 outline-none focus:ring-2 focus:ring-blue-500 transition text-black dark:text-white placeholder:text-gray-400"
+                      className="mt-2 w-full rounded-3xl border border-gray-200 dark:border-slate-700 bg-gray-50 dark:bg-slate-800 px-5 py-5 outline-none focus:ring-2 focus:ring-blue-500 text-black dark:text-white placeholder:text-gray-400"
                     />
 
                   </div>
 
-                  {/* TOTAL */}
+                  {/* TOTALS */}
 
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
 
-                    <div className="bg-blue-50 dark:bg-blue-950/40 border border-blue-100 dark:border-blue-900 rounded-3xl p-6">
+                    <div className="bg-blue-50 dark:bg-blue-950/30 border border-blue-100 dark:border-blue-900 rounded-[2rem] p-6">
 
                       <p className="text-sm text-blue-600 dark:text-blue-400">
                         Total Amount
                       </p>
 
-                      <h2 className="text-4xl font-bold text-blue-700 dark:text-blue-300 mt-2">
+                      <h2 className="text-4xl font-black text-blue-700 dark:text-blue-300 mt-3">
+
                         TZS {total.toLocaleString()}
+
                       </h2>
 
                     </div>
 
-                    <div className="bg-green-50 dark:bg-green-950/40 border border-green-100 dark:border-green-900 rounded-3xl p-6">
+                    <div className="bg-green-50 dark:bg-green-950/30 border border-green-100 dark:border-green-900 rounded-[2rem] p-6">
 
                       <p className="text-sm text-green-600 dark:text-green-400">
                         Total Profit
                       </p>
 
-                      <h2 className="text-4xl font-bold text-green-700 dark:text-green-300 mt-2">
+                      <h2 className="text-4xl font-black text-green-700 dark:text-green-300 mt-3">
+
                         TZS {profit.toLocaleString()}
+
                       </h2>
 
                     </div>
 
                   </div>
 
-                  {/* STOCK STATUS */}
+                  {/* STOCK */}
 
                   {
                     selectedProduct && (
 
-                      <div className="rounded-3xl border border-gray-200 dark:border-slate-700 bg-gray-50 dark:bg-slate-800 p-5">
+                      <div className="rounded-[2rem] border border-gray-200 dark:border-slate-700 bg-gray-50 dark:bg-slate-800 p-6">
 
                         <div className="flex items-center justify-between">
 
-                          <div className="flex items-center gap-3">
+                          <div className="flex items-center gap-4">
 
-                            <div className="bg-blue-100 dark:bg-blue-900 p-3 rounded-2xl">
+                            <div className="bg-blue-100 dark:bg-blue-900 p-4 rounded-2xl">
 
-                              <Package className="w-5 h-5 text-blue-600 dark:text-blue-300" />
+                              <Package className="w-6 h-6 text-blue-600 dark:text-blue-300" />
 
                             </div>
 
                             <div>
 
-                              <h3 className="font-semibold text-gray-800 dark:text-white">
+                              <h3 className="font-bold text-gray-800 dark:text-white">
                                 Stock Available
                               </h3>
 
-                              <p className="text-sm text-gray-500 dark:text-slate-400">
+                              <p className="text-sm text-gray-500 dark:text-slate-400 mt-1">
                                 {selectedProduct.stock} items remaining
                               </p>
 
@@ -435,7 +586,9 @@ export default function SalesPage() {
                             selectedProduct.stock <= 5 && (
 
                               <div className="bg-red-100 dark:bg-red-900/40 text-red-600 dark:text-red-300 px-4 py-2 rounded-full text-sm font-semibold">
+
                                 Low Stock
+
                               </div>
                             )
                           }
@@ -448,7 +601,7 @@ export default function SalesPage() {
 
                   <button
                     type="submit"
-                    className="w-full mt-2 bg-gradient-to-r from-blue-600 to-cyan-500 text-white rounded-2xl py-4 font-semibold hover:scale-[1.01] transition"
+                    className="w-full bg-gradient-to-r from-blue-600 to-cyan-500 text-white rounded-3xl py-5 font-bold text-lg hover:scale-[1.01] transition"
                   >
                     Record Sale
                   </button>
@@ -458,89 +611,10 @@ export default function SalesPage() {
               </div>
 
             </div>
-          )
-        }
 
-        {/* SALES LIST */}
-
-        <div className="space-y-4">
-
-          {sales.map((sale) => (
-
-            <div
-              key={sale.id}
-              className="bg-white dark:bg-slate-900 rounded-3xl p-6 shadow-sm border border-gray-200 dark:border-slate-800 hover:shadow-md transition"
-            >
-
-              <div className="flex items-start justify-between">
-
-                <div>
-
-                  <h2 className="text-2xl font-bold text-gray-800 dark:text-white">
-                    {sale.productName}
-                  </h2>
-
-                  <p className="text-sm text-gray-500 dark:text-slate-400 mt-1">
-                    Product Sale
-                  </p>
-                </div>
-
-                <div className="text-right">
-
-                  <p className="text-sm text-gray-500 dark:text-slate-400">
-                    Revenue
-                  </p>
-
-                  <h2 className="text-2xl font-bold text-blue-600 dark:text-blue-400">
-                    TZS{" "}
-                    {sale.total.toLocaleString()}
-                  </h2>
-                </div>
-              </div>
-
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-6">
-
-                <div className="bg-gray-50 dark:bg-slate-800 rounded-2xl p-4">
-
-                  <p className="text-sm text-gray-500 dark:text-slate-400">
-                    Quantity
-                  </p>
-
-                  <h3 className="text-xl font-bold mt-1 text-black dark:text-white">
-                    {sale.quantity}
-                  </h3>
-                </div>
-
-                <div className="bg-gray-50 dark:bg-slate-800 rounded-2xl p-4">
-
-                  <p className="text-sm text-gray-500 dark:text-slate-400">
-                    Profit
-                  </p>
-
-                  <h3 className="text-xl font-bold mt-1 text-green-600 dark:text-green-400">
-                    TZS{" "}
-                    {sale.profit.toLocaleString()}
-                  </h3>
-                </div>
-
-                <div className="bg-gray-50 dark:bg-slate-800 rounded-2xl p-4">
-
-                  <p className="text-sm text-gray-500 dark:text-slate-400 flex items-center gap-2">
-                    <CalendarDays className="w-4 h-4" />
-                    Date
-                  </p>
-
-                  <h3 className="text-sm font-semibold mt-1 text-black dark:text-white">
-                    {new Date(
-                      sale.createdAt
-                    ).toLocaleDateString()}
-                  </h3>
-                </div>
-              </div>
-            </div>
-          ))}
-        </div>
-      </div>
+          </div>
+        )
+      }
 
     </DashboardLayout>
   );
