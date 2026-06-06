@@ -265,39 +265,45 @@ return (
 
     {/* POPUP */}
 
-    {
-      showForm && (
+{
+  showForm && (
 
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-md p-4">
+    <div className="fixed inset-0 z-50 bg-black/50 backdrop-blur-md overflow-y-auto">
 
-          <div className="w-full max-w-2xl bg-white dark:bg-slate-900 rounded-[2rem] border border-gray-200 dark:border-slate-800 shadow-2xl relative overflow-hidden">
+      <div className="min-h-screen flex items-start justify-center p-4 py-10">
 
-            {/* TOP GRADIENT */}
+        <div className="w-full max-w-2xl bg-white dark:bg-slate-900 rounded-[2rem] border border-gray-200 dark:border-slate-800 shadow-2xl relative overflow-hidden">
 
-            <div className="h-2 bg-gradient-to-r from-blue-600 via-cyan-500 to-indigo-600" />
+          {/* TOP GRADIENT */}
 
-            {/* CLOSE BUTTON */}
+          <div className="h-2 bg-gradient-to-r from-blue-600 via-cyan-500 to-indigo-600" />
 
-            <button
-              onClick={() =>
-                setShowForm(false)
-              }
-              className="absolute top-5 right-5 w-11 h-11 rounded-full bg-gray-100 dark:bg-slate-800 text-black dark:text-white flex items-center justify-center hover:scale-110 transition"
-            >
-              ✕
-            </button>
+          {/* CLOSE BUTTON */}
 
-            <div className="p-6">
+          <button
+            onClick={() =>
+              setShowForm(false)
+            }
+            className="absolute top-5 right-5 z-20 w-11 h-11 rounded-full bg-gray-100 dark:bg-slate-800 text-black dark:text-white flex items-center justify-center hover:scale-110 transition"
+          >
+            ✕
+          </button>
 
-              <AddTransactionForm />
+          {/* SCROLLABLE CONTENT */}
 
-            </div>
+          <div className="max-h-[85vh] overflow-y-auto p-6">
+
+            <AddTransactionForm />
 
           </div>
 
         </div>
-      )
-    }
+
+      </div>
+
+    </div>
+  )
+}
 
   </DashboardLayout>
 );
