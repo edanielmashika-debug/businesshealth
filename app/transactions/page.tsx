@@ -203,7 +203,7 @@ export default function TransactionsPage() {
         {/* MAIN CONTENT */}
 
         <div className="grid grid-cols-1 xl:grid-cols-2 gap-6">
-
+                                                                                                                                                                                                                                                                                                                                                                                    
 
           {/* TRANSACTIONS LIST */}
 
