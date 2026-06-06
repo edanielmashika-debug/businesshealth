@@ -26,6 +26,8 @@ import {
   Trash2,
   Plus,
   X,
+  BadgeDollarSign,
+  Sparkles,
 } from "lucide-react";
 
 export default function DebtsPage() {
@@ -132,38 +134,57 @@ export default function DebtsPage() {
     );
 
   return (
+
     <DashboardLayout>
 
-      <div className="space-y-8">
+      <div className="space-y-8 pb-10">
 
-        {/* HEADER */}
+        {/* HERO */}
 
-        <div className="flex items-start justify-between gap-4">
+        <div className="relative overflow-hidden rounded-[2.5rem] bg-gradient-to-br from-orange-500 via-amber-500 to-red-500 p-8 lg:p-10 text-white shadow-2xl">
 
-          <div>
+          <div className="absolute inset-0 opacity-10 bg-[radial-gradient(circle_at_top_right,white,transparent_35%)]" />
 
-            <h1 className="text-3xl font-bold text-gray-800 dark:text-white">
-              Debts
-            </h1>
+          <div className="absolute -right-10 -top-10 w-48 h-48 bg-white/10 rounded-full blur-3xl" />
 
-            <p className="text-gray-500 dark:text-slate-400 mt-1">
-              Track customer debts and repayments
-            </p>
+          <div className="relative z-10 flex flex-col lg:flex-row lg:items-center lg:justify-between gap-8">
+
+            <div>
+
+              <div className="inline-flex items-center gap-2 bg-white/15 backdrop-blur-md px-4 py-2 rounded-full text-sm font-medium">
+
+                <Sparkles className="w-4 h-4" />
+
+                Debt Tracking
+
+              </div>
+
+              <h1 className="text-4xl lg:text-5xl font-black mt-5 leading-tight">
+                Customer
+                <br />
+                Debts
+              </h1>
+
+              <p className="text-orange-100 mt-4 max-w-2xl text-lg">
+                Monitor pending payments, paid debts and customer balances.
+              </p>
+
+            </div>
+
+            {/* ADD BUTTON */}
+
+            <button
+              onClick={() =>
+                setShowForm(true)
+              }
+              className="w-20 h-20 rounded-[2rem] bg-white text-orange-600 shadow-2xl flex items-center justify-center hover:scale-110 active:scale-95 transition-all duration-300"
+            >
+
+              <Plus className="w-10 h-10" />
+
+            </button>
 
           </div>
-
-          {/* ADD BUTTON */}
-
-          <button
-            onClick={() =>
-              setShowForm(true)
-            }
-            className="w-14 h-14 rounded-2xl bg-gradient-to-r from-blue-600 to-cyan-500 text-white flex items-center justify-center shadow-lg hover:scale-105 transition"
-          >
-
-            <Plus className="w-7 h-7" />
-
-          </button>
 
         </div>
 
@@ -173,82 +194,120 @@ export default function DebtsPage() {
 
           {/* TOTAL */}
 
-          <div className="bg-gradient-to-br from-red-500 to-rose-700 rounded-3xl p-6 text-white shadow-lg">
+          <div className="relative overflow-hidden bg-white dark:bg-slate-900 rounded-[2rem] border border-gray-200 dark:border-slate-800 p-6 shadow-sm hover:shadow-xl transition">
 
-            <div className="flex items-center justify-between">
+            <div className="absolute top-0 right-0 w-40 h-40 bg-red-500/10 rounded-full blur-3xl" />
 
-              <div>
+            <div className="relative z-10">
 
-                <p className="text-sm opacity-80">
-                  Total Debt
-                </p>
+              <div className="flex items-center justify-between">
 
-                <h2 className="text-3xl font-bold mt-2">
-                  TZS{" "}
-                  {totalDebt.toLocaleString()}
-                </h2>
+                <div>
+
+                  <p className="text-sm font-medium text-gray-500 dark:text-slate-400">
+                    Total Debt
+                  </p>
+
+                  <h2 className="text-4xl font-black mt-3 text-red-500">
+                    TZS{" "}
+                    {totalDebt.toLocaleString()}
+                  </h2>
+
+                </div>
+
+                <div className="w-14 h-14 rounded-2xl bg-red-100 dark:bg-red-500/20 flex items-center justify-center">
+
+                  <Wallet className="w-7 h-7 text-red-500" />
+
+                </div>
+
               </div>
 
-              <div className="bg-white/20 p-3 rounded-2xl">
-                <Wallet />
-              </div>
             </div>
+
           </div>
 
           {/* PAID */}
 
-          <div className="bg-gradient-to-br from-green-500 to-emerald-700 rounded-3xl p-6 text-white shadow-lg">
+          <div className="relative overflow-hidden bg-white dark:bg-slate-900 rounded-[2rem] border border-gray-200 dark:border-slate-800 p-6 shadow-sm hover:shadow-xl transition">
 
-            <div className="flex items-center justify-between">
+            <div className="absolute top-0 right-0 w-40 h-40 bg-green-500/10 rounded-full blur-3xl" />
 
-              <div>
+            <div className="relative z-10">
 
-                <p className="text-sm opacity-80">
-                  Paid Debts
-                </p>
+              <div className="flex items-center justify-between">
 
-                <h2 className="text-3xl font-bold mt-2">
-                  {paidDebts.length}
-                </h2>
+                <div>
+
+                  <p className="text-sm font-medium text-gray-500 dark:text-slate-400">
+                    Paid Debts
+                  </p>
+
+                  <h2 className="text-4xl font-black mt-3 text-green-600">
+                    {paidDebts.length}
+                  </h2>
+
+                </div>
+
+                <div className="w-14 h-14 rounded-2xl bg-green-100 dark:bg-green-500/20 flex items-center justify-center">
+
+                  <CheckCircle2 className="w-7 h-7 text-green-600" />
+
+                </div>
+
               </div>
 
-              <div className="bg-white/20 p-3 rounded-2xl">
-                <CheckCircle2 />
-              </div>
             </div>
+
           </div>
 
           {/* PENDING */}
 
-          <div className="bg-gradient-to-br from-yellow-500 to-orange-600 rounded-3xl p-6 text-white shadow-lg">
+          <div className="relative overflow-hidden bg-white dark:bg-slate-900 rounded-[2rem] border border-gray-200 dark:border-slate-800 p-6 shadow-sm hover:shadow-xl transition">
 
-            <div className="flex items-center justify-between">
+            <div className="absolute top-0 right-0 w-40 h-40 bg-yellow-500/10 rounded-full blur-3xl" />
 
-              <div>
+            <div className="relative z-10">
 
-                <p className="text-sm opacity-80">
-                  Pending Debts
-                </p>
+              <div className="flex items-center justify-between">
 
-                <h2 className="text-3xl font-bold mt-2">
-                  {pendingDebts.length}
-                </h2>
+                <div>
+
+                  <p className="text-sm font-medium text-gray-500 dark:text-slate-400">
+                    Pending Debts
+                  </p>
+
+                  <h2 className="text-4xl font-black mt-3 text-yellow-500">
+                    {pendingDebts.length}
+                  </h2>
+
+                </div>
+
+                <div className="w-14 h-14 rounded-2xl bg-yellow-100 dark:bg-yellow-500/20 flex items-center justify-center">
+
+                  <Clock3 className="w-7 h-7 text-yellow-500" />
+
+                </div>
+
               </div>
 
-              <div className="bg-white/20 p-3 rounded-2xl">
-                <Clock3 />
-              </div>
             </div>
+
           </div>
+
         </div>
 
-        {/* POPUP FORM */}
+        {/* POPUP */}
 
         {showForm && (
 
-          <div className="fixed inset-0 z-50 bg-black/50 backdrop-blur-sm flex items-center justify-center p-4">
+          <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-md flex items-center justify-center p-4">
 
-            <div className="w-full max-w-xl bg-white dark:bg-slate-900 rounded-3xl border border-gray-200 dark:border-slate-800 shadow-2xl relative overflow-hidden">
+            <div className="w-full max-w-2xl bg-white dark:bg-slate-900 rounded-[2rem] border border-gray-200 dark:border-slate-800 shadow-2xl relative overflow-hidden max-h-[92vh] flex flex-col">
+
+              {/* TOP BAR */}
+
+              <div className="h-2 bg-gradient-to-r from-orange-500 via-amber-500 to-red-500" />
 
               {/* CLOSE */}
 
@@ -256,14 +315,36 @@ export default function DebtsPage() {
                 onClick={() =>
                   setShowForm(false)
                 }
-                className="absolute top-5 right-5 w-10 h-10 rounded-full bg-gray-100 dark:bg-slate-800 text-black dark:text-white flex items-center justify-center hover:scale-110 transition"
+                className="absolute top-5 right-5 w-11 h-11 rounded-full bg-gray-100 dark:bg-slate-800 text-black dark:text-white flex items-center justify-center hover:scale-110 transition"
               >
 
                 <X className="w-5 h-5" />
 
               </button>
 
-              <div className="p-6">
+              {/* SCROLL AREA */}
+
+              <div className="overflow-y-auto p-6">
+
+                <div className="mb-6">
+
+                  <div className="inline-flex items-center gap-2 bg-orange-100 dark:bg-orange-500/20 text-orange-600 dark:text-orange-300 px-4 py-2 rounded-full text-sm font-semibold">
+
+                    <BadgeDollarSign className="w-4 h-4" />
+
+                    Add New Debt
+
+                  </div>
+
+                  <h2 className="text-3xl font-black text-gray-800 dark:text-white mt-4">
+                    Record Customer Debt
+                  </h2>
+
+                  <p className="text-gray-500 dark:text-slate-400 mt-2">
+                    Save pending customer balances and track repayments easily.
+                  </p>
+
+                </div>
 
                 <AddDebtForm />
 
@@ -276,58 +357,66 @@ export default function DebtsPage() {
 
         {/* DEBT LIST */}
 
-        <div className="grid gap-5">
+        <div className="grid gap-6">
 
           {debts.map((debt) => (
 
             <div
               key={debt.id}
-              className="bg-white dark:bg-slate-900 rounded-3xl border border-gray-200 dark:border-slate-800 shadow-sm p-6 hover:shadow-md transition"
+              className="relative overflow-hidden bg-white dark:bg-slate-900 rounded-[2rem] border border-gray-200 dark:border-slate-800 p-6 shadow-sm hover:shadow-xl transition-all duration-300"
             >
 
-              <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-6">
+              <div className="absolute top-0 right-0 w-40 h-40 bg-orange-500/5 rounded-full blur-3xl" />
+
+              <div className="relative z-10 flex flex-col lg:flex-row lg:items-center lg:justify-between gap-6">
 
                 {/* LEFT */}
 
                 <div>
 
-                  <h2 className="text-2xl font-bold text-gray-800 dark:text-white">
-                    {debt.name}
-                  </h2>
+                  <div className="flex items-center gap-3 flex-wrap">
 
-                  <p className="text-gray-500 dark:text-slate-400 mt-2">
-                    Debt Record
+                    <h2 className="text-3xl font-black text-gray-800 dark:text-white">
+                      {debt.name}
+                    </h2>
+
+                    <span
+                      className={`px-4 py-2 rounded-full text-sm font-semibold ${
+                        debt.status ===
+                        "paid"
+                          ? "bg-green-100 text-green-700 dark:bg-green-500/20 dark:text-green-300"
+                          : "bg-yellow-100 text-yellow-700 dark:bg-yellow-500/20 dark:text-yellow-300"
+                      }`}
+                    >
+                      {debt.status ===
+                      "paid"
+                        ? "Paid"
+                        : "Pending"}
+                    </span>
+
+                  </div>
+
+                  <p className="text-gray-500 dark:text-slate-400 mt-3">
+                    Customer debt record
                   </p>
 
-                  <h3 className="text-3xl font-bold text-blue-600 dark:text-blue-400 mt-4">
+                  <h3 className="text-4xl font-black text-orange-500 mt-5">
                     TZS{" "}
                     {debt.amount.toLocaleString()}
                   </h3>
 
-                  <p className="text-sm text-gray-500 dark:text-slate-400 mt-2">
+                  <p className="text-sm text-gray-500 dark:text-slate-400 mt-3">
+                    Added on{" "}
                     {new Date(
                       debt.createdAt
                     ).toLocaleDateString()}
                   </p>
+
                 </div>
 
-                {/* RIGHT */}
+                {/* ACTIONS */}
 
-                <div className="flex flex-col items-start md:items-end gap-3">
-
-                  <span
-                    className={`px-4 py-2 rounded-full text-sm font-semibold ${
-                      debt.status ===
-                      "paid"
-                        ? "bg-green-100 text-green-700 dark:bg-green-900/40 dark:text-green-300"
-                        : "bg-yellow-100 text-yellow-700 dark:bg-yellow-900/40 dark:text-yellow-300"
-                    }`}
-                  >
-                    {debt.status ===
-                    "paid"
-                      ? "Paid"
-                      : "Pending"}
-                  </span>
+                <div className="flex flex-col gap-3 w-full lg:w-auto">
 
                   {debt.status ===
                     "pending" && (
@@ -338,11 +427,13 @@ export default function DebtsPage() {
                           debt.id
                         )
                       }
-                      className="flex items-center gap-2 bg-black dark:bg-white dark:text-black text-white px-5 py-3 rounded-2xl font-semibold transition hover:scale-[1.02]"
+                      className="flex items-center justify-center gap-2 bg-black dark:bg-white dark:text-black text-white px-6 py-4 rounded-2xl font-semibold hover:scale-[1.02] transition-all"
                     >
-                      <CheckCircle2 className="w-4 h-4" />
 
-                      Mark Paid
+                      <CheckCircle2 className="w-5 h-5" />
+
+                      Mark As Paid
+
                     </button>
                   )}
 
@@ -352,32 +443,47 @@ export default function DebtsPage() {
                         debt.id
                       )
                     }
-                    className="flex items-center gap-2 bg-red-500 hover:bg-red-600 text-white px-5 py-3 rounded-2xl font-semibold transition"
+                    className="flex items-center justify-center gap-2 bg-red-500 hover:bg-red-600 text-white px-6 py-4 rounded-2xl font-semibold transition-all"
                   >
-                    <Trash2 className="w-4 h-4" />
 
-                    Delete
+                    <Trash2 className="w-5 h-5" />
+
+                    Delete Debt
+
                   </button>
+
                 </div>
+
               </div>
+
             </div>
           ))}
 
+          {/* EMPTY */}
+
           {debts.length === 0 && (
 
-            <div className="bg-white dark:bg-slate-900 rounded-3xl border border-dashed border-gray-300 dark:border-slate-700 p-10 text-center">
+            <div className="bg-white dark:bg-slate-900 rounded-[2rem] border border-dashed border-gray-300 dark:border-slate-700 p-14 text-center">
 
-              <h2 className="text-2xl font-bold text-gray-800 dark:text-white">
+              <div className="text-6xl mb-5">
+                💰
+              </div>
+
+              <h2 className="text-3xl font-black text-gray-800 dark:text-white">
                 No debts recorded
               </h2>
 
-              <p className="text-gray-500 dark:text-slate-400 mt-2">
-                Start by adding your first customer debt
+              <p className="text-gray-500 dark:text-slate-400 mt-3 max-w-md mx-auto">
+                Start tracking customer balances and repayments by adding your first debt record.
               </p>
+
             </div>
           )}
+
         </div>
+
       </div>
+
     </DashboardLayout>
   );
 }
