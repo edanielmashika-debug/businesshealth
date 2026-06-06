@@ -2,6 +2,7 @@
 
 import {
   useEffect,
+  useState,
 } from "react";
 
 import DashboardLayout from "@/components/dashboard-layout";
@@ -23,6 +24,8 @@ import {
   CheckCircle2,
   Clock3,
   Trash2,
+  Plus,
+  X,
 } from "lucide-react";
 
 export default function DebtsPage() {
@@ -49,6 +52,9 @@ export default function DebtsPage() {
       (state) =>
         state.deleteDebt
     );
+
+  const [showForm, setShowForm] =
+    useState(false);
 
   useEffect(() => {
 
@@ -132,15 +138,33 @@ export default function DebtsPage() {
 
         {/* HEADER */}
 
-        <div>
+        <div className="flex items-start justify-between gap-4">
 
-          <h1 className="text-3xl font-bold text-gray-800 dark:text-white">
-            Debts
-          </h1>
+          <div>
 
-          <p className="text-gray-500 dark:text-slate-400 mt-1">
-            Track customer debts and repayments
-          </p>
+            <h1 className="text-3xl font-bold text-gray-800 dark:text-white">
+              Debts
+            </h1>
+
+            <p className="text-gray-500 dark:text-slate-400 mt-1">
+              Track customer debts and repayments
+            </p>
+
+          </div>
+
+          {/* ADD BUTTON */}
+
+          <button
+            onClick={() =>
+              setShowForm(true)
+            }
+            className="w-14 h-14 rounded-2xl bg-gradient-to-r from-blue-600 to-cyan-500 text-white flex items-center justify-center shadow-lg hover:scale-105 transition"
+          >
+
+            <Plus className="w-7 h-7" />
+
+          </button>
+
         </div>
 
         {/* STATS */}
@@ -218,23 +242,37 @@ export default function DebtsPage() {
           </div>
         </div>
 
-        {/* ADD FORM */}
+        {/* POPUP FORM */}
 
-        <div className="bg-white dark:bg-slate-900 rounded-3xl border border-gray-200 dark:border-slate-800 shadow-sm p-6">
+        {showForm && (
 
-          <div className="mb-6">
+          <div className="fixed inset-0 z-50 bg-black/50 backdrop-blur-sm flex items-center justify-center p-4">
 
-            <h2 className="text-2xl font-bold text-gray-800 dark:text-white">
-              Add Debt
-            </h2>
+            <div className="w-full max-w-xl bg-white dark:bg-slate-900 rounded-3xl border border-gray-200 dark:border-slate-800 shadow-2xl relative overflow-hidden">
 
-            <p className="text-sm text-gray-500 dark:text-slate-400 mt-1">
-              Record money owed by customers
-            </p>
+              {/* CLOSE */}
+
+              <button
+                onClick={() =>
+                  setShowForm(false)
+                }
+                className="absolute top-5 right-5 w-10 h-10 rounded-full bg-gray-100 dark:bg-slate-800 text-black dark:text-white flex items-center justify-center hover:scale-110 transition"
+              >
+
+                <X className="w-5 h-5" />
+
+              </button>
+
+              <div className="p-6">
+
+                <AddDebtForm />
+
+              </div>
+
+            </div>
+
           </div>
-
-          <AddDebtForm />
-        </div>
+        )}
 
         {/* DEBT LIST */}
 
