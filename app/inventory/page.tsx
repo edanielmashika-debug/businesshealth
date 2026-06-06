@@ -19,6 +19,8 @@ import {
   Trash2,
   Plus,
   X,
+  Sparkles,
+  DollarSign,
 } from "lucide-react";
 
 export default function InventoryPage() {
@@ -137,249 +139,177 @@ export default function InventoryPage() {
 
     <DashboardLayout>
 
-      <div className="space-y-8">
+      <div className="space-y-8 pb-10">
 
-        {/* HEADER */}
+        {/* HERO */}
 
-        <div className="flex items-start justify-between gap-4">
+        <div className="relative overflow-hidden rounded-[2rem] bg-gradient-to-br from-blue-600 via-cyan-500 to-indigo-700 p-8 text-white shadow-2xl">
 
-          <div>
+          <div className="absolute inset-0 opacity-10 bg-[radial-gradient(circle_at_top_right,white,transparent_40%)]" />
 
-            <h1 className="text-3xl font-bold text-gray-800 dark:text-white">
-              Inventory
-            </h1>
+          <div className="relative z-10 flex flex-col lg:flex-row lg:items-center lg:justify-between gap-6">
 
-            <p className="text-gray-500 dark:text-slate-400 mt-1">
-              Manage your business products and stock
-            </p>
+            <div>
+
+              <div className="inline-flex items-center gap-2 bg-white/15 backdrop-blur-md px-4 py-2 rounded-full text-sm font-medium">
+                📦 Inventory Management
+              </div>
+
+              <h1 className="text-4xl lg:text-5xl font-black mt-5 leading-tight">
+                Smart
+                <br />
+                Inventory
+              </h1>
+
+              <p className="text-blue-100 mt-4 max-w-2xl text-lg">
+                Organize products, monitor stock levels, and track inventory value in real-time.
+              </p>
+
+            </div>
+
+            {/* ADD BUTTON */}
+
+            <button
+              onClick={() =>
+                setShowForm(true)
+              }
+              className="w-20 h-20 rounded-[2rem] bg-white text-blue-700 shadow-2xl flex items-center justify-center hover:scale-110 active:scale-95 transition-all duration-300"
+            >
+
+              <Plus size={40} />
+
+            </button>
 
           </div>
 
-          {/* ADD BUTTON */}
-
-          <button
-            onClick={() =>
-              setShowForm(true)
-            }
-            className="w-14 h-14 rounded-2xl bg-gradient-to-r from-blue-600 to-cyan-500 text-white flex items-center justify-center shadow-lg hover:scale-105 transition"
-          >
-
-            <Plus className="w-7 h-7" />
-
-          </button>
-
         </div>
 
-        {/* TOP STATS */}
+        {/* STATS */}
 
         <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6">
 
           {/* PRODUCTS */}
 
-          <div className="bg-gradient-to-br from-blue-500 to-cyan-600 rounded-3xl p-6 text-white shadow-lg">
+          <div className="relative overflow-hidden bg-white dark:bg-slate-900 rounded-[2rem] p-6 border border-gray-200 dark:border-slate-800 shadow-sm hover:shadow-xl transition">
 
-            <div className="flex items-center justify-between">
+            <div className="absolute top-0 right-0 w-40 h-40 bg-blue-500/10 rounded-full blur-3xl" />
+
+            <div className="relative z-10 flex items-start justify-between">
 
               <div>
 
-                <p className="text-sm opacity-80">
+                <p className="text-sm font-medium text-gray-500 dark:text-slate-400">
                   Products
                 </p>
 
-                <h2 className="text-3xl font-bold mt-2">
+                <h2 className="text-4xl font-black mt-3 text-blue-600 dark:text-blue-400">
                   {totalProducts}
                 </h2>
+
               </div>
 
-              <div className="bg-white/20 p-3 rounded-2xl">
-                <Package />
+              <div className="w-14 h-14 rounded-2xl bg-blue-100 dark:bg-blue-500/20 flex items-center justify-center">
+
+                <Package className="w-7 h-7 text-blue-600 dark:text-blue-400" />
+
               </div>
+
             </div>
+
           </div>
 
           {/* STOCK */}
 
-          <div className="bg-gradient-to-br from-purple-500 to-violet-700 rounded-3xl p-6 text-white shadow-lg">
+          <div className="relative overflow-hidden bg-white dark:bg-slate-900 rounded-[2rem] p-6 border border-gray-200 dark:border-slate-800 shadow-sm hover:shadow-xl transition">
 
-            <div className="flex items-center justify-between">
+            <div className="absolute top-0 right-0 w-40 h-40 bg-purple-500/10 rounded-full blur-3xl" />
+
+            <div className="relative z-10 flex items-start justify-between">
 
               <div>
 
-                <p className="text-sm opacity-80">
+                <p className="text-sm font-medium text-gray-500 dark:text-slate-400">
                   Total Stock
                 </p>
 
-                <h2 className="text-3xl font-bold mt-2">
+                <h2 className="text-4xl font-black mt-3 text-purple-600 dark:text-purple-400">
                   {totalStock}
                 </h2>
+
               </div>
 
-              <div className="bg-white/20 p-3 rounded-2xl">
-                <Boxes />
+              <div className="w-14 h-14 rounded-2xl bg-purple-100 dark:bg-purple-500/20 flex items-center justify-center">
+
+                <Boxes className="w-7 h-7 text-purple-600 dark:text-purple-400" />
+
               </div>
+
             </div>
+
           </div>
 
           {/* LOW STOCK */}
 
-          <div className="bg-gradient-to-br from-red-500 to-rose-700 rounded-3xl p-6 text-white shadow-lg">
+          <div className="relative overflow-hidden bg-white dark:bg-slate-900 rounded-[2rem] p-6 border border-gray-200 dark:border-slate-800 shadow-sm hover:shadow-xl transition">
 
-            <div className="flex items-center justify-between">
+            <div className="absolute top-0 right-0 w-40 h-40 bg-red-500/10 rounded-full blur-3xl" />
+
+            <div className="relative z-10 flex items-start justify-between">
 
               <div>
 
-                <p className="text-sm opacity-80">
+                <p className="text-sm font-medium text-gray-500 dark:text-slate-400">
                   Low Stock
                 </p>
 
-                <h2 className="text-3xl font-bold mt-2">
+                <h2 className="text-4xl font-black mt-3 text-red-500">
                   {lowStockCount}
                 </h2>
+
               </div>
 
-              <div className="bg-white/20 p-3 rounded-2xl">
-                <AlertTriangle />
+              <div className="w-14 h-14 rounded-2xl bg-red-100 dark:bg-red-500/20 flex items-center justify-center">
+
+                <AlertTriangle className="w-7 h-7 text-red-500" />
+
               </div>
+
             </div>
+
           </div>
 
           {/* INVENTORY VALUE */}
 
-          <div className="bg-gradient-to-br from-green-500 to-emerald-700 rounded-3xl p-6 text-white shadow-lg">
+          <div className="relative overflow-hidden bg-white dark:bg-slate-900 rounded-[2rem] p-6 border border-gray-200 dark:border-slate-800 shadow-sm hover:shadow-xl transition">
 
-            <div className="flex items-center justify-between">
+            <div className="absolute top-0 right-0 w-40 h-40 bg-green-500/10 rounded-full blur-3xl" />
+
+            <div className="relative z-10 flex items-start justify-between">
 
               <div>
 
-                <p className="text-sm opacity-80">
+                <p className="text-sm font-medium text-gray-500 dark:text-slate-400">
                   Inventory Value
                 </p>
 
-                <h2 className="text-2xl font-bold mt-2">
+                <h2 className="text-3xl font-black mt-3 text-green-600 dark:text-green-400">
                   TZS{" "}
                   {totalInventoryValue.toLocaleString()}
                 </h2>
+
               </div>
 
-              <div className="bg-white/20 p-3 rounded-2xl">
-                <TrendingUp />
+              <div className="w-14 h-14 rounded-2xl bg-green-100 dark:bg-green-500/20 flex items-center justify-center">
+
+                <DollarSign className="w-7 h-7 text-green-600 dark:text-green-400" />
+
               </div>
+
             </div>
+
           </div>
+
         </div>
-
-        {/* POPUP FORM */}
-
-        {showForm && (
-
-          <div className="fixed inset-0 z-50 bg-black/50 backdrop-blur-sm flex items-center justify-center p-4">
-
-            <div className="w-full max-w-2xl bg-white dark:bg-slate-900 rounded-3xl border border-gray-200 dark:border-slate-800 shadow-2xl relative overflow-hidden">
-
-              {/* CLOSE BUTTON */}
-
-              <button
-                onClick={() =>
-                  setShowForm(false)
-                }
-                className="absolute top-5 right-5 w-10 h-10 rounded-full bg-gray-100 dark:bg-slate-800 text-black dark:text-white flex items-center justify-center hover:scale-110 transition"
-              >
-
-                <X className="w-5 h-5" />
-
-              </button>
-
-              <div className="p-6">
-
-                <div className="mb-6">
-
-                  <h2 className="text-2xl font-bold text-gray-800 dark:text-white">
-                    Add Product
-                  </h2>
-
-                  <p className="text-sm text-gray-500 dark:text-slate-400 mt-1">
-                    Add products to your inventory
-                  </p>
-
-                </div>
-
-                <form
-                  onSubmit={
-                    handleSubmit
-                  }
-                  className="space-y-4"
-                >
-
-                  <input
-                    type="text"
-                    placeholder="Product name"
-                    value={name}
-                    onChange={(e) =>
-                      setName(
-                        e.target.value
-                      )
-                    }
-                    className="w-full rounded-2xl border border-gray-200 dark:border-slate-700 bg-gray-50 dark:bg-slate-800 px-4 py-4 placeholder:text-gray-400 outline-none focus:ring-2 focus:ring-blue-500 text-black dark:text-white"
-                  />
-
-                  <input
-                    type="number"
-                    placeholder="Stock quantity"
-                    value={stock}
-                    onChange={(e) =>
-                      setStock(
-                        e.target.value
-                      )
-                    }
-                    className="w-full rounded-2xl border border-gray-200 dark:border-slate-700 bg-gray-50 dark:bg-slate-800 px-4 py-4 placeholder:text-gray-400 outline-none focus:ring-2 focus:ring-blue-500 text-black dark:text-white"
-                  />
-
-                  <input
-                    type="number"
-                    placeholder="Buying price"
-                    value={
-                      buyingPrice
-                    }
-                    onChange={(e) =>
-                      setBuyingPrice(
-                        e.target.value
-                      )
-                    }
-                    className="w-full rounded-2xl border border-gray-200 dark:border-slate-700 bg-gray-50 dark:bg-slate-800 px-4 py-4 placeholder:text-gray-400 outline-none focus:ring-2 focus:ring-blue-500 text-black dark:text-white"
-                  />
-
-                  <input
-                    type="number"
-                    placeholder="Selling price"
-                    value={
-                      sellingPrice
-                    }
-                    onChange={(e) =>
-                      setSellingPrice(
-                        e.target.value
-                      )
-                    }
-                    className="w-full rounded-2xl border border-gray-200 dark:border-slate-700 bg-gray-50 dark:bg-slate-800 px-4 py-4 placeholder:text-gray-400 outline-none focus:ring-2 focus:ring-blue-500 text-black dark:text-white"
-                  />
-
-                  <button
-                    type="submit"
-                    className="w-full bg-gradient-to-r from-blue-600 to-cyan-500 text-white rounded-2xl py-4 font-semibold shadow-lg flex items-center justify-center gap-3"
-                  >
-
-                    <Plus className="w-5 h-5" />
-
-                    Add Product
-
-                  </button>
-                </form>
-
-              </div>
-
-            </div>
-
-          </div>
-        )}
 
         {/* PRODUCTS */}
 
@@ -401,108 +331,289 @@ export default function InventoryPage() {
                   key={
                     product.id
                   }
-                  className="bg-white dark:bg-slate-900 rounded-3xl p-6 shadow-sm border border-gray-200 dark:border-slate-800 hover:shadow-md transition"
+                  className="relative overflow-hidden bg-white dark:bg-slate-900 rounded-[2rem] border border-gray-200 dark:border-slate-800 p-6 shadow-sm hover:shadow-2xl transition-all duration-300"
                 >
 
-                  <div className="flex items-start justify-between">
+                  {/* BACKGROUND GLOW */}
 
-                    <div>
+                  <div className="absolute top-0 right-0 w-40 h-40 bg-blue-500/5 rounded-full blur-3xl" />
 
-                      <h2 className="text-2xl font-bold text-gray-800 dark:text-white">
-                        {
-                          product.name
-                        }
-                      </h2>
+                  <div className="relative z-10">
 
-                      <p className="text-sm text-gray-500 dark:text-slate-400 mt-1">
-                        Inventory Product
-                      </p>
-                    </div>
+                    {/* TOP */}
 
-                    {isLowStock && (
+                    <div className="flex items-start justify-between gap-4">
 
-                      <div className="bg-red-100 dark:bg-red-900/40 text-red-600 px-3 py-1 rounded-full text-sm font-semibold">
+                      <div>
 
-                        Low Stock
+                        <div className="inline-flex items-center gap-2 bg-blue-100 dark:bg-blue-500/20 text-blue-700 dark:text-blue-300 px-3 py-1 rounded-full text-xs font-semibold mb-4">
+                          <Sparkles className="w-3 h-3" />
+                          Inventory Product
+                        </div>
+
+                        <h2 className="text-3xl font-black text-gray-800 dark:text-white leading-tight">
+                          {product.name}
+                        </h2>
+
                       </div>
-                    )}
+
+                      {isLowStock && (
+
+                        <div className="bg-red-100 dark:bg-red-500/20 text-red-600 dark:text-red-400 px-4 py-2 rounded-2xl text-sm font-bold">
+                          Low Stock
+                        </div>
+
+                      )}
+
+                    </div>
+
+                    {/* STATS GRID */}
+
+                    <div className="grid grid-cols-2 gap-4 mt-8">
+
+                      <div className="rounded-3xl bg-gray-50 dark:bg-slate-800/80 p-5 border border-gray-100 dark:border-slate-700">
+
+                        <p className="text-sm text-gray-500 dark:text-slate-400">
+                          Stock Left
+                        </p>
+
+                        <h3 className="text-3xl font-black mt-2 text-black dark:text-white">
+                          {product.stock}
+                        </h3>
+
+                      </div>
+
+                      <div className="rounded-3xl bg-green-50 dark:bg-green-500/10 p-5 border border-green-100 dark:border-green-500/20">
+
+                        <p className="text-sm text-green-600 dark:text-green-400">
+                          Profit
+                        </p>
+
+                        <h3 className="text-2xl font-black mt-2 text-green-600 dark:text-green-400">
+                          TZS{" "}
+                          {profit.toLocaleString()}
+                        </h3>
+
+                      </div>
+
+                      <div className="rounded-3xl bg-gray-50 dark:bg-slate-800/80 p-5 border border-gray-100 dark:border-slate-700">
+
+                        <p className="text-sm text-gray-500 dark:text-slate-400">
+                          Buying Price
+                        </p>
+
+                        <h3 className="text-xl font-black mt-2 text-black dark:text-white">
+                          TZS{" "}
+                          {product.buyPrice.toLocaleString()}
+                        </h3>
+
+                      </div>
+
+                      <div className="rounded-3xl bg-blue-50 dark:bg-blue-500/10 p-5 border border-blue-100 dark:border-blue-500/20">
+
+                        <p className="text-sm text-blue-600 dark:text-blue-400">
+                          Selling Price
+                        </p>
+
+                        <h3 className="text-xl font-black mt-2 text-blue-600 dark:text-blue-400">
+                          TZS{" "}
+                          {product.sellPrice.toLocaleString()}
+                        </h3>
+
+                      </div>
+
+                    </div>
+
+                    {/* DELETE */}
+
+                    <button
+                      onClick={() =>
+                        deleteProduct(
+                          product.id
+                        )
+                      }
+                      className="mt-6 w-full h-14 rounded-2xl bg-red-50 dark:bg-red-500/10 text-red-600 dark:text-red-400 font-bold hover:bg-red-100 dark:hover:bg-red-500/20 transition-all flex items-center justify-center gap-3"
+                    >
+
+                      <Trash2 className="w-5 h-5" />
+
+                      Delete Product
+
+                    </button>
+
                   </div>
 
-                  {/* STATS */}
-
-                  <div className="grid grid-cols-2 gap-4 mt-6">
-
-                    <div className="bg-gray-50 dark:bg-slate-800 rounded-2xl p-4">
-
-                      <p className="text-sm text-gray-500 dark:text-slate-400">
-                        Stock Left
-                      </p>
-
-                      <h3 className="text-xl font-bold mt-1 text-black dark:text-white">
-                        {
-                          product.stock
-                        }
-                      </h3>
-                    </div>
-
-                    <div className="bg-gray-50 dark:bg-slate-800 rounded-2xl p-4">
-
-                      <p className="text-sm text-gray-500 dark:text-slate-400">
-                        Profit
-                      </p>
-
-                      <h3 className="text-xl font-bold mt-1 text-green-600">
-                        TZS{" "}
-                        {profit.toLocaleString()}
-                      </h3>
-                    </div>
-
-                    <div className="bg-gray-50 dark:bg-slate-800 rounded-2xl p-4">
-
-                      <p className="text-sm text-gray-500 dark:text-slate-400">
-                        Buying Price
-                      </p>
-
-                      <h3 className="text-lg font-bold mt-1 text-black dark:text-white">
-                        TZS{" "}
-                        {product.buyPrice.toLocaleString()}
-                      </h3>
-                    </div>
-
-                    <div className="bg-gray-50 dark:bg-slate-800 rounded-2xl p-4">
-
-                      <p className="text-sm text-gray-500 dark:text-slate-400">
-                        Selling Price
-                      </p>
-
-                      <h3 className="text-lg font-bold mt-1 text-blue-600">
-                        TZS{" "}
-                        {product.sellPrice.toLocaleString()}
-                      </h3>
-                    </div>
-                  </div>
-
-                  {/* DELETE */}
-
-                  <button
-                    onClick={() =>
-                      deleteProduct(
-                        product.id
-                      )
-                    }
-                    className="mt-6 w-full bg-red-50 dark:bg-red-900/20 text-red-600 rounded-2xl py-3 font-semibold hover:bg-red-100 dark:hover:bg-red-900/40 transition flex items-center justify-center gap-2"
-                  >
-
-                    <Trash2 className="w-4 h-4" />
-
-                    Delete Product
-                  </button>
                 </div>
               );
             }
           )}
         </div>
+
       </div>
+
+      {/* POPUP */}
+
+      {showForm && (
+
+        <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-md flex items-center justify-center p-4">
+
+          <div className="w-full max-w-2xl max-h-[90vh] overflow-y-auto bg-white dark:bg-slate-900 rounded-[2rem] border border-gray-200 dark:border-slate-800 shadow-2xl relative">
+
+            {/* TOP BAR */}
+
+            <div className="h-2 bg-gradient-to-r from-blue-600 via-cyan-500 to-indigo-600 rounded-t-[2rem]" />
+
+            {/* CLOSE */}
+
+            <button
+              onClick={() =>
+                setShowForm(false)
+              }
+              className="absolute top-5 right-5 w-11 h-11 rounded-full bg-gray-100 dark:bg-slate-800 text-black dark:text-white flex items-center justify-center hover:scale-110 transition"
+            >
+
+              <X className="w-5 h-5" />
+
+            </button>
+
+            <div className="p-6 sm:p-8">
+
+              {/* HEADER */}
+
+              <div className="mb-8">
+
+                <div className="inline-flex items-center gap-2 bg-blue-100 dark:bg-blue-500/20 text-blue-700 dark:text-blue-300 px-4 py-2 rounded-full text-sm font-semibold">
+                  📦 Add Inventory
+                </div>
+
+                <h2 className="text-3xl font-black text-gray-800 dark:text-white mt-5">
+                  Add Product
+                </h2>
+
+                <p className="text-gray-500 dark:text-slate-400 mt-2">
+                  Add new products into your inventory system
+                </p>
+
+              </div>
+
+              {/* FORM */}
+
+              <form
+                onSubmit={
+                  handleSubmit
+                }
+                className="space-y-5"
+              >
+
+                <div>
+
+                  <label className="text-sm font-semibold text-gray-700 dark:text-slate-300">
+                    Product Name
+                  </label>
+
+                  <input
+                    type="text"
+                    placeholder="Enter product name"
+                    value={name}
+                    onChange={(e) =>
+                      setName(
+                        e.target.value
+                      )
+                    }
+                    className="w-full mt-2 h-14 rounded-2xl border border-gray-200 dark:border-slate-700 bg-gray-50 dark:bg-slate-800 px-5 outline-none focus:ring-2 focus:ring-blue-500 text-black dark:text-white placeholder:text-gray-400"
+                  />
+
+                </div>
+
+                <div>
+
+                  <label className="text-sm font-semibold text-gray-700 dark:text-slate-300">
+                    Stock Quantity
+                  </label>
+
+                  <input
+                    type="number"
+                    placeholder="Enter stock quantity"
+                    value={stock}
+                    onChange={(e) =>
+                      setStock(
+                        e.target.value
+                      )
+                    }
+                    className="w-full mt-2 h-14 rounded-2xl border border-gray-200 dark:border-slate-700 bg-gray-50 dark:bg-slate-800 px-5 outline-none focus:ring-2 focus:ring-blue-500 text-black dark:text-white placeholder:text-gray-400"
+                  />
+
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+
+                  <div>
+
+                    <label className="text-sm font-semibold text-gray-700 dark:text-slate-300">
+                      Buying Price
+                    </label>
+
+                    <input
+                      type="number"
+                      placeholder="Buying price"
+                      value={
+                        buyingPrice
+                      }
+                      onChange={(e) =>
+                        setBuyingPrice(
+                          e.target.value
+                        )
+                      }
+                      className="w-full mt-2 h-14 rounded-2xl border border-gray-200 dark:border-slate-700 bg-gray-50 dark:bg-slate-800 px-5 outline-none focus:ring-2 focus:ring-blue-500 text-black dark:text-white placeholder:text-gray-400"
+                    />
+
+                  </div>
+
+                  <div>
+
+                    <label className="text-sm font-semibold text-gray-700 dark:text-slate-300">
+                      Selling Price
+                    </label>
+
+                    <input
+                      type="number"
+                      placeholder="Selling price"
+                      value={
+                        sellingPrice
+                      }
+                      onChange={(e) =>
+                        setSellingPrice(
+                          e.target.value
+                        )
+                      }
+                      className="w-full mt-2 h-14 rounded-2xl border border-gray-200 dark:border-slate-700 bg-gray-50 dark:bg-slate-800 px-5 outline-none focus:ring-2 focus:ring-blue-500 text-black dark:text-white placeholder:text-gray-400"
+                    />
+
+                  </div>
+
+                </div>
+
+                {/* BUTTON */}
+
+                <button
+                  type="submit"
+                  className="w-full h-14 rounded-2xl bg-gradient-to-r from-blue-600 to-cyan-500 text-white font-bold shadow-lg hover:scale-[1.01] active:scale-[0.99] transition-all flex items-center justify-center gap-3"
+                >
+
+                  <Plus className="w-5 h-5" />
+
+                  Add Product
+
+                </button>
+
+              </form>
+
+            </div>
+
+          </div>
+
+        </div>
+      )}
 
     </DashboardLayout>
   );
