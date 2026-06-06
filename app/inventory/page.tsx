@@ -18,6 +18,7 @@ import {
   Boxes,
   Trash2,
   Plus,
+  X,
 } from "lucide-react";
 
 export default function InventoryPage() {
@@ -45,6 +46,9 @@ export default function InventoryPage() {
     sellingPrice,
     setSellingPrice,
   ] = useState("");
+
+  const [showForm, setShowForm] =
+    useState(false);
 
   useEffect(() => {
 
@@ -91,6 +95,8 @@ export default function InventoryPage() {
     setStock("");
     setBuyingPrice("");
     setSellingPrice("");
+
+    setShowForm(false);
   };
 
   const totalProducts =
@@ -135,15 +141,33 @@ export default function InventoryPage() {
 
         {/* HEADER */}
 
-        <div>
+        <div className="flex items-start justify-between gap-4">
 
-          <h1 className="text-3xl font-bold text-gray-800 dark:text-white">
-            Inventory
-          </h1>
+          <div>
 
-          <p className="text-gray-500 dark:text-slate-400 mt-1">
-            Manage your business products and stock
-          </p>
+            <h1 className="text-3xl font-bold text-gray-800 dark:text-white">
+              Inventory
+            </h1>
+
+            <p className="text-gray-500 dark:text-slate-400 mt-1">
+              Manage your business products and stock
+            </p>
+
+          </div>
+
+          {/* ADD BUTTON */}
+
+          <button
+            onClick={() =>
+              setShowForm(true)
+            }
+            className="w-14 h-14 rounded-2xl bg-gradient-to-r from-blue-600 to-cyan-500 text-white flex items-center justify-center shadow-lg hover:scale-105 transition"
+          >
+
+            <Plus className="w-7 h-7" />
+
+          </button>
+
         </div>
 
         {/* TOP STATS */}
@@ -244,91 +268,118 @@ export default function InventoryPage() {
           </div>
         </div>
 
-        {/* FORM */}
+        {/* POPUP FORM */}
 
-        <div className="bg-white dark:bg-slate-900 rounded-3xl p-6 shadow-sm border border-gray-200 dark:border-slate-800">
+        {showForm && (
 
-          <div className="mb-6">
+          <div className="fixed inset-0 z-50 bg-black/50 backdrop-blur-sm flex items-center justify-center p-4">
 
-            <h2 className="text-2xl font-bold text-gray-800 dark:text-white">
-              Add Product
-            </h2>
+            <div className="w-full max-w-2xl bg-white dark:bg-slate-900 rounded-3xl border border-gray-200 dark:border-slate-800 shadow-2xl relative overflow-hidden">
 
-            <p className="text-sm text-gray-500 dark:text-slate-400 mt-1">
-              Add products to your inventory
-            </p>
+              {/* CLOSE BUTTON */}
+
+              <button
+                onClick={() =>
+                  setShowForm(false)
+                }
+                className="absolute top-5 right-5 w-10 h-10 rounded-full bg-gray-100 dark:bg-slate-800 text-black dark:text-white flex items-center justify-center hover:scale-110 transition"
+              >
+
+                <X className="w-5 h-5" />
+
+              </button>
+
+              <div className="p-6">
+
+                <div className="mb-6">
+
+                  <h2 className="text-2xl font-bold text-gray-800 dark:text-white">
+                    Add Product
+                  </h2>
+
+                  <p className="text-sm text-gray-500 dark:text-slate-400 mt-1">
+                    Add products to your inventory
+                  </p>
+
+                </div>
+
+                <form
+                  onSubmit={
+                    handleSubmit
+                  }
+                  className="space-y-4"
+                >
+
+                  <input
+                    type="text"
+                    placeholder="Product name"
+                    value={name}
+                    onChange={(e) =>
+                      setName(
+                        e.target.value
+                      )
+                    }
+                    className="w-full rounded-2xl border border-gray-200 dark:border-slate-700 bg-gray-50 dark:bg-slate-800 px-4 py-4 placeholder:text-gray-400 outline-none focus:ring-2 focus:ring-blue-500 text-black dark:text-white"
+                  />
+
+                  <input
+                    type="number"
+                    placeholder="Stock quantity"
+                    value={stock}
+                    onChange={(e) =>
+                      setStock(
+                        e.target.value
+                      )
+                    }
+                    className="w-full rounded-2xl border border-gray-200 dark:border-slate-700 bg-gray-50 dark:bg-slate-800 px-4 py-4 placeholder:text-gray-400 outline-none focus:ring-2 focus:ring-blue-500 text-black dark:text-white"
+                  />
+
+                  <input
+                    type="number"
+                    placeholder="Buying price"
+                    value={
+                      buyingPrice
+                    }
+                    onChange={(e) =>
+                      setBuyingPrice(
+                        e.target.value
+                      )
+                    }
+                    className="w-full rounded-2xl border border-gray-200 dark:border-slate-700 bg-gray-50 dark:bg-slate-800 px-4 py-4 placeholder:text-gray-400 outline-none focus:ring-2 focus:ring-blue-500 text-black dark:text-white"
+                  />
+
+                  <input
+                    type="number"
+                    placeholder="Selling price"
+                    value={
+                      sellingPrice
+                    }
+                    onChange={(e) =>
+                      setSellingPrice(
+                        e.target.value
+                      )
+                    }
+                    className="w-full rounded-2xl border border-gray-200 dark:border-slate-700 bg-gray-50 dark:bg-slate-800 px-4 py-4 placeholder:text-gray-400 outline-none focus:ring-2 focus:ring-blue-500 text-black dark:text-white"
+                  />
+
+                  <button
+                    type="submit"
+                    className="w-full bg-gradient-to-r from-blue-600 to-cyan-500 text-white rounded-2xl py-4 font-semibold shadow-lg flex items-center justify-center gap-3"
+                  >
+
+                    <Plus className="w-5 h-5" />
+
+                    Add Product
+
+                  </button>
+                </form>
+
+              </div>
+
+            </div>
+
           </div>
-
-          <form
-            onSubmit={
-              handleSubmit
-            }
-            className="space-y-4"
-          >
-
-            <input
-              type="text"
-              placeholder="Product name"
-              value={name}
-              onChange={(e) =>
-                setName(
-                  e.target.value
-                )
-              }
-              className="w-full rounded-2xl border border-gray-200 dark:border-slate-700 bg-gray-50 dark:bg-slate-800 px-4 py-4 placeholder:text-gray-400 outline-none focus:ring-2 focus:ring-blue-500 text-black dark:text-white"
-            />
-
-            <input
-              type="number"
-              placeholder="Stock quantity"
-              value={stock}
-              onChange={(e) =>
-                setStock(
-                  e.target.value
-                )
-              }
-              className="w-full rounded-2xl border border-gray-200 dark:border-slate-700 bg-gray-50 dark:bg-slate-800 px-4 py-4 placeholder:text-gray-400 outline-none focus:ring-2 focus:ring-blue-500 text-black dark:text-white"
-            />
-
-            <input
-              type="number"
-              placeholder="Buying price"
-              value={
-                buyingPrice
-              }
-              onChange={(e) =>
-                setBuyingPrice(
-                  e.target.value
-                )
-              }
-              className="w-full rounded-2xl border border-gray-200 dark:border-slate-700 bg-gray-50 dark:bg-slate-800 px-4 py-4 placeholder:text-gray-400 outline-none focus:ring-2 focus:ring-blue-500 text-black dark:text-white"
-            />
-
-            <input
-              type="number"
-              placeholder="Selling price"
-              value={
-                sellingPrice
-              }
-              onChange={(e) =>
-                setSellingPrice(
-                  e.target.value
-                )
-              }
-              className="w-full rounded-2xl border border-gray-200 dark:border-slate-700 bg-gray-50 dark:bg-slate-800 px-4 py-4 placeholder:text-gray-400 outline-none focus:ring-2 focus:ring-blue-500 text-black dark:text-white"
-            />
-
-            <button
-              type="submit"
-              className="w-full bg-gradient-to-r from-blue-600 to-cyan-500 text-white rounded-2xl py-4 font-semibold shadow-lg flex items-center justify-center gap-3"
-            >
-
-              <Plus className="w-5 h-5" />
-
-              Add Product
-            </button>
-          </form>
-        </div>
+        )}
 
         {/* PRODUCTS */}
 
@@ -452,6 +503,7 @@ export default function InventoryPage() {
           )}
         </div>
       </div>
+
     </DashboardLayout>
   );
 }
