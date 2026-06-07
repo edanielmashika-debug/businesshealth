@@ -27,6 +27,9 @@ import { useDebtStore } from "@/store/debt-store";
 import { supabase } from "@/lib/supabase";
 import AiInsightsCard from "@/components/ai-insights-card";
 
+import AiPredictionsCard from "@/components/ai-predictions-card";
+
+import { generatePredictions } from "@/services/ai-predictions";
 import { generateInsights } from "@/services/ai-insights";
 
 export default function HomePage() {
@@ -283,6 +286,19 @@ export default function HomePage() {
         debt.status === "pending"
     );
 
+  const predictions =
+    generatePredictions({
+
+      totalRevenue,
+
+      totalExpenses,
+
+      lowStockCount,
+
+      pendingDebts:
+        pendingDebts.length,
+    });
+
 
 
 
@@ -363,6 +379,10 @@ export default function HomePage() {
           pendingDebts={
             pendingDebts.length
           }
+        />
+
+        <AiPredictionsCard
+          predictions={predictions}
         />
 
         {/* SECOND ROW */}
