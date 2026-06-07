@@ -29,6 +29,10 @@ import AiInsightsCard from "@/components/ai-insights-card";
 
 import AiPredictionsCard from "@/components/ai-predictions-card";
 
+import AiRecommendationsCard from "@/components/ai-recommendations-card";
+
+import { generateRecommendations } from "@/services/ai-recommendations";
+
 import { generatePredictions } from "@/services/ai-predictions";
 import { generateInsights } from "@/services/ai-insights";
 
@@ -299,6 +303,18 @@ export default function HomePage() {
         pendingDebts.length,
     });
 
+  const recommendations =
+    generateRecommendations({
+
+      products,
+
+      debts,
+
+      totalRevenue,
+
+      totalExpenses,
+    });
+
 
 
 
@@ -383,6 +399,10 @@ export default function HomePage() {
 
         <AiPredictionsCard
           predictions={predictions}
+        />
+
+        <AiRecommendationsCard
+          recommendations={recommendations}
         />
 
         {/* SECOND ROW */}
