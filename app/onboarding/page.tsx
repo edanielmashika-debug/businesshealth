@@ -5,6 +5,7 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 
 import { supabase } from "../../lib/supabase";
+import {toast} from "sonner";
 
 export default function OnboardingPage() {
 
@@ -63,7 +64,7 @@ export default function OnboardingPage() {
     setLoading(false);
 
     if (error) {
-      alert(error.message);
+      toast.error(error.message);
       return;
     }
 

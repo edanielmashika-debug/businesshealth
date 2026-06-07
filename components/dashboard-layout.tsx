@@ -30,6 +30,9 @@ import {
   Sparkles,
   LogOut,
 } from "lucide-react";
+import { Toaster } from "sonner";
+
+
 
 export default function DashboardLayout({
   children,
@@ -138,7 +141,7 @@ export default function DashboardLayout({
 
         setBusinessName(
           data.business_name ||
-            ""
+          ""
         );
       }
     }
@@ -507,6 +510,13 @@ ${active
         <div className="p-5 md:p-8">
 
           {children}
+
+          <Toaster
+            richColors
+            position="top-right"
+            closeButton
+            duration={3000}
+          />
 
         </div>
 

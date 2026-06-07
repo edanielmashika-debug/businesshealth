@@ -7,6 +7,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 
 import { supabase } from "../../lib/supabase";
+import { toast } from "sonner";
 
 export default function SignUpPage() {
 
@@ -42,7 +43,7 @@ export default function SignUpPage() {
 
     if (error) {
 
-      alert(error.message);
+      toast.error(error.message);
 
       return;
     }
@@ -61,7 +62,7 @@ export default function SignUpPage() {
         });
     }
 
-    alert(
+    toast.success(
       "Account created successfully!"
     );
 

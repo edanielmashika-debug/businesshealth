@@ -26,6 +26,8 @@ import {
   Sparkles,
 } from "lucide-react";
 
+import {toast} from "sonner";
+
 export default function SalesPage() {
 
   const products =
@@ -122,7 +124,7 @@ export default function SalesPage() {
       selectedProduct.stock
     ) {
 
-      alert(
+      toast.error(
         "Not enough stock"
       );
 

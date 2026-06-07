@@ -17,6 +17,8 @@ import {
   ShieldCheck,
 } from "lucide-react";
 
+import {toast} from "sonner";
+
 export default function ProfilePage() {
 
   const router =
@@ -131,13 +133,13 @@ export default function ProfilePage() {
 
       console.log(error);
 
-      alert(
+      toast.error(
         error.message
       );
 
     } else {
 
-      alert(
+      toast.success(
         "Profile updated successfully"
       );
     }
@@ -201,7 +203,7 @@ export default function ProfilePage() {
           uploadError
         );
 
-        alert(
+        toast.error(
           uploadError.message
         );
 
