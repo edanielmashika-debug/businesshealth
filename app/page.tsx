@@ -9,6 +9,7 @@ import AnalyticsChart from "@/components/analytics-chart";
 import CategoryChart from "@/components/category-chart";
 
 import { useDashboardStats } from "@/hooks/use-dashboard-stats";
+import WeeklySummaryCard from "@/components/weekly-summary-card";
 
 import { getTransactions } from "@/services/transaction-service";
 
@@ -283,6 +284,8 @@ export default function HomePage() {
     );
 
 
+
+
   const insights = generateInsights({
 
     totalRevenue,
@@ -345,6 +348,21 @@ export default function HomePage() {
         {/* AI */}
         <AiInsightsCard
           insights={insights}
+        />
+
+        <WeeklySummaryCard
+
+          revenue={totalRevenue}
+
+          expenses={totalExpenses}
+
+          profit={profit}
+
+          lowStockCount={lowStockCount}
+
+          pendingDebts={
+            pendingDebts.length
+          }
         />
 
         {/* SECOND ROW */}

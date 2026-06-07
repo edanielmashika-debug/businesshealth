@@ -15,7 +15,22 @@ export function generateInsights({
   const insights: string[] = [];
 
   /*
-    PROFITABILITY
+    PROFIT
+  */
+
+  const profit =
+    totalRevenue -
+    totalExpenses;
+
+  if (profit > 0) {
+
+    insights.push(
+      `Your estimated profit is TZS ${profit.toLocaleString()}.`
+    );
+  }
+
+  /*
+    EXPENSE WARNING
   */
 
   if (
@@ -24,9 +39,13 @@ export function generateInsights({
   ) {
 
     insights.push(
-      "Your expenses are unusually high compared to revenue."
+      "Expenses are consuming most of your revenue."
     );
   }
+
+  /*
+    STRONG SALES
+  */
 
   if (
     totalRevenue >
@@ -34,55 +53,64 @@ export function generateInsights({
   ) {
 
     insights.push(
-      "Your business is generating strong profit margins."
+      "Sales performance looks very strong this period."
     );
   }
 
   /*
-    INVENTORY
-  */
-
-  if (lowStockCount > 0) {
-
-    insights.push(
-      `${lowStockCount} products are running low on stock.`
-    );
-  }
-
-  if (totalProducts === 0) {
-
-    insights.push(
-      "You have not added inventory products yet."
-    );
-  }
-
-  /*
-    DEBTS
-  */
-
-  if (pendingDebts > 0) {
-
-    insights.push(
-      `${pendingDebts} customer debts are still pending.`
-    );
-  }
-
-  /*
-    CASHFLOW
+    LOW STOCK
   */
 
   if (
-    totalRevenue === 0 &&
-    totalExpenses > 0
+    lowStockCount > 0
   ) {
 
     insights.push(
-      "Your business currently has expenses but no recorded sales."
+      `${lowStockCount} products may need restocking soon.`
     );
   }
 
   /*
-    EMPTY STATE
+    PENDING DEBTS
+  */
+
+  if (
+    pendingDebts > 0
+  ) {
+
+    insights.push(
+      `${pendingDebts} debts are still pending collection.`
+    );
+  }
+
+  /*
+    EMPTY INVENTORY
+  */
+
+  if (
+    totalProducts === 0
+  ) {
+
+    insights.push(
+      "Your inventory is currently empty."
+    );
+  }
+
+  /*
+    NO SALES
+  */
+
+  if (
+    totalRevenue === 0
+  ) {
+
+    insights.push(
+      "No sales have been recorded yet."
+    );
+  }
+
+  /*
+    HEALTHY STATE
   */
 
   if (
@@ -90,7 +118,7 @@ export function generateInsights({
   ) {
 
     insights.push(
-      "Your business performance looks healthy today."
+      "Business performance looks healthy today."
     );
   }
 
