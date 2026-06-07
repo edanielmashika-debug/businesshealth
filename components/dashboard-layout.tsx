@@ -29,6 +29,7 @@ import {
   ChevronRight,
   Sparkles,
   LogOut,
+  BrainCircuitIcon,
 } from "lucide-react";
 import { Toaster } from "sonner";
 
@@ -109,6 +110,12 @@ export default function DashboardLayout({
       name: "Settings",
       href: "/settings",
       icon: Settings,
+    },
+
+    {
+      name:"AI take",
+      href: "/ai",
+      icon: BrainCircuitIcon,
     },
   ];
 
