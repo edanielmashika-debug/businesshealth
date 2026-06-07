@@ -21,8 +21,12 @@ import { useSalesStore } from "@/store/sales-store";
 import { useExpenseStore } from "@/store/expense-store";
 
 import { useRouter } from "next/navigation";
+import { useDebtStore } from "@/store/debt-store";
 
 import { supabase } from "@/lib/supabase";
+import AiInsightsCard from "@/components/ai-insights-card";
+
+import { generateInsights } from "@/services/ai-insights";
 
 export default function HomePage() {
 
@@ -75,6 +79,8 @@ export default function HomePage() {
       (state) =>
         state.fetchExpenses
     );
+
+
 
   useEffect(() => {
 
@@ -256,6 +262,42 @@ export default function HomePage() {
         b[1] - a[1]
     )[0];
 
+  const lowStockCount =
+    products.filter(
+      (product) =>
+        product.stock <= 5
+    ).length;
+
+  const totalProducts =
+    products.length;
+
+  const debts =
+    useDebtStore(
+      (state) => state.debts
+    );
+
+  const pendingDebts =
+    debts.filter(
+      (debt) =>
+        debt.status === "pending"
+    );
+
+
+  const insights = generateInsights({
+
+    totalRevenue,
+
+    totalExpenses,
+
+    lowStockCount,
+
+    pendingDebts:
+
+      pendingDebts.length,
+
+    totalProducts,
+  });
+
   return (
     <DashboardLayout>
 
@@ -299,6 +341,11 @@ export default function HomePage() {
             amount={`TZS ${netProfit.toLocaleString()}`}
           />
         </div>
+
+        {/* AI */}
+        <AiInsightsCard
+          insights={insights}
+        />
 
         {/* SECOND ROW */}
 

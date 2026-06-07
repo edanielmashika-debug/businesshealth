@@ -7,7 +7,6 @@ import { useTransactionStore } from "@/store/transaction-store";
 
 import { createTransaction } from "@/services/transaction-service";
 
-import { useExpenseStore } from "@/store/expense-store";
 
 import SmsImport from "@/components/sms-import";
 
@@ -27,10 +26,6 @@ export default function AddTransactionForm() {
       (state) => state.addTransaction
     );
 
-  const addExpense =
-    useExpenseStore(
-      (state) => state.addExpense
-    );
 
   const [title, setTitle] =
     useState("");
@@ -91,26 +86,6 @@ export default function AddTransactionForm() {
       newTransaction
     );
 
-    if (
-      type === "expense"
-    ) {
-
-      addExpense({
-
-        id:
-          crypto.randomUUID(),
-
-        title,
-
-        amount:
-          Number(amount),
-
-        category,
-
-        createdAt:
-          new Date().toISOString(),
-      });
-    }
 
     setTitle("");
 
