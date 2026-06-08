@@ -1,16 +1,44 @@
+/// <reference types="node" />
 import OpenAI from "openai";
-
-const openai =
-  new OpenAI({
-    apiKey:
-      process.env.OPENAI_API_KEY,
-  });
 
 export async function POST(
   req: Request
 ) {
 
   try {
+
+    /*
+      CHECK API KEY
+    */
+
+    if (
+      !process.env.OPENAI_API_KEY
+    ) {
+
+      return Response.json(
+        {
+          error:
+            "Missing OpenAI API key",
+        },
+        {
+          status: 500,
+        }
+      );
+    }
+
+    /*
+      OPENAI CLIENT
+    */
+
+    const openai =
+      new OpenAI({
+        apiKey:
+          process.env.OPENAI_API_KEY,
+      });
+
+    /*
+      REQUEST BODY
+    */
 
     const body =
       await req.json();
@@ -19,6 +47,10 @@ export async function POST(
       message,
       businessData,
     } = body;
+
+    /*
+      AI REQUEST
+    */
 
     const completion =
       await openai.chat.completions.create({
@@ -31,7 +63,7 @@ export async function POST(
             role: "system",
 
             content: `
-You are a smart AI business assistant.
+You are an AI business assistant.
 
 Analyze:
 - sales
@@ -40,7 +72,7 @@ Analyze:
 - debts
 - profits
 
-Give concise business advice.
+Give concise advice.
             `,
           },
 
@@ -58,20 +90,29 @@ ${message}
         ],
       });
 
+    /*
+      RESPONSE
+    */
+
     return Response.json({
 
       reply:
-        completion.choices[0]
-          .message.content,
+        completion.choices?.[0]
+          ?.message?.content ||
+        "No AI response",
     });
 
-  } catch (error) {
+  } catch (error: any) {
 
-    console.log(error);
+    console.log(
+      "AI ERROR:",
+      error
+    );
 
     return Response.json(
       {
         error:
+          error.message ||
           "AI failed",
       },
       {

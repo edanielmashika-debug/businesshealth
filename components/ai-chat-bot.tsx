@@ -125,6 +125,8 @@ export default function AiChatbot({
       const data =
         await response.json();
 
+      console.log(data);
+
       setMessages((prev) => [
         ...prev,
         {
@@ -209,31 +211,29 @@ export default function AiChatbot({
 
               <div
                 key={index}
-                className={`flex items-end gap-3 ${
-                  message.role ===
-                  "user"
+                className={`flex items-end gap-3 ${message.role ===
+                    "user"
                     ? "justify-end"
                     : "justify-start"
-                }`}
+                  }`}
               >
 
                 {message.role ===
                   "ai" && (
 
-                  <div className="w-10 h-10 rounded-2xl bg-gradient-to-br from-blue-600 to-cyan-500 flex items-center justify-center shrink-0">
+                    <div className="w-10 h-10 rounded-2xl bg-gradient-to-br from-blue-600 to-cyan-500 flex items-center justify-center shrink-0">
 
-                    <Bot className="w-5 h-5 text-white" />
+                      <Bot className="w-5 h-5 text-white" />
 
-                  </div>
-                )}
+                    </div>
+                  )}
 
                 <div
-                  className={`max-w-[85%] px-5 py-4 rounded-3xl text-sm leading-relaxed shadow-sm ${
-                    message.role ===
-                    "user"
+                  className={`max-w-[85%] px-5 py-4 rounded-3xl text-sm leading-relaxed shadow-sm ${message.role ===
+                      "user"
                       ? "bg-blue-600 text-white rounded-br-md"
                       : "bg-white dark:bg-slate-900 text-gray-800 dark:text-slate-200 border border-gray-200 dark:border-slate-800 rounded-bl-md"
-                  }`}
+                    }`}
                 >
                   {message.text}
                 </div>
@@ -241,12 +241,12 @@ export default function AiChatbot({
                 {message.role ===
                   "user" && (
 
-                  <div className="w-10 h-10 rounded-2xl bg-gray-300 dark:bg-slate-700 flex items-center justify-center shrink-0">
+                    <div className="w-10 h-10 rounded-2xl bg-gray-300 dark:bg-slate-700 flex items-center justify-center shrink-0">
 
-                    <User className="w-5 h-5 text-black dark:text-white" />
+                      <User className="w-5 h-5 text-black dark:text-white" />
 
-                  </div>
-                )}
+                    </div>
+                  )}
 
               </div>
             )
