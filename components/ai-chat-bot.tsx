@@ -1,6 +1,11 @@
 "use client";
 
-import { useState } from "react";
+import {
+  useState,
+  useEffect,
+} from "react";
+
+
 
 import {
   Bot,
@@ -26,11 +31,28 @@ import {
 
 export default function AiChatBot() {
 
-  const sales =
-    useSalesStore(
-      (state) =>
-        state.sales || []
-    );
+
+const fetchSales =
+  useSalesStore(
+    (state) =>
+      state.fetchSales
+  );
+
+useEffect(() => {
+  fetchSales();
+}, []);
+
+
+
+const sales =
+  useSalesStore(
+    (state) =>
+      state.sales || []
+  );
+
+
+
+
 
   const expenses =
     useExpenseStore(
