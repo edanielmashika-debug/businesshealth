@@ -104,10 +104,10 @@ export default function AiChatbotPage() {
 
 return (
   <DashboardLayout>
-    <div className="h-screen flex flex-col bg-gray-50 dark:bg-slate-950 overflow-hidden">
+    <div className="h-screen bg-gray-50 dark:bg-slate-950 relative overflow-hidden">
 
-      {/* HEADER (fixed) */}
-      <div className="flex items-center justify-between px-6 py-5 border-b border-gray-200 dark:border-slate-800 bg-white dark:bg-slate-950 shrink-0">
+      {/* HEADER (FIXED TOP) */}
+      <div className="fixed top-0 left-0 right-0 z-50 flex items-center justify-between px-6 py-5 border-b border-gray-200 dark:border-slate-800 bg-white dark:bg-slate-950">
         <div className="flex items-center gap-3">
           <div className="w-12 h-12 rounded-2xl bg-gradient-to-r from-blue-600 to-cyan-500 flex items-center justify-center text-white">
             <Sparkles />
@@ -123,7 +123,7 @@ return (
       </div>
 
       {/* CHAT AREA (ONLY SCROLLABLE) */}
-      <div className="flex-1 overflow-y-auto px-5 py-6 space-y-5">
+      <div className="absolute top-[88px] bottom-[110px] left-0 right-0 overflow-y-auto px-5 py-6 space-y-5">
         {messages.map((msg, i) => (
           <div
             key={i}
@@ -162,8 +162,8 @@ return (
         <div ref={bottomRef} />
       </div>
 
-      {/* INPUT (fixed bottom) */}
-      <div className="shrink-0 p-5 border-t border-gray-200 dark:border-slate-800 bg-white dark:bg-slate-950">
+      {/* INPUT (FIXED BOTTOM) */}
+      <div className="fixed bottom-0 left-0 right-0 z-50 p-5 border-t border-gray-200 dark:border-slate-800 bg-white dark:bg-slate-950">
         <div className="flex items-center gap-3">
 
           <input
@@ -174,11 +174,10 @@ return (
             className="flex-1 rounded-2xl border px-5 py-4 bg-gray-50 dark:bg-slate-900 outline-none"
           />
 
-          {/* FIXED BUTTON CENTERING */}
           <button
             onClick={handleSend}
             disabled={loading}
-            className="w-14 h-14 rounded-2xl bg-gradient-to-r from-blue-600 to-cyan-500 text-white flex items-center justify-center hover:scale-105 transition disabled:opacity-50"
+            className="w-14 h-14 flex items-center justify-center rounded-2xl bg-gradient-to-r from-blue-600 to-cyan-500 text-white hover:scale-105 transition disabled:opacity-50"
           >
             <Send size={20} />
           </button>
