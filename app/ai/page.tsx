@@ -107,7 +107,7 @@ return (
     <div className="h-screen bg-gray-50 dark:bg-slate-950 relative overflow-hidden">
 
       {/* HEADER (FIXED TOP) */}
-      <div className="sticky top-0 left-0 right-0 z-50 flex items-center justify-between px-6 py-5 border-b border-gray-200 dark:border-slate-800 bg-white dark:bg-slate-950">
+      <div className="fixed top-[80px]0 left-0 right-0 z-50 flex items-center justify-between px-6 py-5 border-b border-gray-200 dark:border-slate-800 bg-white dark:bg-slate-950">
         <div className="flex items-center gap-3">
           <div className="w-12 h-12 rounded-2xl bg-gradient-to-r from-blue-600 to-cyan-500 flex items-center justify-center text-white">
             <Sparkles />
@@ -123,7 +123,7 @@ return (
       </div>
 
       {/* CHAT AREA (ONLY SCROLLABLE) */}
-      <div className="absolute top-[88px] bottom-[110px] left-0 right-0 overflow-y-auto px-5 py-6 space-y-5">
+      <div className="absolute top-[160px] bottom-[110px] left-0 right-0 overflow-y-auto px-5 py-6 space-y-5">
         {messages.map((msg, i) => (
           <div
             key={i}
