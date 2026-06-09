@@ -1,98 +1,146 @@
 "use client";
 
-import {
-  useEffect,
-  useRef,
-  useState,
-} from "react";
+import { useState } from "react";
 
 import {
   Bot,
   Send,
-  User,
-  X,
   Sparkles,
 } from "lucide-react";
 
-type Message = {
-  role: "user" | "ai";
-  text: string;
-};
+import {
+  useSalesStore,
+} from "../store/sales-store";
 
-export default function AiChatbot({
-  products,
-  debts,
-  expenses,
-  sales,
-  onClose,
-}: any) {
+import {
+  useExpenseStore,
+} from "../store/expense-store";
 
-  const [messages, setMessages] =
-    useState<Message[]>([
-      {
-        role: "ai",
-        text:
-          "Hello 👋 I'm your AI business assistant. Ask me anything about your sales, debts, expenses, profits, or inventory.",
-      },
-    ]);
+import {
+  useDebtStore,
+} from "../store/debt-store";
 
-  const [input, setInput] =
+import {
+  useInventoryStore,
+} from "../store/inventory-store";
+
+export default function AiChatBot() {
+
+  const sales =
+    useSalesStore(
+      (state) =>
+        state.sales || []
+    );
+
+  const expenses =
+    useExpenseStore(
+      (state) =>
+        state.expenses || []
+    );
+
+  const debts =
+    useDebtStore(
+      (state) =>
+        state.debts || []
+    );
+
+  const products =
+    useInventoryStore(
+      (state) =>
+        state.products || []
+    );
+
+  const [message, setMessage] =
     useState("");
 
   const [loading, setLoading] =
     useState(false);
 
-  const messagesEndRef =
-    useRef<HTMLDivElement | null>(
-      null
+  const [response, setResponse] =
+    useState("");
+
+  /* TOTALS */
+
+  const totalSales =
+    sales.reduce(
+      (
+        sum,
+        sale
+      ) =>
+        sum +
+        Number(
+          sale.total ||
+          0
+        ),
+      0
     );
 
-  /*
-    AUTO SCROLL
-  */
+  const totalExpenses =
+    expenses.reduce(
+      (
+        sum,
+        expense
+      ) =>
+        sum +
+        Number(
+          expense.amount || 0
+        ),
+      0
+    );
 
-  useEffect(() => {
+  const totalDebts =
+    debts.reduce(
+      (
+        sum,
+        debt
+      ) =>
+        sum +
+        Number(
+          debt.amount || 0
+        ),
+      0
+    );
 
-    messagesEndRef.current?.scrollIntoView({
-      behavior: "smooth",
-    });
+  const lowStockCount =
+    products.filter(
+      (product) =>
+        product.stock <= 5
+    ).length;
 
-  }, [messages]);
+  async function handleAsk() {
 
-  /*
-    SEND MESSAGE
-  */
-
-  async function sendMessage() {
-
-    if (
-      !input.trim() ||
-      loading
-    )
-      return;
-
-    const userMessage =
-      input;
-
-    /*
-      USER MESSAGE
-    */
-
-    setMessages((prev) => [
-      ...prev,
-      {
-        role: "user",
-        text: userMessage,
-      },
-    ]);
-
-    setInput("");
-
-    setLoading(true);
+    if (!message) return;
 
     try {
 
-      const response =
+      setLoading(true);
+
+      setResponse("");
+
+      const businessData = {
+
+        totalSales,
+
+        totalExpenses,
+
+        totalDebts,
+
+        lowStockCount,
+
+        productsCount:
+          products.length,
+
+        salesCount:
+          sales.length,
+
+        expensesCount:
+          expenses.length,
+
+        debtsCount:
+          debts.length,
+      };
+
+      const res =
         await fetch(
           "/api/ai-chat",
           {
@@ -104,51 +152,28 @@ export default function AiChatbot({
             },
 
             body: JSON.stringify({
+              message,
 
-              message:
-                userMessage,
-
-              businessData: {
-
-                products,
-
-                debts,
-
-                expenses,
-
-                sales,
-              },
+              businessData,
             }),
           }
         );
 
       const data =
-        await response.json();
+        await res.json();
 
-      console.log(data);
-
-      setMessages((prev) => [
-        ...prev,
-        {
-          role: "ai",
-          text:
-            data.reply ||
-            "No response from AI.",
-        },
-      ]);
+      setResponse(
+        data.reply ||
+          "No response from AI."
+      );
 
     } catch (error) {
 
       console.log(error);
 
-      setMessages((prev) => [
-        ...prev,
-        {
-          role: "ai",
-          text:
-            "AI failed to respond.",
-        },
-      ]);
+      setResponse(
+        "Something went wrong."
+      );
 
     } finally {
 
@@ -158,180 +183,96 @@ export default function AiChatbot({
 
   return (
 
-    <div className="fixed inset-0 z-[120] bg-black/50 backdrop-blur-sm flex items-end md:items-center justify-center p-0 md:p-4">
+    <div className="bg-white dark:bg-slate-900 border border-gray-200 dark:border-slate-800 rounded-3xl p-6 shadow-sm">
 
-      <div className="w-full md:max-w-3xl h-[100dvh] md:h-[90vh] bg-white dark:bg-slate-900 md:rounded-3xl border border-gray-200 dark:border-slate-800 shadow-2xl flex flex-col overflow-hidden">
+      {/* HEADER */}
 
-        {/* HEADER */}
+      <div className="flex items-center gap-4 mb-6">
 
-        <div className="flex items-center justify-between px-5 py-4 border-b border-gray-200 dark:border-slate-800 bg-white/80 dark:bg-slate-900/80 backdrop-blur-sm">
+        <div className="w-14 h-14 rounded-2xl bg-gradient-to-r from-blue-600 to-cyan-500 text-white flex items-center justify-center shadow-lg">
 
-          <div className="flex items-center gap-3">
-
-            <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-blue-600 to-cyan-500 flex items-center justify-center shadow-lg">
-
-              <Sparkles className="w-6 h-6 text-white" />
-
-            </div>
-
-            <div>
-
-              <h2 className="font-bold text-gray-800 dark:text-white text-lg">
-                AI Business Assistant
-              </h2>
-
-              <p className="text-xs text-gray-500 dark:text-slate-400">
-                Powered by OpenAI
-              </p>
-
-            </div>
-
-          </div>
-
-          <button
-            onClick={onClose}
-            className="w-10 h-10 rounded-2xl bg-gray-100 dark:bg-slate-800 flex items-center justify-center hover:scale-105 transition"
-          >
-
-            <X className="w-5 h-5 text-black dark:text-white" />
-
-          </button>
+          <Bot className="w-7 h-7" />
 
         </div>
 
-        {/* CHAT AREA */}
+        <div>
 
-        <div className="flex-1 overflow-y-auto px-4 py-5 space-y-5 bg-gray-50 dark:bg-slate-950">
+          <h2 className="text-2xl font-bold text-gray-800 dark:text-white">
+            Nova AI Assistant
+          </h2>
 
-          {messages.map(
-            (
-              message,
-              index
-            ) => (
-
-              <div
-                key={index}
-                className={`flex items-end gap-3 ${message.role ===
-                    "user"
-                    ? "justify-end"
-                    : "justify-start"
-                  }`}
-              >
-
-                {message.role ===
-                  "ai" && (
-
-                    <div className="w-10 h-10 rounded-2xl bg-gradient-to-br from-blue-600 to-cyan-500 flex items-center justify-center shrink-0">
-
-                      <Bot className="w-5 h-5 text-white" />
-
-                    </div>
-                  )}
-
-                <div
-                  className={`max-w-[85%] px-5 py-4 rounded-3xl text-sm leading-relaxed shadow-sm ${message.role ===
-                      "user"
-                      ? "bg-blue-600 text-white rounded-br-md"
-                      : "bg-white dark:bg-slate-900 text-gray-800 dark:text-slate-200 border border-gray-200 dark:border-slate-800 rounded-bl-md"
-                    }`}
-                >
-                  {message.text}
-                </div>
-
-                {message.role ===
-                  "user" && (
-
-                    <div className="w-10 h-10 rounded-2xl bg-gray-300 dark:bg-slate-700 flex items-center justify-center shrink-0">
-
-                      <User className="w-5 h-5 text-black dark:text-white" />
-
-                    </div>
-                  )}
-
-              </div>
-            )
-          )}
-
-          {/* LOADING */}
-
-          {loading && (
-
-            <div className="flex items-center gap-3">
-
-              <div className="w-10 h-10 rounded-2xl bg-gradient-to-br from-blue-600 to-cyan-500 flex items-center justify-center">
-
-                <Bot className="w-5 h-5 text-white" />
-
-              </div>
-
-              <div className="bg-white dark:bg-slate-900 border border-gray-200 dark:border-slate-800 px-5 py-4 rounded-3xl rounded-bl-md shadow-sm">
-
-                <div className="flex gap-1">
-
-                  <span className="w-2 h-2 rounded-full bg-blue-500 animate-bounce" />
-
-                  <span className="w-2 h-2 rounded-full bg-blue-500 animate-bounce delay-100" />
-
-                  <span className="w-2 h-2 rounded-full bg-blue-500 animate-bounce delay-200" />
-
-                </div>
-
-              </div>
-
-            </div>
-          )}
-
-          <div ref={messagesEndRef} />
-
-        </div>
-
-        {/* INPUT */}
-
-        <div className="border-t border-gray-200 dark:border-slate-800 bg-white dark:bg-slate-900 p-4">
-
-          <div className="flex items-center gap-3">
-
-            <input
-              type="text"
-              value={input}
-              onChange={(e) =>
-                setInput(
-                  e.target.value
-                )
-              }
-              onKeyDown={(e) => {
-
-                if (
-                  e.key ===
-                  "Enter"
-                ) {
-
-                  sendMessage();
-                }
-              }}
-              placeholder="Ask your AI assistant..."
-              className="flex-1 rounded-2xl border border-gray-200 dark:border-slate-700 bg-gray-50 dark:bg-slate-800 px-5 py-4 text-sm outline-none focus:ring-2 focus:ring-blue-500 text-black dark:text-white placeholder:text-gray-400"
-            />
-
-            <button
-              onClick={
-                sendMessage
-              }
-              disabled={
-                loading
-              }
-              className="w-14 h-14 rounded-2xl bg-gradient-to-r from-blue-600 to-cyan-500 text-white flex items-center justify-center shadow-lg hover:scale-105 transition disabled:opacity-50"
-            >
-
-              <Send className="w-5 h-5" />
-
-            </button>
-
-          </div>
+          <p className="text-sm text-gray-500 dark:text-slate-400 mt-1">
+            Analyze your business with AI
+          </p>
 
         </div>
 
       </div>
+
+      {/* INPUT */}
+
+      <div className="space-y-4">
+
+        <textarea
+          value={message}
+          onChange={(e) =>
+            setMessage(
+              e.target.value
+            )
+          }
+          placeholder="Ask Nova AI anything about your business..."
+          className="w-full h-36 rounded-3xl border border-gray-200 dark:border-slate-700 bg-gray-50 dark:bg-slate-950 px-5 py-4 outline-none focus:ring-2 focus:ring-blue-500 text-black dark:text-white placeholder:text-gray-400 dark:placeholder:text-slate-500 resize-none"
+        />
+
+        <button
+          onClick={handleAsk}
+          disabled={loading}
+          className="w-full bg-gradient-to-r from-blue-600 to-cyan-500 text-white rounded-2xl py-4 font-semibold shadow-lg hover:scale-[1.01] transition flex items-center justify-center gap-3 disabled:opacity-60"
+        >
+
+          {loading ? (
+
+            <>
+              <Sparkles className="w-5 h-5 animate-pulse" />
+
+              AI is thinking...
+            </>
+
+          ) : (
+
+            <>
+              <Send className="w-5 h-5" />
+
+              Ask AI
+            </>
+          )}
+
+        </button>
+
+      </div>
+
+      {/* RESPONSE */}
+
+      {response && (
+
+        <div className="mt-6 bg-blue-50 dark:bg-slate-800 border border-blue-100 dark:border-slate-700 rounded-3xl p-5">
+
+          <div className="flex items-center gap-2 mb-3">
+
+            <Sparkles className="w-5 h-5 text-blue-600" />
+
+            <h3 className="font-bold text-blue-700 dark:text-cyan-400">
+              Nova AI Response
+            </h3>
+
+          </div>
+
+          <p className="text-gray-700 dark:text-slate-300 leading-7 whitespace-pre-wrap">
+            {response}
+          </p>
+
+        </div>
+      )}
 
     </div>
   );
