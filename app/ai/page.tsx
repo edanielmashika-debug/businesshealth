@@ -107,7 +107,7 @@ return (
     <div className="h-screen bg-gray-50 dark:bg-slate-950 relative overflow-hidden">
 
       {/* HEADER (FIXED TOP) */}
-      <div className="fixed top-0 left-0 right-0 z-50 flex items-center justify-between px-6 py-5 border-b border-gray-200 dark:border-slate-800 bg-white dark:bg-slate-950">
+      <div className="sticky top-0 left-0 right-0 z-50 flex items-center justify-between px-6 py-5 border-b border-gray-200 dark:border-slate-800 bg-white dark:bg-slate-950">
         <div className="flex items-center gap-3">
           <div className="w-12 h-12 rounded-2xl bg-gradient-to-r from-blue-600 to-cyan-500 flex items-center justify-center text-white">
             <Sparkles />
