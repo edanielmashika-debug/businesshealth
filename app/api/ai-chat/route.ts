@@ -1,5 +1,6 @@
 /// <reference types="node" />
-import OpenAI from "openai";
+
+import Groq from "groq-sdk";
 
 export async function POST(
   req: Request
@@ -8,17 +9,17 @@ export async function POST(
   try {
 
     /*
-      CHECK API KEY
+      API KEY CHECK
     */
 
     if (
-      !process.env.OPENAI_API_KEY
+      !process.env.GROQ_API_KEY
     ) {
 
       return Response.json(
         {
           error:
-            "Missing OpenAI API key",
+            "Missing GROQ_API_KEY",
         },
         {
           status: 500,
@@ -27,13 +28,13 @@ export async function POST(
     }
 
     /*
-      OPENAI CLIENT
+      GROQ CLIENT
     */
 
-    const openai =
-      new OpenAI({
+    const groq =
+      new Groq({
         apiKey:
-          process.env.OPENAI_API_KEY,
+          process.env.GROQ_API_KEY,
       });
 
     /*
@@ -53,9 +54,10 @@ export async function POST(
     */
 
     const completion =
-      await openai.chat.completions.create({
+      await groq.chat.completions.create({
 
-        model: "gpt-4.1-mini",
+        model:
+          "llama-3.3-70b-versatile",
 
         messages: [
 
@@ -63,16 +65,22 @@ export async function POST(
             role: "system",
 
             content: `
-You are an AI business assistant.
+You are Nova AI.
 
-Analyze:
-- sales
-- expenses
-- inventory
-- debts
-- profits
+You are an AI assistant for a business management app.
 
-Give concise advice.
+Help users:
+- analyze profits
+- analyze expenses
+- analyze inventory
+- analyze debts
+- improve business growth
+
+Keep responses:
+- concise
+- practical
+- smart
+- easy to understand
             `,
           },
 
@@ -81,13 +89,19 @@ Give concise advice.
 
             content: `
 Business Data:
-${JSON.stringify(businessData)}
+${JSON.stringify(
+  businessData
+)}
 
 Question:
 ${message}
             `,
           },
         ],
+
+        temperature: 0.7,
+
+        max_tokens: 500,
       });
 
     /*
@@ -105,7 +119,7 @@ ${message}
   } catch (error: any) {
 
     console.log(
-      "AI ERROR:",
+      "GROQ ERROR:",
       error
     );
 
@@ -113,7 +127,7 @@ ${message}
       {
         error:
           error.message ||
-          "AI failed",
+          "Groq AI failed",
       },
       {
         status: 500,
