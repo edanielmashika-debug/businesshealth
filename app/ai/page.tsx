@@ -102,12 +102,12 @@ export default function AiChatbotPage() {
     }
   }
 
-  return (
-    <DashboardLayout>
-    <div className="min-h-screen flex flex-col bg-gray-50 dark:bg-slate-950">
+return (
+  <DashboardLayout>
+    <div className="h-screen flex flex-col bg-gray-50 dark:bg-slate-950 overflow-hidden">
 
-      {/* HEADER */}
-      <div className="flex items-center justify-between px-6 py-5 border-b border-gray-200 dark:border-slate-800 bg-white dark:bg-slate-950">
+      {/* HEADER (fixed) */}
+      <div className="flex items-center justify-between px-6 py-5 border-b border-gray-200 dark:border-slate-800 bg-white dark:bg-slate-950 shrink-0">
         <div className="flex items-center gap-3">
           <div className="w-12 h-12 rounded-2xl bg-gradient-to-r from-blue-600 to-cyan-500 flex items-center justify-center text-white">
             <Sparkles />
@@ -122,10 +122,13 @@ export default function AiChatbotPage() {
         </div>
       </div>
 
-      {/* CHAT AREA */}
+      {/* CHAT AREA (ONLY SCROLLABLE) */}
       <div className="flex-1 overflow-y-auto px-5 py-6 space-y-5">
         {messages.map((msg, i) => (
-          <div key={i} className={`flex ${msg.role === "user" ? "justify-end" : "justify-start"}`}>
+          <div
+            key={i}
+            className={`flex ${msg.role === "user" ? "justify-end" : "justify-start"}`}
+          >
             <div
               className={`max-w-[85%] rounded-3xl px-5 py-4 shadow-sm ${
                 msg.role === "user"
@@ -159,27 +162,31 @@ export default function AiChatbotPage() {
         <div ref={bottomRef} />
       </div>
 
-      {/* INPUT */}
-      <div className="p-5 border-t border-gray-200 dark:border-slate-800 bg-white dark:bg-slate-950">
-        <div className="flex gap-3">
+      {/* INPUT (fixed bottom) */}
+      <div className="shrink-0 p-5 border-t border-gray-200 dark:border-slate-800 bg-white dark:bg-slate-950">
+        <div className="flex items-center gap-3">
+
           <input
             value={message}
             onChange={(e) => setMessage(e.target.value)}
             onKeyDown={handleKeyDown}
             placeholder="Ask AI about your business..."
-            className="flex-1 rounded-2xl border px-5 py-4 bg-gray-50 dark:bg-slate-900"
+            className="flex-1 rounded-2xl border px-5 py-4 bg-gray-50 dark:bg-slate-900 outline-none"
           />
 
+          {/* FIXED BUTTON CENTERING */}
           <button
             onClick={handleSend}
             disabled={loading}
-            className="w-14 h-14 rounded-2xl bg-gradient-to-r from-blue-600 to-cyan-500 text-white"
+            className="w-14 h-14 rounded-2xl bg-gradient-to-r from-blue-600 to-cyan-500 text-white flex items-center justify-center hover:scale-105 transition disabled:opacity-50"
           >
             <Send size={20} />
           </button>
+
         </div>
       </div>
+
     </div>
-    </DashboardLayout>
-  );
+  </DashboardLayout>
+);
 }
