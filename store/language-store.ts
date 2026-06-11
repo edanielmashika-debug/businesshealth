@@ -1,18 +1,27 @@
+
 import { create } from "zustand";
-type Language = "en" | "sw" ;
+import { persist } from "zustand/middleware";
+
+export type Language = "en" | "sw";
 
 interface LanguageState {
-    language: Language;
-    setLanguage: (lang: Language) => void;
+  language: Language;
+  setLanguage: (language: Language) => void;
 }
 
-export const useLanguageStore = 
-  create<LanguageState>((set)=>({
-    language: "en",
+export const useLanguageStore =
+  create<LanguageState>()(
+    persist(
+      (set) => ({
+        language: "en",
 
-    setLanguage: (lang) =>
-        set({
-            language: lang,
-        }),
-
-  }));
+        setLanguage: (language) =>
+          set({
+            language,
+          }),
+      }),
+      {
+        name: "nova-language",
+      }
+    )
+  );

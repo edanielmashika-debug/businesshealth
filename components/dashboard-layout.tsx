@@ -11,6 +11,9 @@ import {
   useEffect,
 } from "react";
 
+
+import { useTranslation } from "@/hooks/useTranslation";
+
 import { supabase } from "../lib/supabase";
 
 import {
@@ -55,65 +58,68 @@ export default function DashboardLayout({
     setBusinessName,
   ] = useState("");
 
+const t = useTranslation();
+
+
   const links = [
 
     {
-      name: "Home",
+      name: t.home,
       href: "/",
       icon: Home,
     },
 
     {
-      name: "Sales",
+      name: t.sales,
       href: "/sales",
       icon: Receipt,
     },
 
     {
-      name: "Inventory",
+      name: t.inventory,
       href: "/inventory",
       icon: Package,
     },
 
     {
-      name: "Transactions",
+      name: t.transactions,
       href: "/transactions",
       icon: Wallet,
     },
 
     {
-      name: "Debts",
+      name: t.debts,
       href: "/debts",
       icon: HandCoins,
     },
 
     {
-      name: "Analytics",
+      name: t.analytics,
       href: "/analytics",
       icon: BarChart3,
     },
 
     {
-      name: "Expenses",
+      name: t.expenses,
       href: "/expenses",
       icon:
         BadgeDollarSignIcon,
     },
 
     {
-      name: "Reports",
+      name: t.reports,
       href: "/reports",
       icon: FileText,
     },
 
     {
-      name: "Settings",
+      name: t.settings,
       href: "/settings",
       icon: Settings,
     },
 
     {
-      name:"AI take",
+      name:t.ai,
       href: "/ai",
       icon: BrainCircuitIcon,
     },

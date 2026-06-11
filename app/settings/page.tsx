@@ -29,11 +29,17 @@ import {
 export default function SettingsPage() {
 
   const router = useRouter();
-  const {
-  language,
-  setLanguage,
 
-} = useLanguageStore();
+
+const language =
+  useLanguageStore(
+    (state) => state.language
+  );
+
+const setLanguage =
+  useLanguageStore(
+    (state) => state.setLanguage
+  );
 
   const {
     theme,

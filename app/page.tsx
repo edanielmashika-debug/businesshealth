@@ -35,6 +35,8 @@ import { generateRecommendations } from "@/services/ai-recommendations";
 
 import { generatePredictions } from "@/services/ai-predictions";
 import { generateInsights } from "@/services/ai-insights";
+import { useTranslation } from "@/hooks/useTranslation";
+
 
 export default function HomePage() {
 
@@ -43,6 +45,9 @@ export default function HomePage() {
     expense,
     profit,
   } = useDashboardStats();
+
+const t = useTranslation();
+
 
   const router = useRouter();
 
