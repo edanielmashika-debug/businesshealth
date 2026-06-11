@@ -13,6 +13,8 @@ import { useTheme } from "next-themes";
 import { exportTransactions } from "@/lib/export-transactions";
 
 import { useTransactionStore } from "@/store/transaction-store";
+import { useLanguageStore} from "@/store/language-store";
+
 
 import {
   DollarSign,
@@ -27,6 +29,11 @@ import {
 export default function SettingsPage() {
 
   const router = useRouter();
+  const {
+  language,
+  setLanguage,
+
+} = useLanguageStore();
 
   const {
     theme,
@@ -185,6 +192,35 @@ export default function SettingsPage() {
                 : "🌙 Dark Mode"}
 
             </button>
+
+            {/*LANGUAGE SWITCH */}
+            <div className="flex gap-3">
+
+              <button
+                onClick={() =>
+                  setLanguage("en")
+                }
+                className={`px-4 py-3 rounded-xl ${language === "en"
+                    ? "bg-blue-600 text-white"
+                    : "bg-gray-200"
+                  }`}
+              >
+                English
+              </button>
+
+              <button
+                onClick={() =>
+                  setLanguage("sw")
+                }
+                className={`px-4 py-3 rounded-xl ${language === "sw"
+                    ? "bg-blue-600 text-white"
+                    : "bg-gray-200"
+                  }`}
+              >
+                Kiswahili
+              </button>
+
+            </div>
 
             {/* LOGOUT */}
 

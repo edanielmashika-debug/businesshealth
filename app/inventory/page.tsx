@@ -6,6 +6,7 @@ import {
 } from "react";
 
 import DashboardLayout from "@/components/dashboard-layout";
+import {useTranslation} from "@/hooks/useTranslation";
 
 import {
   useInventoryStore,
@@ -24,7 +25,7 @@ import {
 } from "lucide-react";
 
 export default function InventoryPage() {
-
+  const t = useTranslation();
   const {
     products,
     addProduct,
@@ -158,7 +159,7 @@ export default function InventoryPage() {
               <h1 className="text-4xl lg:text-5xl font-black mt-5 leading-tight">
                 Smart
                 <br />
-                Inventory
+                {t.inventory}
               </h1>
 
               <p className="text-blue-100 mt-4 max-w-2xl text-lg">
