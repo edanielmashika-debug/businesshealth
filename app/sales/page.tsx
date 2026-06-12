@@ -15,6 +15,9 @@ import {
   useSalesStore,
 } from "../../store/sales-store";
 
+import {useTranslation} from "../../hooks/useTranslation";
+
+
 import {
   ShoppingCart,
   DollarSign,
@@ -27,6 +30,7 @@ import {
 } from "lucide-react";
 
 import {toast} from "sonner";
+import { useLanguageStore } from "../../store/language-store";
 
 export default function SalesPage() {
 
@@ -179,6 +183,8 @@ export default function SalesPage() {
       0
     );
 
+
+    const t = useTranslation();
   return (
 
     <DashboardLayout>
@@ -199,21 +205,21 @@ export default function SalesPage() {
 
                 <Sparkles className="w-4 h-4" />
 
-                Sales Dashboard
+                {t.salesDashboard}
 
               </div>
 
               <h1 className="text-4xl lg:text-5xl font-black mt-5 leading-tight">
 
-                Track
+                {t.trackProductSales}
                 <br />
-                Product Sales
+                {t.productSale}
 
               </h1>
 
               <p className="text-blue-100 mt-4 max-w-2xl text-lg">
 
-                Record sales, monitor revenue, and analyze business growth in real time.
+                {t.salesDescription}
 
               </p>
 
@@ -247,7 +253,7 @@ export default function SalesPage() {
             <div className="relative z-10">
 
               <p className="text-sm text-gray-500 dark:text-slate-400">
-                Total Revenue
+                {t.totalRevenue}
               </p>
 
               <h2 className="text-4xl font-black mt-3 text-blue-600 dark:text-blue-400">
@@ -267,7 +273,7 @@ export default function SalesPage() {
             <div className="relative z-10">
 
               <p className="text-sm text-gray-500 dark:text-slate-400">
-                Total Profit
+                {t.totalProfit}
               </p>
 
               <h2 className="text-4xl font-black mt-3 text-green-600">
@@ -287,7 +293,7 @@ export default function SalesPage() {
             <div className="relative z-10">
 
               <p className="text-sm text-gray-500 dark:text-slate-400">
-                Sales Count
+                {t.salesCount}
               </p>
 
               <h2 className="text-4xl font-black mt-3 text-purple-600 dark:text-purple-400">
@@ -323,7 +329,7 @@ export default function SalesPage() {
 
                       <ShoppingCart className="w-4 h-4" />
 
-                      Product Sale
+                      {t.productSale}
 
                     </div>
 
@@ -338,7 +344,7 @@ export default function SalesPage() {
                   <div className="text-left lg:text-right">
 
                     <p className="text-sm text-gray-500 dark:text-slate-400">
-                      Revenue
+                      {t.revenue}
                     </p>
 
                     <h2 className="text-4xl font-black text-blue-600 dark:text-blue-400 mt-2">
@@ -358,7 +364,7 @@ export default function SalesPage() {
                   <div className="bg-gray-50 dark:bg-slate-800 rounded-3xl p-5">
 
                     <p className="text-sm text-gray-500 dark:text-slate-400">
-                      Quantity Sold
+                       {t.quantitySold}
                     </p>
 
                     <h3 className="text-2xl font-bold mt-2 text-black dark:text-white">
@@ -372,7 +378,7 @@ export default function SalesPage() {
                   <div className="bg-green-50 dark:bg-green-950/30 rounded-3xl p-5 border border-green-100 dark:border-green-900">
 
                     <p className="text-sm text-green-600 dark:text-green-400">
-                      Profit Earned
+                      {t.profitEarned}
                     </p>
 
                     <h3 className="text-2xl font-bold mt-2 text-green-600 dark:text-green-400">
@@ -389,7 +395,7 @@ export default function SalesPage() {
 
                       <CalendarDays className="w-4 h-4" />
 
-                      Sale Date
+                      {t.saleDate}
 
                     </p>
 
@@ -434,11 +440,11 @@ export default function SalesPage() {
                   <div>
 
                     <h2 className="text-2xl font-black text-gray-800 dark:text-white">
-                      Record Sale
+                      {t.recordSale}
                     </h2>
 
                     <p className="text-sm text-gray-500 dark:text-slate-400 mt-1">
-                      Create and track product sales
+                      {t.createAndTrackSales}
                     </p>
 
                   </div>
@@ -466,7 +472,7 @@ export default function SalesPage() {
                   <div>
 
                     <label className="text-sm font-medium text-gray-500 dark:text-slate-400">
-                      Product
+                      {t.product}
                     </label>
 
                     <select
@@ -480,7 +486,7 @@ export default function SalesPage() {
                     >
 
                       <option value="">
-                        Select Product
+                        {t.selectProduct}
                       </option>
 
                       {products.map(
@@ -502,12 +508,12 @@ export default function SalesPage() {
                   <div>
 
                     <label className="text-sm font-medium text-gray-500 dark:text-slate-400">
-                      Quantity
+                      {t.quantity}
                     </label>
 
                     <input
                       type="number"
-                      placeholder="Enter quantity"
+                      placeholder={t.enterQuantity}
                       value={quantity}
                       onChange={(e) =>
                         setQuantity(
@@ -526,7 +532,7 @@ export default function SalesPage() {
                     <div className="bg-blue-50 dark:bg-blue-950/30 border border-blue-100 dark:border-blue-900 rounded-[2rem] p-6">
 
                       <p className="text-sm text-blue-600 dark:text-blue-400">
-                        Total Amount
+                        {t.totalAmount}
                       </p>
 
                       <h2 className="text-4xl font-black text-blue-700 dark:text-blue-300 mt-3">
@@ -540,7 +546,7 @@ export default function SalesPage() {
                     <div className="bg-green-50 dark:bg-green-950/30 border border-green-100 dark:border-green-900 rounded-[2rem] p-6">
 
                       <p className="text-sm text-green-600 dark:text-green-400">
-                        Total Profit
+                        {t.totalProfit}
                       </p>
 
                       <h2 className="text-4xl font-black text-green-700 dark:text-green-300 mt-3">
@@ -573,7 +579,7 @@ export default function SalesPage() {
                             <div>
 
                               <h3 className="font-bold text-gray-800 dark:text-white">
-                                Stock Available
+                                {t.stockAvailable}
                               </h3>
 
                               <p className="text-sm text-gray-500 dark:text-slate-400 mt-1">
@@ -589,7 +595,7 @@ export default function SalesPage() {
 
                               <div className="bg-red-100 dark:bg-red-900/40 text-red-600 dark:text-red-300 px-4 py-2 rounded-full text-sm font-semibold">
 
-                                Low Stock
+                                {t.lowStock}
 
                               </div>
                             )
@@ -605,7 +611,7 @@ export default function SalesPage() {
                     type="submit"
                     className="w-full bg-gradient-to-r from-blue-600 to-cyan-500 text-white rounded-3xl py-5 font-bold text-lg hover:scale-[1.01] transition"
                   >
-                    Record Sale
+                    {t.recordSale}
                   </button>
 
                 </form>
