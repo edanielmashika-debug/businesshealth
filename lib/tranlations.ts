@@ -80,11 +80,67 @@ notEnoughStock: "Not enough stock",
 
 
 
+businessCashflow: "Business Cashflow",
+
+cashflowDescription:
+  "Track every income and expense flowing through your business.",
+
+
+netBalance: "Net Balance",
+
+recentTransactions: "Recent Transactions",
+
+transactionHistory:
+  "Full business transaction history",
+
+records: "Records",
+
+addTransaction: "Add Transaction",
+
+createTransaction:
+  "Create a new transaction",
+
+
+
+  smartTransactions: "Smart Transactions",
+
+
+
+transactionDescription:
+  "Record your business revenue and expenses with a modern cashflow system.",
+
+transactionTitle: "Transaction Title",
+
+transactionTitlePlaceholder: "Shop Sale",
+
+amount: "Amount",
+
+amountPlaceholder: "50000",
+
+category: "Category",
+
+categoryPlaceholder: "Sales",
+
+transactionType: "Transaction Type",
+
+expense: "Expense",
+
+saveTransaction: "Save Transaction",
+
+importFromSms:
+  "Import Transaction From SMS Instead!",
+
+
+
+
     pendingDebts: "Pending Debts",
     paidDebts: "Paid Debts",
 
     welcome: "Welcome back",
     administrator: "Administrator",
+
+    add: "Add",
+transaction: "Transaction",
 
     businessAssistant:
       "Your business intelligence assistant",
@@ -134,6 +190,8 @@ trackProductSales: "Fuatilia Mauzo ya Bidhaa",
 
 salesDescription:
   "Rekodi mauzo, fuatilia mapato, na chambua ukuaji wa biashara yako kwa wakati halisi.",
+add: "Ongeza",
+transaction: "Muamala",
 
 totalRevenue: "Jumla ya Mapato",
 
@@ -158,6 +216,7 @@ createAndTrackSales:
 
 
 
+
 selectProduct: "Chagua Bidhaa",
 
 quantity: "Kiasi",
@@ -170,14 +229,31 @@ stockAvailable: "Stoo Iliyopo",
 
 itemsRemaining: "bidhaa zimebaki",
 
-
-
 recordSaleButton: "Rekodi Mauzo",
 
 notEnoughStock: "Hakuna stoo ya kutosha",
 
 
+businessCashflow: "Mtiririko wa Fedha wa Biashara",
 
+cashflowDescription:
+  "Fuatilia kila mapato na matumizi yanayopita kwenye biashara yako.",
+
+
+netBalance: "Salio Halisi",
+
+recentTransactions: "Miamala ya Hivi Karibuni",
+
+transactionHistory:
+  "Historia Kamili ya Miamala ya Biashara",
+
+records: "Rekodi",
+
+
+addTransaction: "Ongeza Muamala",
+
+createTransaction:
+  "Unda Muamala Mpya",
 
 
     addProduct: "Ongeza Bidhaa",
@@ -187,6 +263,35 @@ notEnoughStock: "Hakuna stoo ya kutosha",
     addExpense: "Ongeza Matumizi",
     inventoryHeader: "Panga bidhaa, fuatilia viwango vya hisa, na ufuatilie thamani ya hesabu kwa wakati halisi.",
 
+
+    smartTransactions: "Miamala Mahiri",
+
+
+
+transactionDescription:
+  "Rekodi mapato na matumizi ya biashara yako kwa mfumo wa kisasa wa usimamizi wa fedha.",
+
+transactionTitle: "Jina la Muamala",
+
+transactionTitlePlaceholder: "Mauzo ya Dukani",
+
+amount: "Kiasi",
+
+amountPlaceholder: "50000",
+
+category: "Kategoria",
+
+categoryPlaceholder: "Mauzo",
+
+transactionType: "Aina ya Muamala",
+
+
+expense: "Matumizi",
+
+saveTransaction: "Hifadhi Muamala",
+
+importFromSms:
+  "Ingiza Muamala Kutoka SMS Badala Yake!",
 
     inventoryValue:
       "Thamani ya Bidhaa",

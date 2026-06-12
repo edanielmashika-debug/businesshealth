@@ -9,6 +9,7 @@ import { createTransaction } from "@/services/transaction-service";
 
 
 import SmsImport from "@/components/sms-import";
+import { useTranslation } from "@/hooks/useTranslation";
 
 import {
   X,
@@ -21,6 +22,7 @@ import {
 
 export default function AddTransactionForm() {
 
+  const t = useTranslation();
   const addTransaction =
     useTransactionStore(
       (state) => state.addTransaction
@@ -119,18 +121,17 @@ export default function AddTransactionForm() {
 
                 <Sparkles className="w-4 h-4" />
 
-                Smart Transactions
-
+                {t.smartTransactions}
               </div>
 
               <h2 className="text-3xl font-black mt-5 leading-tight">
-                Add
+                {t.add}
                 <br />
-                Transaction
+                {t.transaction}
               </h2>
 
               <p className="text-blue-100 mt-3 max-w-xl">
-                Record your business revenue and expenses with a modern cashflow system.
+                {t.transactionDescription}
               </p>
 
             </div>
@@ -154,7 +155,7 @@ export default function AddTransactionForm() {
           <div>
 
             <label className="text-sm font-semibold text-gray-600 dark:text-slate-300">
-              Transaction Title
+               {t.transactionTitle}
             </label>
 
             <input
@@ -176,7 +177,7 @@ export default function AddTransactionForm() {
           <div>
 
             <label className="text-sm font-semibold text-gray-600 dark:text-slate-300">
-              Amount
+              {t.amount}
             </label>
 
             <input
@@ -198,7 +199,7 @@ export default function AddTransactionForm() {
           <div>
 
             <label className="text-sm font-semibold text-gray-600 dark:text-slate-300">
-              Category
+              {t.category}
             </label>
 
             <input
@@ -220,7 +221,7 @@ export default function AddTransactionForm() {
           <div>
 
             <label className="text-sm font-semibold text-gray-600 dark:text-slate-300">
-              Transaction Type
+              {t.transactionType}
             </label>
 
             <div className="grid grid-cols-2 gap-4 mt-3">
@@ -245,7 +246,7 @@ export default function AddTransactionForm() {
                   <ArrowDownCircle className="w-7 h-7" />
 
                   <span className="font-bold">
-                    Revenue
+                    {t.revenue}
                   </span>
 
                 </div>
@@ -272,7 +273,7 @@ export default function AddTransactionForm() {
                   <ArrowUpCircle className="w-7 h-7" />
 
                   <span className="font-bold">
-                    Expense
+                    {t.expenses}
                   </span>
 
                 </div>
@@ -300,7 +301,7 @@ export default function AddTransactionForm() {
 
               <Plus className="w-6 h-6" />
 
-              Save Transaction
+              {t.saveTransaction}
 
             </div>
 
@@ -313,7 +314,7 @@ export default function AddTransactionForm() {
             }
             className="w-full rounded-[2rem] border border-gray-200 dark:border-slate-700 bg-white dark:bg-slate-900 py-5 font-bold text-blue-600 dark:text-cyan-400 hover:bg-blue-50 dark:hover:bg-slate-800 transition"
           >
-            Import  Transaction From SMS Instead!
+            {t.importFromSms}
           </button>
 
         </div>

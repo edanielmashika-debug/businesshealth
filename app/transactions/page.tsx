@@ -22,8 +22,9 @@ import {
   useTransactionStore,
 } from "@/store/transaction-store";
 
+import { useTranslation } from "@/hooks/useTranslation";
 export default function TransactionsPage() {
-
+  const t = useTranslation();
   const {
     totalRevenue,
     totalExpenses,
@@ -134,17 +135,17 @@ return (
           <div>
 
             <div className="inline-flex items-center gap-2 bg-white/15 backdrop-blur-md px-4 py-2 rounded-full text-sm font-medium">
-              💳 Transactions
+              💳 + {t.transactions}
             </div>
 
             <h1 className="text-4xl lg:text-5xl font-black mt-5 leading-tight">
-              Business
+              {t.cashflowDescription}
               <br />
-              Cashflow
+              
             </h1>
 
             <p className="text-blue-100 mt-4 max-w-2xl text-lg">
-              Track every income and expense flowing through your business.
+              {t.cashflowDescription}
             </p>
 
           </div>
@@ -177,7 +178,7 @@ return (
           <div className="relative z-10">
 
             <p className="text-sm font-medium text-gray-500 dark:text-slate-400">
-              Revenue
+              {t.revenue}
             </p>
 
             <h2 className="text-4xl font-black mt-3 text-green-600">
@@ -197,7 +198,7 @@ return (
           <div className="relative z-10">
 
             <p className="text-sm font-medium text-gray-500 dark:text-slate-400">
-              Expenses
+              {t.expenses}
             </p>
 
             <h2 className="text-4xl font-black mt-3 text-red-500">
@@ -217,7 +218,7 @@ return (
           <div className="relative z-10">
 
             <p className="text-sm font-medium text-gray-500 dark:text-slate-400">
-              Net Balance
+              {t.netBalance}
             </p>
 
             <h2 className="text-4xl font-black mt-3 text-blue-600 dark:text-blue-400">
@@ -239,17 +240,17 @@ return (
           <div>
 
             <h2 className="text-2xl font-bold text-gray-800 dark:text-white">
-              Recent Transactions
+              {t.recentTransactions}
             </h2>
 
             <p className="text-sm text-gray-500 dark:text-slate-400 mt-1">
-              Full business transaction history
+              {t.transactionHistory}
             </p>
 
           </div>
 
           <div className="bg-blue-100 dark:bg-blue-500/20 text-blue-700 dark:text-blue-300 px-4 py-2 rounded-2xl font-semibold">
-            {transactions.length} Records
+            {transactions.length} {t.records}
           </div>
 
         </div>
