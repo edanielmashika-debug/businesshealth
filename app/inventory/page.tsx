@@ -153,7 +153,7 @@ export default function InventoryPage() {
             <div>
 
               <div className="inline-flex items-center gap-2 bg-white/15 backdrop-blur-md px-4 py-2 rounded-full text-sm font-medium">
-                📦 Inventory Management
+                 {t.inventoryManagement}
               </div>
 
               <h1 className="text-4xl lg:text-5xl font-black mt-5 leading-tight">
@@ -163,7 +163,7 @@ export default function InventoryPage() {
               </h1>
 
               <p className="text-blue-100 mt-4 max-w-2xl text-lg">
-                Organize products, monitor stock levels, and track inventory value in real-time.
+               {t.inventoryHeader}
               </p>
 
             </div>
@@ -200,7 +200,7 @@ export default function InventoryPage() {
               <div>
 
                 <p className="text-sm font-medium text-gray-500 dark:text-slate-400">
-                  Products
+                  {t.product}
                 </p>
 
                 <h2 className="text-4xl font-black mt-3 text-blue-600 dark:text-blue-400">
@@ -230,7 +230,7 @@ export default function InventoryPage() {
               <div>
 
                 <p className="text-sm font-medium text-gray-500 dark:text-slate-400">
-                  Total Stock
+                  {t.totalStock}
                 </p>
 
                 <h2 className="text-4xl font-black mt-3 text-purple-600 dark:text-purple-400">
@@ -260,7 +260,7 @@ export default function InventoryPage() {
               <div>
 
                 <p className="text-sm font-medium text-gray-500 dark:text-slate-400">
-                  Low Stock
+                  {t.lowStock}
                 </p>
 
                 <h2 className="text-4xl font-black mt-3 text-red-500">
@@ -290,7 +290,7 @@ export default function InventoryPage() {
               <div>
 
                 <p className="text-sm font-medium text-gray-500 dark:text-slate-400">
-                  Inventory Value
+                  {t.inventoryValue}
                 </p>
 
                 <h2 className="text-3xl font-black mt-3 text-green-600 dark:text-green-400">
@@ -349,7 +349,7 @@ export default function InventoryPage() {
 
                         <div className="inline-flex items-center gap-2 bg-blue-100 dark:bg-blue-500/20 text-blue-700 dark:text-blue-300 px-3 py-1 rounded-full text-xs font-semibold mb-4">
                           <Sparkles className="w-3 h-3" />
-                          Inventory Product
+                          {t.inventoryProduct}
                         </div>
 
                         <h2 className="text-3xl font-black text-gray-800 dark:text-white leading-tight">
@@ -361,7 +361,7 @@ export default function InventoryPage() {
                       {isLowStock && (
 
                         <div className="bg-red-100 dark:bg-red-500/20 text-red-600 dark:text-red-400 px-4 py-2 rounded-2xl text-sm font-bold">
-                          Low Stock
+                          {t.lowStock}
                         </div>
 
                       )}
@@ -375,7 +375,7 @@ export default function InventoryPage() {
                       <div className="rounded-3xl bg-gray-50 dark:bg-slate-800/80 p-5 border border-gray-100 dark:border-slate-700">
 
                         <p className="text-sm text-gray-500 dark:text-slate-400">
-                          Stock Left
+                         {t.stockLeft}
                         </p>
 
                         <h3 className="text-3xl font-black mt-2 text-black dark:text-white">
@@ -387,7 +387,7 @@ export default function InventoryPage() {
                       <div className="rounded-3xl bg-green-50 dark:bg-green-500/10 p-5 border border-green-100 dark:border-green-500/20">
 
                         <p className="text-sm text-green-600 dark:text-green-400">
-                          Profit
+                          {t.profit}
                         </p>
 
                         <h3 className="text-2xl font-black mt-2 text-green-600 dark:text-green-400">
@@ -400,7 +400,7 @@ export default function InventoryPage() {
                       <div className="rounded-3xl bg-gray-50 dark:bg-slate-800/80 p-5 border border-gray-100 dark:border-slate-700">
 
                         <p className="text-sm text-gray-500 dark:text-slate-400">
-                          Buying Price
+                          {t.buyingPrice}
                         </p>
 
                         <h3 className="text-xl font-black mt-2 text-black dark:text-white">
@@ -413,7 +413,7 @@ export default function InventoryPage() {
                       <div className="rounded-3xl bg-blue-50 dark:bg-blue-500/10 p-5 border border-blue-100 dark:border-blue-500/20">
 
                         <p className="text-sm text-blue-600 dark:text-blue-400">
-                          Selling Price
+                          {t.sellingPrice}
                         </p>
 
                         <h3 className="text-xl font-black mt-2 text-blue-600 dark:text-blue-400">
@@ -438,7 +438,7 @@ export default function InventoryPage() {
 
                       <Trash2 className="w-5 h-5" />
 
-                      Delete Product
+                      {t.deleteProduct}
 
                     </button>
 
@@ -484,15 +484,15 @@ export default function InventoryPage() {
               <div className="mb-8">
 
                 <div className="inline-flex items-center gap-2 bg-blue-100 dark:bg-blue-500/20 text-blue-700 dark:text-blue-300 px-4 py-2 rounded-full text-sm font-semibold">
-                  📦 Add Inventory
+                  📦 + {t.addInventory}
                 </div>
 
                 <h2 className="text-3xl font-black text-gray-800 dark:text-white mt-5">
-                  Add Product
+                  {t.addProduct}
                 </h2>
 
                 <p className="text-gray-500 dark:text-slate-400 mt-2">
-                  Add new products into your inventory system
+                  {t.newProduct}
                 </p>
 
               </div>
@@ -509,12 +509,12 @@ export default function InventoryPage() {
                 <div>
 
                   <label className="text-sm font-semibold text-gray-700 dark:text-slate-300">
-                    Product Name
+                    {t.productName}
                   </label>
 
                   <input
                     type="text"
-                    placeholder="Enter product name"
+                    placeholder={t.enterProductName}
                     value={name}
                     onChange={(e) =>
                       setName(
@@ -534,7 +534,7 @@ export default function InventoryPage() {
 
                   <input
                     type="number"
-                    placeholder="Enter stock quantity"
+                    placeholder={t.enterStockQuantity}
                     value={stock}
                     onChange={(e) =>
                       setStock(
@@ -551,12 +551,12 @@ export default function InventoryPage() {
                   <div>
 
                     <label className="text-sm font-semibold text-gray-700 dark:text-slate-300">
-                      Buying Price
+                      {t.buyingPrice}
                     </label>
 
                     <input
                       type="number"
-                      placeholder="Buying price"
+                      placeholder= {t.buyingPrice}
                       value={
                         buyingPrice
                       }
@@ -573,12 +573,12 @@ export default function InventoryPage() {
                   <div>
 
                     <label className="text-sm font-semibold text-gray-700 dark:text-slate-300">
-                      Selling Price
+                      {t.sellingPrice}
                     </label>
 
                     <input
                       type="number"
-                      placeholder="Selling price"
+                      placeholder={t.sellingPrice}
                       value={
                         sellingPrice
                       }
@@ -603,7 +603,7 @@ export default function InventoryPage() {
 
                   <Plus className="w-5 h-5" />
 
-                  Add Product
+                  {t.addProduct}
 
                 </button>
 

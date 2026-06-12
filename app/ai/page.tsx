@@ -14,6 +14,7 @@ import { useSalesStore } from "../../store/sales-store";
 import { useExpenseStore } from "../../store/expense-store";
 import { useDebtStore } from "../../store/debt-store";
 import { useInventoryStore } from "../../store/inventory-store";
+import {useTranslation} from "../../hooks/useTranslation";
 
 interface Message {
   role: "user" | "ai";
@@ -22,6 +23,8 @@ interface Message {
 
 export default function AiChatbotPage() {
   const [message, setMessage] = useState("");
+
+  const t = useTranslation();
 
   const [loading, setLoading] =
     useState(false);
@@ -222,7 +225,7 @@ export default function AiChatbotPage() {
               </h1>
 
               <p className="text-gray-500 dark:text-slate-400">
-                Your business intelligence assistant
+                {t.businessAssistant}
               </p>
 
             </div>
@@ -323,7 +326,7 @@ export default function AiChatbotPage() {
               onKeyDown={
                 handleKeyDown
               }
-              placeholder="Ask Nova AI about your business..."
+              placeholder={t.askAi}
               className="flex-1 rounded-2xl border border-gray-200 dark:border-slate-800 bg-gray-50 dark:bg-slate-900 px-5 py-4 text-gray-900 dark:text-white placeholder:text-gray-500 dark:placeholder:text-slate-500 outline-none focus:ring-2 focus:ring-blue-500"
             />
 

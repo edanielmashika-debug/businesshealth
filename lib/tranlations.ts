@@ -20,12 +20,30 @@ export const translations = {
     totalDebt: "Total Debt",
 
     addProduct: "Add Product",
+    product: "Products",
     addSale: "Add Sale",
     addDebt: "Add Debt",
     addExpense: "Add Expense",
 
     inventoryValue: "Inventory Value",
+    totalStock: "Total Stock",
     lowStock: "Low Stock",
+    stockLeft: "Stock left",
+    inventoryManagement: "📦 InventoryManagement",
+    inventoryProduct: "Inventory Product",
+    profit: "Profit",
+    buyingPrice: "Buying Price",
+    sellingPrice: "Selling Price",
+    deleteProduct: "Delete Product",
+    addInventory: "Add Inventory",
+    newProduct: "Add new products into your inventory system",
+    productName: "Product Name",
+    enterProductName: "Enter Product Name",
+    stockQuantity: "Stock Quantity",
+    enterStockQuantity: "Enter Stock Quantity",
+
+
+
 
     pendingDebts: "Pending Debts",
     paidDebts: "Paid Debts",
@@ -35,6 +53,7 @@ export const translations = {
 
     businessAssistant:
       "Your business intelligence assistant",
+    inventoryHeader: "Organize products, monitor stock levels, and track inventory value in real-time.",
 
     askAi:
       "Ask Nova AI about your business...",
@@ -58,11 +77,35 @@ export const translations = {
     totalSales: "Jumla ya Mauzo",
     totalExpenses: "Jumla ya Matumizi",
     totalDebt: "Jumla ya Madeni",
+    stockLeft: "Bidhaa zilizobaki",
+    inventoryProduct: "Bidhaa Ya Biashara",
+    inventoryManagement: " 📦 Meneji Bidhaa za Biashara",
+    totalStock: "Jumla Ya Bidhaa",
+    profit: "Faida",
+    buyingPrice: "Bei Ya Kununua",
+    sellingPrice: "Bei Ya Kuuza",
+    deleteProduct: "Futa Bidhaa",
+    addInventory: "Ongeza Bidhaa",
+    newProduct: "Ongeza Bidhaa Mpya Kwenye Mfumo Wako Wa Bidhaa",
+    productName: "Jina La Bidhaa",
+    enterProductName: "Andika Jina La Bidhaa",
+    stockQuantity: "Idadi Ya Bidhaa",
+    enterStockQuantity: "Ingiza Idadi Ya Bidhaa",
+
+
+    
+
+
+
+
 
     addProduct: "Ongeza Bidhaa",
+    product: "Bidhaa",
     addSale: "Ongeza Mauzo",
     addDebt: "Ongeza Deni",
     addExpense: "Ongeza Matumizi",
+    inventoryHeader: "Panga bidhaa, fuatilia viwango vya hisa, na ufuatilie thamani ya hesabu kwa wakati halisi.",
+
 
     inventoryValue:
       "Thamani ya Bidhaa",

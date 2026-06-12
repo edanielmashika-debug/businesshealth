@@ -384,7 +384,8 @@ ${active
                   </div>
 
                   <div className="text-sm text-gray-500 dark:text-slate-400">
-                    Administrator
+                    {t.administrator
+                    }
                   </div>
 
                 </div>
@@ -406,7 +407,7 @@ ${active
 
             <LogOut className="w-5 h-5" />
 
-            Logout
+            {t.logout}
 
           </button>
 
@@ -434,7 +435,7 @@ ${active
 
             <p className="text-sm text-gray-500 dark:text-slate-400 mt-1">
 
-              Welcome back,
+              {t.welcome}
               {" "}
               <span className="font-semibold text-blue-600 dark:text-cyan-400">
                 Emmanuel
@@ -505,7 +506,7 @@ ${active
                   </div>
 
                   <div className="text-xs text-gray-500 dark:text-slate-400">
-                    Administrator
+                    {t.administrator}
                   </div>
 
                 </div>
