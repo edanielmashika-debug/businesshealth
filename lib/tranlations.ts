@@ -151,6 +151,54 @@ analyticsChart: {
   revenue: "Revenue",
   noSalesData: "No sales data",
 },
+
+expensesPage: {
+  expenseTracker: "Expense Tracker",
+
+  business: "Business",
+  expenses: "Expenses",
+
+  businessExpensesDescription:
+    "Monitor spending, control costs and track every business expense.",
+
+  totalExpenses: "Total Expenses",
+
+  expenseRecords: "Expense Records",
+
+  categories: "Categories",
+
+  newExpense: "New Expense",
+
+  addExpense: "Add Expense",
+
+  addExpenseDescription:
+    "Record business spending and categorize your expenses.",
+
+  expenseTitle: "Expense Title",
+
+  expenseTitlePlaceholder: "Office Rent",
+
+  amount: "Amount",
+
+  category: "Category",
+
+  categoryPlaceholder: "Transport",
+
+  expensePreview: "Expense Preview",
+
+  expense: "Expense",
+
+  saveExpense: "Save Expense",
+
+  expenseTransaction: "Expense transaction",
+
+  delete: "Delete",
+
+  noExpensesYet: "No expenses yet",
+
+  noExpensesYetDescription:
+    "Start recording your business spending and keep your finances organized.",
+},
     dashboard: "Dashboard",
     sales: "Sales",
     inventory: "Inventory",
@@ -450,6 +498,54 @@ analyticsPage: {
 
   lowStockProducts: "Bidhaa Zinazoisha",
   bestSeller: "Bidhaa Inayouzwa Zaidi",
+},
+
+expensesPage: {
+  expenseTracker: "Ufuatiliaji wa Matumizi",
+
+  business: "Matumizi",
+  expenses: "ya Biashara",
+
+  businessExpensesDescription:
+    "Fuatilia matumizi, dhibiti gharama na rekodi kila matumizi ya biashara.",
+
+  totalExpenses: "Jumla ya Matumizi",
+
+  expenseRecords: "Rekodi za Matumizi",
+
+  categories: "Makundi",
+
+  newExpense: "Matumizi Mapya",
+
+  addExpense: "Ongeza Matumizi",
+
+  addExpenseDescription:
+    "Rekodi matumizi ya biashara na yapange kwa makundi.",
+
+  expenseTitle: "Jina la Matumizi",
+
+  expenseTitlePlaceholder: "Kodi ya Ofisi",
+
+  amount: "Kiasi",
+
+  category: "Kundi",
+
+  categoryPlaceholder: "Usafiri",
+
+  expensePreview: "Muhtasari wa Matumizi",
+
+  expense: "Matumizi",
+
+  saveExpense: "Hifadhi Matumizi",
+
+  expenseTransaction: "Muamala wa matumizi",
+
+  delete: "Futa",
+
+  noExpensesYet: "Hakuna matumizi bado",
+
+  noExpensesYetDescription:
+    "Anza kurekodi matumizi ya biashara yako na kuweka fedha zako katika mpangilio.",
 },
 
 

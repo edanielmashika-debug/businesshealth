@@ -6,7 +6,7 @@ import {
 } from "react";
 
 import DashboardLayout from "../../components/dashboard-layout";
-
+import {useTranslation} from "../../hooks/useTranslation";
 import {
   useExpenseStore,
 } from "../../store/expense-store";
@@ -22,7 +22,7 @@ import {
 } from "lucide-react";
 
 export default function ExpensesPage() {
-
+const t = useTranslation();
   const {
     expenses,
     addExpense,
@@ -124,18 +124,18 @@ export default function ExpensesPage() {
 
                 <Sparkles className="w-4 h-4" />
 
-                Expense Tracker
+                {t.expensesPage.expenseTracker}
 
               </div>
 
               <h1 className="text-4xl lg:text-5xl font-black mt-5 leading-tight">
-                Business
+                {t.expensesPage.business}
                 <br />
-                Expenses
+                {t.expensesPage.expenses}
               </h1>
 
               <p className="text-red-100 mt-4 max-w-2xl text-lg">
-                Monitor spending, control costs and track every business expense.
+                {t.expensesPage.businessExpensesDescription}
               </p>
 
             </div>
@@ -174,7 +174,7 @@ export default function ExpensesPage() {
                 <div>
 
                   <p className="text-sm font-medium text-gray-500 dark:text-slate-400">
-                    Total Expenses
+                    {t.expensesPage.totalExpenses}
                   </p>
 
                   <h2 className="text-4xl font-black mt-3 text-red-500">
@@ -209,7 +209,7 @@ export default function ExpensesPage() {
                 <div>
 
                   <p className="text-sm font-medium text-gray-500 dark:text-slate-400">
-                    Expense Records
+                     {t.expensesPage.expenseRecords}
                   </p>
 
                   <h2 className="text-4xl font-black mt-3 text-orange-500">
@@ -243,7 +243,7 @@ export default function ExpensesPage() {
                 <div>
 
                   <p className="text-sm font-medium text-gray-500 dark:text-slate-400">
-                    Categories
+                    {t.expensesPage.categories}
                   </p>
 
                   <h2 className="text-4xl font-black mt-3 text-rose-500">
@@ -301,16 +301,16 @@ export default function ExpensesPage() {
 
                     <Receipt className="w-4 h-4" />
 
-                    New Expense
+                    {t.expensesPage.newExpense}
 
                   </div>
 
                   <h2 className="text-3xl font-black text-gray-800 dark:text-white mt-5">
-                    Add Expense
+                    {t.expensesPage.addExpense}
                   </h2>
 
                   <p className="text-gray-500 dark:text-slate-400 mt-3">
-                    Record business spending and categorize your expenses.
+                    {t.expensesPage.addExpenseDescription}
                   </p>
 
                 </div>
@@ -327,12 +327,12 @@ export default function ExpensesPage() {
                   <div>
 
                     <label className="block text-sm font-semibold text-gray-700 dark:text-slate-300 mb-3">
-                      Expense Title
+                      {t.expensesPage.expenseTitle}
                     </label>
 
                     <input
                       type="text"
-                      placeholder="Office Rent"
+                      placeholder={t.expensesPage.expenseTitlePlaceholder}
                       value={title}
                       onChange={(e) =>
                         setTitle(
@@ -349,7 +349,7 @@ export default function ExpensesPage() {
                   <div>
 
                     <label className="block text-sm font-semibold text-gray-700 dark:text-slate-300 mb-3">
-                      Amount
+                      {t.expensesPage.amount}
                     </label>
 
                     <div className="relative">
@@ -379,12 +379,12 @@ export default function ExpensesPage() {
                   <div>
 
                     <label className="block text-sm font-semibold text-gray-700 dark:text-slate-300 mb-3">
-                      Category
+                      {t.expensesPage.category}
                     </label>
 
                     <input
                       type="text"
-                      placeholder="Transport"
+                      placeholder={t.expensesPage.categoryPlaceholder}
                       value={category}
                       onChange={(e) =>
                         setCategory(
@@ -408,7 +408,7 @@ export default function ExpensesPage() {
                         <div>
 
                           <p className="text-sm opacity-80">
-                            Expense Preview
+                            {t.expensesPage.expensePreview}
                           </p>
 
                           <h3 className="text-2xl font-black mt-2">
@@ -447,7 +447,7 @@ export default function ExpensesPage() {
 
                     <Plus className="w-5 h-5" />
 
-                    Save Expense
+                    {t.expensesPage.saveExpense}
 
                   </button>
 
@@ -499,7 +499,7 @@ export default function ExpensesPage() {
                     </div>
 
                     <p className="text-gray-500 dark:text-slate-400 mt-4">
-                      Expense transaction
+                      {t.expensesPage.category}
                     </p>
 
                     <p className="text-sm text-gray-500 dark:text-slate-400 mt-3">
@@ -530,7 +530,7 @@ export default function ExpensesPage() {
 
                       <Trash2 className="w-4 h-4" />
 
-                      Delete
+                      {t.expensesPage.delete}
 
                     </button>
 
@@ -554,11 +554,11 @@ export default function ExpensesPage() {
               </div>
 
               <h2 className="text-3xl font-black text-gray-800 dark:text-white">
-                No expenses yet
+                {t.expensesPage.noExpensesYet}
               </h2>
 
               <p className="text-gray-500 dark:text-slate-400 mt-3 max-w-md mx-auto">
-                Start recording your business spending and keep your finances organized.
+                {t.expensesPage.noExpensesYetDescription}
               </p>
 
             </div>
