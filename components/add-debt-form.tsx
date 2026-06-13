@@ -5,6 +5,7 @@ import { useState } from "react";
 import { useDebtStore } from "@/store/debt-store";
 
 import { createDebt } from "@/lib/debts";
+import { useTranslation } from "@/hooks/useTranslation";
 
 import {
   Wallet,
@@ -15,7 +16,7 @@ import {
 } from "lucide-react";
 
 export default function AddDebtForm() {
-
+  const t = useTranslation();
   const addDebt =
     useDebtStore(
       (state) =>
@@ -85,16 +86,16 @@ export default function AddDebtForm() {
 
             <Sparkles className="w-4 h-4" />
 
-            Debt Record
+            {t.addDebtForm.debtRecord}
 
           </div>
 
           <h2 className="text-3xl font-black text-gray-800 dark:text-white mt-5">
-            Add New Debt
+            {t.addDebtForm.addNewDebt}
           </h2>
 
           <p className="text-gray-500 dark:text-slate-400 mt-3 leading-relaxed">
-            Save customer balances and monitor repayments easily.
+            {t.addDebtForm.description}
           </p>
 
         </div>
@@ -114,7 +115,7 @@ export default function AddDebtForm() {
 
               <User className="w-4 h-4" />
 
-              Customer Name
+              {t.addDebtForm.customerName}
 
             </label>
 
@@ -122,7 +123,7 @@ export default function AddDebtForm() {
 
               <input
                 type="text"
-                placeholder="Enter customer name"
+                placeholder={t.addDebtForm.enterCustomerName}
                 value={name}
                 onChange={(e) =>
                   setName(
@@ -144,7 +145,7 @@ export default function AddDebtForm() {
 
               <BadgeDollarSign className="w-4 h-4" />
 
-              Debt Amount
+              {t.addDebtForm.debtAmount}
 
             </label>
 
@@ -181,7 +182,7 @@ export default function AddDebtForm() {
                 <div>
 
                   <p className="text-sm opacity-80">
-                    Pending Debt
+                    {t.addDebtForm.pendingDebt}
                   </p>
 
                   <h3 className="text-2xl font-black mt-2">
@@ -219,7 +220,7 @@ export default function AddDebtForm() {
 
             <Plus className="w-5 h-5" />
 
-            Save Debt
+            {t.addDebtForm.saveDebt}
 
           </button>
 

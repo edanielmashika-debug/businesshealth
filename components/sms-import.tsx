@@ -6,6 +6,8 @@ import {
   useTransactionStore,
 } from "@/store/transaction-store";
 
+import { useTranslation } from "@/hooks/useTranslation";
+
 import {
   Smartphone,
   Sparkles,
@@ -15,6 +17,8 @@ import {
 } from "lucide-react";
 
 export default function SmsImport() {
+
+  const t = useTranslation();
 
   const addTransaction =
     useTransactionStore(
@@ -195,18 +199,18 @@ export default function SmsImport() {
 
               <Sparkles className="w-4 h-4" />
 
-              Smart SMS Import
+                {t.smsImport.smartSmsImport}
 
             </div>
 
             <h2 className="text-3xl font-black mt-5 leading-tight">
-              Import
+              {t.smsImport.import}
               <br />
-              Mobile Money SMS
+              {t.smsImport.mobileMoneySms}
             </h2>
 
             <p className="text-blue-100 mt-3 max-w-xl">
-              Paste transaction messages and automatically extract amount, provider and transaction type.
+              {t.smsImport.importDescription}
             </p>
 
           </div>
@@ -228,11 +232,11 @@ export default function SmsImport() {
         <div className="mb-5">
 
           <h3 className="text-xl font-bold text-gray-800 dark:text-white">
-            SMS Message
+            {t.smsImport.smsMessage}
           </h3>
 
           <p className="text-sm text-gray-500 dark:text-slate-400 mt-1">
-            Paste the full message from M-Pesa, Airtel Money or Tigo Pesa.
+            {t.smsImport.smsMessageDescription}
           </p>
 
         </div>
@@ -267,7 +271,7 @@ Umepokea TZS 50,000 kutoka kwa John kupitia M-Pesa..."
               <div className="relative z-10">
 
                 <p className="text-sm text-gray-500 dark:text-slate-400">
-                  Provider
+                  {t.smsImport.provider}
                 </p>
 
                 <h2 className="text-2xl font-black text-blue-600 dark:text-blue-400 mt-3">
@@ -287,7 +291,7 @@ Umepokea TZS 50,000 kutoka kwa John kupitia M-Pesa..."
               <div className="relative z-10">
 
                 <p className="text-sm text-gray-500 dark:text-slate-400">
-                  Amount
+                  {t.smsImport.amount}
                 </p>
 
                 <h2 className="text-2xl font-black text-green-600 mt-3">
@@ -315,7 +319,7 @@ Umepokea TZS 50,000 kutoka kwa John kupitia M-Pesa..."
               <div className="relative z-10">
 
                 <p className="text-sm text-gray-500 dark:text-slate-400">
-                  Transaction Type
+                  {t.smsImport.transactionType}
                 </p>
 
                 <div className="flex items-center gap-3 mt-3">
@@ -378,7 +382,7 @@ Umepokea TZS 50,000 kutoka kwa John kupitia M-Pesa..."
 
           <CheckCircle2 className="w-6 h-6" />
 
-          Import Transaction
+          {t.smsImport.importTransaction}
 
         </div>
 

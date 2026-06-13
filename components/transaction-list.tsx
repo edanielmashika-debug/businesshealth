@@ -6,7 +6,10 @@ import {
   ArrowUpCircle,
 } from "lucide-react";
 
+import { useLanguageStore } from "@/store/language-store";
+
 import { Transaction } from "@/types/transaction";
+import { useTranslation } from "@/hooks/useTranslation";
 
 type TransactionListProps = {
   transactions: Transaction[];
@@ -20,7 +23,7 @@ export default function TransactionList({
   transactions,
   onDelete,
 }: TransactionListProps) {
-
+    const t = useTranslation();
   if (
     transactions.length === 0
   ) {
@@ -38,11 +41,11 @@ export default function TransactionList({
           </div>
 
           <h2 className="text-3xl font-black text-gray-800 dark:text-white">
-            No Transactions Yet
+            {t.transactionList.noTransactionsYet}
           </h2>
 
           <p className="text-gray-500 dark:text-slate-400 mt-3 max-w-md mx-auto text-lg">
-            Your imported SMS and manual transactions will appear here.
+            {t.transactionList.noTransactionsDescription}
           </p>
 
         </div>
@@ -172,7 +175,7 @@ export default function TransactionList({
                   <div className="text-left lg:text-right">
 
                     <p className="text-xs uppercase tracking-wider text-gray-400 dark:text-slate-500 font-bold">
-                      Amount
+                      {t.amount}
                     </p>
 
                     <h2

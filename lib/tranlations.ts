@@ -1,11 +1,122 @@
 
 export const translations = {
   en: {
+
+
+    transactionList: {
+noTransactionsYet: "No Transactions Yet",
+
+noTransactionsDescription:
+"Your imported SMS and manual transactions will appear here.",
+
+amount: "Amount",
+
+revenue: "Revenue",
+
+expense: "Expense",
+
+mobileMoney: "Mobile Money",
+
+manual: "Manual"
+},
+
+
+
+
+    smsImport: {
+  smartSmsImport: "Smart SMS Import",
+    import:
+    "Import",
+    mobileMoneySms: "Mobile Money SMS",
+  importDescription:
+    "Paste transaction messages and automatically extract amount, provider and transaction type.",
+
+  smsMessage: "SMS Message",
+
+  smsMessageDescription:
+    "Paste the full message from M-Pesa, Airtel Money or Tigo Pesa.",
+
+  smsPlaceholder:
+    "Example:\nYou have received TZS 50,000 from John via M-Pesa...",
+
+  provider: "Provider",
+
+  amount: "Amount",
+
+  transactionType: "Transaction Type",
+
+  revenue: "Revenue",
+
+  expense: "Expense",
+
+  importTransaction: "Import Transaction",
+
+  mobileMoney: "Mobile Money",
+
+  mpesa: "M-Pesa",
+
+  airtelMoney: "Airtel Money",
+
+  tigoPesa: "Tigo Pesa",
+
+  haloPesa: "HaloPesa"
+},
+
+debts: {
+debtTracking: "Debt Tracking",
+customer: "Customer",
+Debts: "Debts",
+customerDebtsDescription:
+"Monitor pending payments, paid debts and customer balances.",
+
+totalDebt: "Total Debt",
+paidDebts: "Paid Debts",
+pendingDebts: "Pending Debts",
+
+addNewDebt: "Add New Debt",
+recordCustomerDebt: "Record Customer Debt",
+recordCustomerDebtDescription:
+"Save pending customer balances and track repayments easily.",
+
+paid: "Paid",
+pending: "Pending",
+
+customerDebtRecord: "Customer debt record",
+
+addedOn: "Added on",
+
+markAsPaid: "Mark As Paid",
+
+deleteDebt: "Delete Debt",
+
+noDebtsRecorded: "No debts recorded",
+
+noDebtsRecordedDescription:
+"Start tracking customer balances and repayments by adding your first debt record."
+},
+
+addDebtForm: {
+debtRecord: "Debt Record",
+addNewDebt: "Add New Debt",
+description:
+"Save customer balances and monitor repayments easily.",
+
+customerName: "Customer Name",
+enterCustomerName: "Enter customer name",
+
+debtAmount: "Debt Amount",
+
+pendingDebt: "Pending Debt",
+customer: "Customer",
+
+saveDebt: "Save Debt"
+
+},
     dashboard: "Dashboard",
     sales: "Sales",
     inventory: "Inventory",
     transactions: "Transactions",
-    debts: "Debts",
+  
     expenses: "Expenses",
     reports: "Reports",
     settings: "Settings",
@@ -152,13 +263,125 @@ transaction: "Transaction",
   },
 
   sw: {
+
+    transactionList: {
+noTransactionsYet: "Hakuna Miamala Bado",
+
+noTransactionsDescription:
+"Miamala uliyoingiza kupitia SMS au kwa mkono itaonekana hapa.",
+
+amount: "Kiasi",
+
+revenue: "Mapato",
+
+expense: "Matumizi",
+
+mobileMoney: "Pesa Mtandao",
+
+manual: "Ya Kuingiza Mwenyewe"
+},
+
+
+    smsImport: {
+  smartSmsImport: "Uingizaji Mahiri wa SMS",
+
+  import:
+    "Ingiza ",
+    mobileMoneySms: "SMS za Mobile Money",
+
+  importDescription:
+    "Bandika ujumbe wa muamala na mfumo utachambua kiasi, mtoa huduma na aina ya muamala kiotomatiki.",
+
+  smsMessage: "Ujumbe wa SMS",
+
+  smsMessageDescription:
+    "Bandika ujumbe kamili kutoka M-Pesa, Airtel Money au Tigo Pesa.",
+
+  smsPlaceholder:
+    "Mfano:\nUmepokea TZS 50,000 kutoka kwa John kupitia M-Pesa...",
+
+  provider: "Mtoa Huduma",
+
+  amount: "Kiasi",
+
+  transactionType: "Aina ya Muamala",
+
+  revenue: "Mapato",
+
+  expense: "Matumizi",
+
+  importTransaction: "Ingiza Muamala",
+
+  mobileMoney: "Pesa Mtandao",
+
+  mpesa: "M-Pesa",
+
+  airtelMoney: "Airtel Money",
+
+  tigoPesa: "Tigo Pesa",
+
+  haloPesa: "HaloPesa"
+},
+
+debts: {
+debtTracking: "Ufuatiliaji wa Madeni",
+customer: "Madeni",
+Debts: "ya Wateja",
+customerDebtsDescription:
+"Fuatilia malipo yanayosubiri, madeni yaliyolipwa na salio za wateja.",
+
+totalDebt: "Jumla ya Madeni",
+paidDebts: "Madeni Yaliyolipwa",
+pendingDebts: "Madeni Yanayosubiri",
+
+addNewDebt: "Ongeza Deni Jipya",
+recordCustomerDebt: "Sajili Deni la Mteja",
+recordCustomerDebtDescription:
+"Hifadhi madeni ya wateja na fuatilia marejesho kwa urahisi.",
+
+paid: "Imelipwa",
+pending: "Inasubiri",
+
+customerDebtRecord: "Taarifa ya deni la mteja",
+
+addedOn: "Imeongezwa tarehe",
+
+markAsPaid: "Weka Kama Imelipwa",
+
+deleteDebt: "Futa Deni",
+
+noDebtsRecorded: "Hakuna Madeni Yaliyosajiliwa",
+
+noDebtsRecordedDescription:
+"Anza kufuatilia madeni ya wateja kwa kuongeza deni lako la kwanza."
+},
+
+
+addDebtForm: {
+debtRecord: "Rekodi ya Deni",
+addNewDebt: "Ongeza Deni Jipya",
+description:
+"Hifadhi madeni ya wateja na fuatilia malipo kwa urahisi.",
+
+customerName: "Jina la Mteja",
+enterCustomerName: "Weka jina la mteja",
+
+debtAmount: "Kiasi cha Deni",
+
+pendingDebt: "Deni Linalosubiri",
+customer: "Mteja",
+
+saveDebt: "Hifadhi Deni"
+
+},
+
+
     dashboard: "Dashibodi",
     sales: "Mauzo",
     home: "Nyumbani",
     analytics: "Uchanganuzi",
     inventory: "Bidhaa",
     transactions: "Miamala",
-    debts: "Madeni",
     expenses: "Matumizi",
     reports: "Ripoti",
     settings: "Mipangilio",

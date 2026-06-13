@@ -5,6 +5,9 @@ import {
   useState,
 } from "react";
 
+import {useTranslation} from "../../hooks/useTranslation";
+
+
 import DashboardLayout from "@/components/dashboard-layout";
 
 import AddDebtForm from "@/components/add-debt-form";
@@ -31,7 +34,7 @@ import {
 } from "lucide-react";
 
 export default function DebtsPage() {
-
+  const t = useTranslation();
   const debts =
     useDebtStore(
       (state) => state.debts
@@ -155,18 +158,18 @@ export default function DebtsPage() {
 
                 <Sparkles className="w-4 h-4" />
 
-                Debt Tracking
+                {t.debts.debtTracking}
 
               </div>
 
               <h1 className="text-4xl lg:text-5xl font-black mt-5 leading-tight">
-                Customer
+                {t.debts.customer}
                 <br />
-                Debts
+                {t.debts.Debts}
               </h1>
 
               <p className="text-orange-100 mt-4 max-w-2xl text-lg">
-                Monitor pending payments, paid debts and customer balances.
+                {t.debts.customerDebtsDescription}
               </p>
 
             </div>
@@ -205,7 +208,7 @@ export default function DebtsPage() {
                 <div>
 
                   <p className="text-sm font-medium text-gray-500 dark:text-slate-400">
-                    Total Debt
+                    {t.debts.totalDebt}
                   </p>
 
                   <h2 className="text-4xl font-black mt-3 text-red-500">
@@ -240,7 +243,7 @@ export default function DebtsPage() {
                 <div>
 
                   <p className="text-sm font-medium text-gray-500 dark:text-slate-400">
-                    Paid Debts
+                    {t.debts.paidDebts}
                   </p>
 
                   <h2 className="text-4xl font-black mt-3 text-green-600">
@@ -274,7 +277,7 @@ export default function DebtsPage() {
                 <div>
 
                   <p className="text-sm font-medium text-gray-500 dark:text-slate-400">
-                    Pending Debts
+                    {t.debts.pendingDebts}
                   </p>
 
                   <h2 className="text-4xl font-black mt-3 text-yellow-500">
@@ -332,16 +335,16 @@ export default function DebtsPage() {
 
                     <BadgeDollarSign className="w-4 h-4" />
 
-                    Add New Debt
+                    {t.debts.addNewDebt}
 
                   </div>
 
                   <h2 className="text-3xl font-black text-gray-800 dark:text-white mt-4">
-                    Record Customer Debt
+                    {t.debts.recordCustomerDebt}
                   </h2>
 
                   <p className="text-gray-500 dark:text-slate-400 mt-2">
-                    Save pending customer balances and track repayments easily.
+                    {t.debts.recordCustomerDebtDescription}
                   </p>
 
                 </div>
@@ -397,7 +400,7 @@ export default function DebtsPage() {
                   </div>
 
                   <p className="text-gray-500 dark:text-slate-400 mt-3">
-                    Customer debt record
+                    {t.debts.customerDebtRecord}
                   </p>
 
                   <h3 className="text-4xl font-black text-orange-500 mt-5">
@@ -432,7 +435,7 @@ export default function DebtsPage() {
 
                       <CheckCircle2 className="w-5 h-5" />
 
-                      Mark As Paid
+                      {t.debts.markAsPaid}
 
                     </button>
                   )}
@@ -448,7 +451,7 @@ export default function DebtsPage() {
 
                     <Trash2 className="w-5 h-5" />
 
-                    Delete Debt
+                    {t.debts.deleteDebt}
 
                   </button>
 
@@ -470,11 +473,11 @@ export default function DebtsPage() {
               </div>
 
               <h2 className="text-3xl font-black text-gray-800 dark:text-white">
-                No debts recorded
+                {t.debts.noDebtsRecorded}
               </h2>
 
               <p className="text-gray-500 dark:text-slate-400 mt-3 max-w-md mx-auto">
-                Start tracking customer balances and repayments by adding your first debt record.
+                  {t.debts.noDebtsRecordedDescription}
               </p>
 
             </div>
