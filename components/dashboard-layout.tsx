@@ -88,7 +88,7 @@ const t = useTranslation();
     },
 
     {
-      name: t.debts,
+      name: t.debts.menu,
       href: "/debts",
       icon: HandCoins,
     },

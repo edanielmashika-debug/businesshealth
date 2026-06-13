@@ -63,6 +63,7 @@ manual: "Manual"
 },
 
 debts: {
+menu: "Debts",
 debtTracking: "Debt Tracking",
 customer: "Customer",
 Debts: "Debts",
@@ -324,6 +325,7 @@ manual: "Ya Kuingiza Mwenyewe"
 },
 
 debts: {
+menu: "Madeni",
 debtTracking: "Ufuatiliaji wa Madeni",
 customer: "Madeni",
 Debts: "ya Wateja",
