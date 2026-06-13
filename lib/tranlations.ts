@@ -152,6 +152,8 @@ analyticsChart: {
   noSalesData: "No sales data",
 },
 
+
+
 expensesPage: {
   expenseTracker: "Expense Tracker",
 
@@ -198,6 +200,127 @@ expensesPage: {
 
   noExpensesYetDescription:
     "Start recording your business spending and keep your finances organized.",
+},
+
+reportsPage: {
+  reports: "Reports",
+
+  reportsDescription:
+    "Download your business reports",
+
+  filterReportsByDate:
+    "Filter Reports By Date",
+  analytics: "Revenue Statistics",
+  perfomance: "Business Revenue Perfomance",
+
+  selectReportPeriod:
+    "Select Report Period",
+
+  startDate:
+    "Start Date",
+
+  endDate:
+    "End Date",
+
+  revenue:
+    "Revenue",
+
+  profit:
+    "Profit",
+
+  salesCount:
+    "Sales Count",
+
+  monthlyRevenueGrowth:
+    "Monthly Revenue Growth",
+
+  monthlyProfitGrowth:
+    "Monthly Profit Growth",
+
+  salesReport:
+    "Sales Report",
+
+  salesReportDescription:
+    "Download sales PDF report",
+
+  downloadPdf:
+    "Download PDF",
+
+  versus:
+    "vs",
+},
+
+settingsPage: {
+  settings: "Settings",
+
+  settingsDescription:
+    "Manage your business preferences",
+
+  appSettings:
+    "App Settings",
+
+  appSettingsDescription:
+    "Customize your business dashboard",
+
+  changeCurrency:
+    "Change Currency",
+
+  changeCurrencyDescription:
+    "Set your business currency",
+
+  exportReports:
+    "Export Reports",
+
+  exportReportsDescription:
+    "Download sales and expense reports",
+
+  export:
+    "Export",
+
+  lightMode:
+    "☀️ Light Mode",
+
+  darkMode:
+    "🌙 Dark Mode",
+
+  english:
+    "English",
+
+  swahili:
+    "Kiswahili",
+
+  logout:
+    "Logout",
+
+  deleteAccount:
+    "Delete Account",
+
+  deleteAccountConfirmation:
+    "Delete your account permanently?",
+
+  businessSystem:
+    "Business System",
+
+  businessSystemDescription:
+    "Your inventory, sales, expenses and analytics are securely synced with your account.",
+
+  cloudSync:
+    "Cloud Sync",
+
+  active:
+    "Active",
+
+  security:
+    "Security",
+
+  protected:
+    "Protected",
+
+  multiDevice:
+    "Multi Device",
+
+  enabled:
+    "Enabled",
 },
     dashboard: "Dashboard",
     sales: "Sales",
@@ -546,6 +669,127 @@ expensesPage: {
 
   noExpensesYetDescription:
     "Anza kurekodi matumizi ya biashara yako na kuweka fedha zako katika mpangilio.",
+},
+
+reportsPage: {
+  reports: "Ripoti",
+
+  reportsDescription:
+    "Pakua ripoti za biashara yako",
+
+  filterReportsByDate:
+    "Chuja Ripoti Kwa Tarehe",
+
+  selectReportPeriod:
+    "Chagua Kipindi Cha Ripoti",
+  analytics: "Takwimu za mapato",
+  perfomance: "Perfomance Ya Mapato Ya Biashara",
+
+  startDate:
+    "Tarehe ya Kuanza",
+
+  endDate:
+    "Tarehe ya Mwisho",
+
+  revenue:
+    "Mapato",
+
+  profit:
+    "Faida",
+
+  salesCount:
+    "Idadi ya Mauzo",
+
+  monthlyRevenueGrowth:
+    "Ukuaji wa Mapato kwa Mwezi",
+
+  monthlyProfitGrowth:
+    "Ukuaji wa Faida kwa Mwezi",
+
+  salesReport:
+    "Ripoti ya Mauzo",
+
+  salesReportDescription:
+    "Pakua ripoti ya mauzo katika PDF",
+
+  downloadPdf:
+    "Pakua PDF",
+
+  versus:
+    "dhidi ya",
+},
+
+settingsPage: {
+  settings: "Mipangilio",
+
+  settingsDescription:
+    "Dhibiti mapendeleo ya biashara yako",
+
+  appSettings:
+    "Mipangilio ya Programu",
+
+  appSettingsDescription:
+    "Binafsisha dashibodi ya biashara yako",
+
+  changeCurrency:
+    "Badili Sarafu",
+
+  changeCurrencyDescription:
+    "Weka sarafu ya biashara yako",
+
+  exportReports:
+    "Hamisha Ripoti",
+
+  exportReportsDescription:
+    "Pakua ripoti za mauzo na matumizi",
+
+  export:
+    "Hamisha",
+
+  lightMode:
+    "☀️ Hali ya Mwanga",
+
+  darkMode:
+    "🌙 Hali ya Giza",
+
+  english:
+    "Kiingereza",
+
+  swahili:
+    "Kiswahili",
+
+  logout:
+    "Ondoka",
+
+  deleteAccount:
+    "Futa Akaunti",
+
+  deleteAccountConfirmation:
+    "Unataka kufuta akaunti yako kabisa?",
+
+  businessSystem:
+    "Mfumo wa Biashara",
+
+  businessSystemDescription:
+    "Bidhaa, mauzo, matumizi na uchambuzi wako vinasawazishwa kwa usalama kwenye akaunti yako.",
+
+  cloudSync:
+    "Usawazishaji wa Wingu",
+
+  active:
+    "Inatumika",
+
+  security:
+    "Usalama",
+
+  protected:
+    "Imelindwa",
+
+  multiDevice:
+    "Vifaa Vingi",
+
+  enabled:
+    "Imewezeshwa",
 },
 
 

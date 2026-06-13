@@ -25,9 +25,10 @@ import {
   Cloud,
   Smartphone,
 } from "lucide-react";
+import { useTranslation } from "@/hooks/useTranslation";
 
 export default function SettingsPage() {
-
+  const t = useTranslation();
   const router = useRouter();
 
 
@@ -88,11 +89,11 @@ const setLanguage =
         <div>
 
           <h1 className="text-3xl font-bold text-gray-800 dark:text-white">
-            Settings
+                {t.settingsPage.settings}
           </h1>
 
           <p className="text-gray-500 dark:text-slate-400 mt-1">
-            Manage your business preferences
+             {t.settingsPage.settingsDescription}
           </p>
         </div>
 
@@ -105,11 +106,11 @@ const setLanguage =
           <div className="p-6 border-b border-gray-200 dark:border-slate-700 bg-gradient-to-r from-blue-50 to-cyan-50 dark:from-slate-800 dark:to-slate-900">
 
             <h2 className="text-2xl font-bold text-black dark:text-white">
-              App Settings
+              {t.settingsPage.appSettings}
             </h2>
 
             <p className="text-sm text-gray-500 dark:text-slate-400 mt-1">
-              Customize your business dashboard
+              {t.settingsPage.appSettingsDescription}
             </p>
           </div>
 
@@ -132,11 +133,11 @@ const setLanguage =
                 <div className="text-left">
 
                   <h3 className="font-semibold text-black dark:text-white">
-                    Change Currency
+                    {t.settingsPage.changeCurrency}
                   </h3>
 
                   <p className="text-sm text-gray-500 dark:text-slate-400 mt-1">
-                    Set your business currency
+                    {t.settingsPage.changeCurrencyDescription}
                   </p>
                 </div>
               </div>
@@ -166,17 +167,17 @@ const setLanguage =
                 <div className="text-left">
 
                   <h3 className="font-semibold text-black dark:text-white">
-                    Export Reports
+                    {t.settingsPage.exportReports}
                   </h3>
 
                   <p className="text-sm text-gray-500 dark:text-slate-400 mt-1">
-                    Download sales and expense reports
+                    {t.settingsPage.exportReportsDescription}
                   </p>
                 </div>
               </div>
 
               <div className="text-blue-600 font-semibold">
-                Export
+                {t.settingsPage.export}
               </div>
             </button>
 
@@ -194,8 +195,8 @@ const setLanguage =
             >
 
               {theme === "dark"
-                ? "☀️ Light Mode"
-                : "🌙 Dark Mode"}
+                ? t.settingsPage.lightMode
+                : t.settingsPage.darkMode}
 
             </button>
 
@@ -238,7 +239,7 @@ const setLanguage =
             >
               <LogOut className="w-5 h-5" />
 
-              Logout
+              {t.settingsPage.logout}
             </button>
 
             {/* DELETE ACCOUNT */}
@@ -251,7 +252,7 @@ const setLanguage =
             >
               <Trash2 className="w-5 h-5" />
 
-              Delete Account
+              {t.settingsPage.deleteAccount}
             </button>
           </div>
         </div>
@@ -261,11 +262,11 @@ const setLanguage =
         <div className="bg-white dark:bg-slate-900 rounded-3xl border border-gray-200 dark:border-slate-700 shadow-sm p-6">
 
           <h2 className="text-xl font-bold text-black dark:text-white">
-            Business System
+            {t.settingsPage.businessSystem}
           </h2>
 
           <p className="text-sm text-gray-500 dark:text-slate-400 mt-2">
-            Your inventory, sales, expenses and analytics are securely synced with your account.
+            {t.settingsPage.businessSystemDescription}
           </p>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-6">
@@ -279,12 +280,12 @@ const setLanguage =
                 <Cloud className="w-5 h-5 text-blue-600" />
 
                 <p className="text-sm text-blue-600">
-                  Cloud Sync
+                  {t.settingsPage.cloudSync}
                 </p>
               </div>
 
               <h3 className="text-xl font-bold text-black dark:text-white mt-2">
-                Active
+                {t.settingsPage.active}
               </h3>
             </div>
 
@@ -297,12 +298,12 @@ const setLanguage =
                 <ShieldCheck className="w-5 h-5 text-green-600" />
 
                 <p className="text-sm text-green-600">
-                  Security
+                  {t.settingsPage.security}
                 </p>
               </div>
 
               <h3 className="text-xl font-bold text-black dark:text-white mt-2">
-                Protected
+                {t.settingsPage.protected}
               </h3>
             </div>
 
@@ -315,12 +316,12 @@ const setLanguage =
                 <Smartphone className="w-5 h-5 text-cyan-600" />
 
                 <p className="text-sm text-cyan-600">
-                  Multi Device
+                  {t.settingsPage.multiDevice}
                 </p>
               </div>
 
               <h3 className="text-xl font-bold text-black dark:text-white mt-2">
-                Enabled
+                {t.settingsPage.enabled}
               </h3>
             </div>
           </div>

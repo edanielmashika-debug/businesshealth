@@ -3,6 +3,7 @@
 import { useState } from "react";
 
 import DashboardLayout from "../../components/dashboard-layout";
+import { useTranslation } from "../../hooks/useTranslation";
 
 import {
   generateSalesPDF,
@@ -15,6 +16,8 @@ import {
 import ReportChart from "../../components/report-chart";
 
 export default function ReportsPage() {
+
+  const t = useTranslation();
 
   const sales =
     useSalesStore(
@@ -197,28 +200,28 @@ export default function ReportsPage() {
         <div>
 
           <h1 className="text-3xl font-bold text-gray-800 dark:text-white">
-            Reports
+            {t.reportsPage.reports}
           </h1>
 
           <p className="text-gray-500 dark:text-slate-400 mt-1">
-            Pakua ripoti za biashara yako
+            {t.reportsPage.reportsDescription}
           </p>
         </div>
 
         <div className="bg-white dark:bg-slate-900 rounded-3xl border border-gray-200 dark:border-slate-700 p-6 shadow-sm">
 
           <h2 className="text-xl font-bold text-black dark:text-white">
-            Chuja Ripoti Kwa Tarehe
+            {t.reportsPage.filterReportsByDate}
           </h2>
 
           <p className="text-sm text-gray-500 dark:text-slate-400 mt-1">
-            Chagua Kipindi Cha Ripoti
+            {t.reportsPage.selectReportPeriod}
           </p>
 
           <div className="grid md:grid-cols-2 gap-4 mt-6">
 
             <span className="text-sm font-medium text-gray-500 dark:text-slate-400">
-              Tarehe ya kuanza
+              {t.reportsPage.startDate}
             </span>
 
             <input
@@ -233,7 +236,7 @@ export default function ReportsPage() {
             />
 
             <span className="text-sm font-medium text-gray-500 dark:text-slate-400">
-              Tarehe ya mwisho
+              {t.reportsPage.endDate}
             </span>
 
             <input
@@ -254,7 +257,7 @@ export default function ReportsPage() {
           <div className="bg-white dark:bg-slate-900 rounded-3xl border border-gray-200 dark:border-slate-700 p-6 shadow-sm">
 
             <p className="text-sm text-blue-600">
-              Revenue
+              {t.reportsPage.revenue}
             </p>
 
             <h2 className="text-3xl font-bold text-black dark:text-white mt-2">
@@ -266,7 +269,7 @@ export default function ReportsPage() {
           <div className="bg-white dark:bg-slate-900 rounded-3xl border border-gray-200 dark:border-slate-700 p-6 shadow-sm">
 
             <p className="text-sm text-green-600">
-              Profit
+              {t.reportsPage.profit}
             </p>
 
             <h2 className="text-3xl font-bold text-black dark:text-white mt-2">
@@ -278,7 +281,7 @@ export default function ReportsPage() {
           <div className="bg-white dark:bg-slate-900 rounded-3xl border border-gray-200 dark:border-slate-700 p-6 shadow-sm">
 
             <p className="text-sm text-cyan-600">
-              Sales Count
+              {t.reportsPage.salesCount}
             </p>
 
             <h2 className="text-3xl font-bold text-black dark:text-white mt-2">
@@ -297,7 +300,7 @@ export default function ReportsPage() {
             <div className="bg-white dark:bg-slate-900 rounded-3xl border border-gray-200 dark:border-slate-700 p-6 shadow-sm">
 
               <p className="text-sm text-blue-600">
-                Monthly Revenue Growth
+                {t.reportsPage.monthlyRevenueGrowth}
               </p>
 
               <h2 className="text-4xl font-bold text-black dark:text-white mt-3">
@@ -319,7 +322,7 @@ export default function ReportsPage() {
             <div className="bg-white dark:bg-slate-900 rounded-3xl border border-gray-200 dark:border-slate-700 p-6 shadow-sm">
 
               <p className="text-sm text-cyan-600">
-                Monthly Profit Growth
+                {t.reportsPage.monthlyProfitGrowth}
               </p>
 
               <h2 className="text-4xl font-bold text-black dark:text-white mt-3">
@@ -347,11 +350,11 @@ export default function ReportsPage() {
             <div>
 
               <h2 className="text-xl font-bold text-black dark:text-white">
-                Sales Report
+                {t.reportsPage.salesReport}
               </h2>
 
               <p className="text-sm text-gray-500 dark:text-slate-400 mt-1">
-                Download sales PDF report
+                {t.reportsPage.salesReportDescription}
               </p>
             </div>
 
@@ -363,7 +366,7 @@ export default function ReportsPage() {
               }
               className="bg-blue-600 hover:bg-blue-700 text-white rounded-2xl px-6 py-3 font-semibold transition"
             >
-              Download PDF
+              {t.reportsPage.downloadPdf}
             </button>
           </div>
         </div>
