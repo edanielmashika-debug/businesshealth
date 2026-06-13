@@ -6,6 +6,9 @@ import {
   useState,
 } from "react";
 
+import { useTranslation } from "../../hooks/useTranslation";
+
+
 import DashboardLayout from "../../components/dashboard-layout";
 
 import AnalyticsChart from "../../components/analytics-chart";
@@ -36,6 +39,7 @@ import {
 } from "../../lib/sales";
 
 export default function AnalyticsPage() {
+  const t = useTranslation();
 
   const [sales, setSales] =
     useState<any[]>([]);
@@ -475,19 +479,18 @@ return (
 
               <TrendingUp className="w-4 h-4" />
 
-              Business Analytics
+              {t.analyticsPage.businessAnalytics}
 
             </div>
 
             <h1 className="text-4xl lg:text-5xl font-black mt-5 leading-tight">
-              Financial
+              {t.analyticsPage.financial}
               <br />
-              Overview
+              {t.analyticsPage.overview}
             </h1>
 
             <p className="text-blue-100 mt-4 max-w-2xl text-lg">
-              Monitor revenue, expenses, profits and growth
-              across your business in real time.
+              {t.analyticsPage.financialOverviewDescription}
             </p>
 
           </div>
@@ -497,7 +500,7 @@ return (
             <div className="bg-white/10 backdrop-blur-xl rounded-3xl p-5 border border-white/10">
 
               <p className="text-sm text-blue-100">
-                Revenue
+                {t.analyticsPage.revenue}
               </p>
 
               <h2 className="text-2xl font-black mt-2">
@@ -509,7 +512,7 @@ return (
             <div className="bg-white/10 backdrop-blur-xl rounded-3xl p-5 border border-white/10">
 
               <p className="text-sm text-blue-100">
-                Profit
+                {t.analyticsPage.profit}
               </p>
 
               <h2 className="text-2xl font-black mt-2">
@@ -539,7 +542,7 @@ return (
             <div>
 
               <p className="text-sm font-medium text-gray-500 dark:text-slate-400">
-                Total Revenue
+                {t.analyticsPage.totalRevenue}
               </p>
 
               <h2 className="text-3xl font-black mt-3 text-gray-900 dark:text-white">
@@ -569,7 +572,7 @@ return (
             <div>
 
               <p className="text-sm font-medium text-gray-500 dark:text-slate-400">
-                Total Expenses
+                {t.analyticsPage.totalExpenses}
               </p>
 
               <h2 className="text-3xl font-black mt-3 text-gray-900 dark:text-white">
@@ -597,7 +600,7 @@ return (
             <div>
 
               <p className="text-sm font-medium text-gray-500 dark:text-slate-400">
-                Net Profit
+                {t.analyticsPage.netProfit}
               </p>
 
               <h2 className="text-3xl font-black mt-3 text-gray-900 dark:text-white">
@@ -627,7 +630,7 @@ return (
             <div>
 
               <p className="text-sm font-medium text-gray-500 dark:text-slate-400">
-                Total Sales
+                {t.analyticsPage.totalSales}
               </p>
 
               <h2 className="text-3xl font-black mt-3 text-gray-900 dark:text-white">
@@ -655,7 +658,7 @@ return (
         <div className="bg-white dark:bg-slate-900 rounded-[2rem] border border-gray-200 dark:border-slate-800 p-6 shadow-sm">
 
           <p className="text-sm font-medium text-blue-600">
-            Today's Revenue
+            {t.analyticsPage.todaysRevenue}
           </p>
 
           <h2 className="text-4xl font-black text-gray-900 dark:text-white mt-3">
@@ -667,7 +670,7 @@ return (
         <div className="bg-white dark:bg-slate-900 rounded-[2rem] border border-gray-200 dark:border-slate-800 p-6 shadow-sm">
 
           <p className="text-sm font-medium text-red-500">
-            Today's Expenses
+            {t.analyticsPage.totalExpenses}
           </p>
 
           <h2 className="text-4xl font-black text-gray-900 dark:text-white mt-3">
@@ -679,7 +682,7 @@ return (
         <div className="bg-white dark:bg-slate-900 rounded-[2rem] border border-gray-200 dark:border-slate-800 p-6 shadow-sm">
 
           <p className="text-sm font-medium text-green-600">
-            Today's Profit
+            {t.analyticsPage.todaysProfit}
           </p>
 
           <h2 className="text-4xl font-black text-gray-900 dark:text-white mt-3">
@@ -701,7 +704,7 @@ return (
           <div>
 
             <p className="text-sm uppercase tracking-widest opacity-80">
-              Monthly Growth
+              {t.analyticsPage.monthlyGrowth}
             </p>
 
             <h2 className="text-6xl font-black mt-3">
@@ -729,11 +732,11 @@ return (
           <div className="mb-6">
 
             <h2 className="text-2xl font-bold text-gray-800 dark:text-white">
-              Revenue Overview
+              {t.analyticsPage.revenueOverview}
             </h2>
 
             <p className="text-sm text-gray-500 dark:text-slate-400 mt-1">
-              Combined sales and transaction revenue
+              {t.analyticsPage.revenueOverviewDescription}
             </p>
 
           </div>
@@ -747,11 +750,11 @@ return (
           <div className="mb-6">
 
             <h2 className="text-2xl font-bold text-gray-800 dark:text-white">
-              Expense Categories
+              {t.analyticsPage.expenseCategories}
             </h2>
 
             <p className="text-sm text-gray-500 dark:text-slate-400 mt-1">
-              Track where money is going
+              {t.analyticsPage.expenseCategoriesDescription}
             </p>
 
           </div>

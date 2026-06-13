@@ -113,6 +113,44 @@ customer: "Customer",
 saveDebt: "Save Debt"
 
 },
+
+analyticsPage: {
+  businessAnalytics: "Business Analytics",
+  financial: "Financial",
+  overview: "Overview",
+  financialOverviewDescription:
+    "Monitor revenue, expenses, profits and growth across your business in real time.",
+
+  revenue: "Revenue",
+  profit: "Profit",
+
+  totalRevenue: "Total Revenue",
+  totalExpenses: "Total Expenses",
+  netProfit: "Net Profit",
+  totalSales: "Total Sales",
+
+  todaysRevenue: "Today's Revenue",
+  todaysExpenses: "Today's Expenses",
+  todaysProfit: "Today's Profit",
+
+  monthlyGrowth: "Monthly Growth",
+
+  revenueOverview: "Revenue Overview",
+  revenueOverviewDescription:
+    "Combined sales and transaction revenue",
+
+  expenseCategories: "Expense Categories",
+  expenseCategoriesDescription:
+    "Track where money is going",
+
+  lowStockProducts: "Low Stock Products",
+  bestSeller: "Best Seller",
+},
+
+analyticsChart: {
+  revenue: "Revenue",
+  noSalesData: "No sales data",
+},
     dashboard: "Dashboard",
     sales: "Sales",
     inventory: "Inventory",
@@ -375,6 +413,43 @@ customer: "Mteja",
 
 saveDebt: "Hifadhi Deni"
 
+},
+
+analyticsChart: {
+  revenue: "Mapato",
+  noSalesData: "Hakuna data ya mauzo",
+},
+analyticsPage: {
+  businessAnalytics: "Takwimu za Biashara",
+  financial: "Muhtasari",
+  overview: "wa Fedha",
+  financialOverviewDescription:
+    "Fuatilia mapato, matumizi, faida na ukuaji wa biashara yako kwa wakati halisi.",
+
+  revenue: "Mapato",
+  profit: "Faida",
+
+  totalRevenue: "Jumla ya Mapato",
+  totalExpenses: "Jumla ya Matumizi",
+  netProfit: "Faida Halisi",
+  totalSales: "Jumla ya Mauzo",
+
+  todaysRevenue: "Mapato ya Leo",
+  todaysExpenses: "Matumizi ya Leo",
+  todaysProfit: "Faida ya Leo",
+
+  monthlyGrowth: "Ukuaji wa Mwezi",
+
+  revenueOverview: "Muhtasari wa Mapato",
+  revenueOverviewDescription:
+    "Mapato yote kutoka mauzo na miamala",
+
+  expenseCategories: "Makundi ya Matumizi",
+  expenseCategoriesDescription:
+    "Fuatilia fedha zinatumika wapi",
+
+  lowStockProducts: "Bidhaa Zinazoisha",
+  bestSeller: "Bidhaa Inayouzwa Zaidi",
 },
 
 

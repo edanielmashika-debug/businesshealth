@@ -10,12 +10,15 @@ import {
   Tooltip,
 } from "recharts";
 
+import { useTranslation } from "@/hooks/useTranslation";
+
+
 import {
   useSalesStore,
 } from "@/store/sales-store";
 
 export default function AnalyticsChart() {
-
+  const t = useTranslation();
   const sales =
     useSalesStore(
       (state) =>
