@@ -14,7 +14,8 @@ import { useSalesStore } from "../../store/sales-store";
 import { useExpenseStore } from "../../store/expense-store";
 import { useDebtStore } from "../../store/debt-store";
 import { useInventoryStore } from "../../store/inventory-store";
-import {useTranslation} from "../../hooks/useTranslation";
+import { useCustomerDebtStore } from "../../store/customer-debt-store";
+import { useTranslation } from "../../hooks/useTranslation";
 
 interface Message {
   role: "user" | "ai";
@@ -42,6 +43,10 @@ export default function AiChatbotPage() {
 
   /* LOAD DATA */
 
+  const customerdebts =
+    useCustomerDebtStore(
+      (state) => state.debts
+    );
   const fetchSales =
     useSalesStore(
       (state) => state.fetchSales
@@ -80,6 +85,63 @@ export default function AiChatbotPage() {
       0
     );
 
+  const debtAnalytics = {
+    totalDebts: debts.length,
+
+    outstandingDebt: debts.reduce(
+      (sum, debt) =>
+        sum +
+        (debt.amount -
+          debt.paid_amount),
+      0
+    ),
+
+    totalDebtIssued:
+      debts.reduce(
+        (sum, debt) =>
+          sum + debt.amount,
+        0
+      ),
+
+    totalCollected:
+      debts.reduce(
+        (sum, debt) =>
+          sum +
+          debt.paid_amount,
+        0
+      ),
+
+    overdueDebts:
+      debts.filter(
+        (debt) =>
+          debt.status !== "paid" &&
+          debt.due_date &&
+          new Date(debt.due_date) <
+          new Date()
+      ).length,
+
+    unpaidCustomers:
+      debts.filter(
+        (debt) =>
+          debt.status !== "paid"
+      ).length,
+
+    topDebtors: debts
+      .map((debt) => ({
+        customer:
+          debt.customer_name,
+
+        remaining:
+          debt.amount -
+          debt.paid_amount,
+      }))
+      .sort(
+        (a, b) =>
+          b.remaining -
+          a.remaining
+      )
+      .slice(0, 5),
+  };
   const totalExpenses =
     expenses.reduce(
       (sum, expense) =>
@@ -143,6 +205,16 @@ export default function AiChatbotPage() {
 
             body: JSON.stringify({
               message: userMessage,
+              debts:
+                [
+                  {
+                    customer_name: "John",
+                    amount: 150000,
+                    paid_amount: 50000,
+                    status: "partial",
+                    due_date: "2026-06-20"
+                  }
+                ],
 
               businessData: {
                 totalSales,
@@ -159,6 +231,8 @@ export default function AiChatbotPage() {
                 expenses,
 
                 debts,
+
+                customerdebts: debtAnalytics,
 
                 products,
               },
@@ -243,19 +317,17 @@ export default function AiChatbotPage() {
 
               <div
                 key={index}
-                className={`flex ${
-                  msg.role === "user"
-                    ? "justify-end"
-                    : "justify-start"
-                }`}
+                className={`flex ${msg.role === "user"
+                  ? "justify-end"
+                  : "justify-start"
+                  }`}
               >
 
                 <div
-                  className={`max-w-[85%] rounded-3xl px-5 py-4 shadow-sm ${
-                    msg.role === "user"
-                      ? "bg-gradient-to-r from-blue-600 to-cyan-500 text-white"
-                      : "bg-white dark:bg-slate-900 border border-gray-200 dark:border-slate-800 text-gray-800 dark:text-slate-100"
-                  }`}
+                  className={`max-w-[85%] rounded-3xl px-5 py-4 shadow-sm ${msg.role === "user"
+                    ? "bg-gradient-to-r from-blue-600 to-cyan-500 text-white"
+                    : "bg-white dark:bg-slate-900 border border-gray-200 dark:border-slate-800 text-gray-800 dark:text-slate-100"
+                    }`}
                 >
 
                   <div className="flex items-center gap-2 mb-2">
@@ -269,7 +341,7 @@ export default function AiChatbotPage() {
                     <span className="text-xs opacity-70">
 
                       {msg.role ===
-                      "user"
+                        "user"
                         ? "You"
                         : "Nova AI"}
 
