@@ -322,6 +322,48 @@ settingsPage: {
   enabled:
     "Enabled",
 },
+
+customerDebtsPage: {
+  customerDebts: "Customer Debts",
+  customer: "Customer",
+  debts: "Debts",
+customerDebtTracker: "Customer Debt Tracker",
+trackCustomerDebts: "Track money owed by customers, monitor repayments and manage overdue balances.",
+
+addCustomerDebt: "Add Customer Debt",
+recordMoneyOwed: "Record money owed by a customer",
+
+customerName: "Customer Name",
+phoneNumber: "Phone Number",
+amountOwed: "Amount Owed",
+dueDate: "Due Date",
+notes: "Notes",
+
+saveDebt: "Save Debt",
+
+outstandingDebt: "Outstanding Debt",
+unpaidCustomers: "Unpaid Customers",
+collectedThisMonth: "Collected This Month",
+enteramount: " Enter amount received from customer",
+debt: "Debt",
+paid: "Paid",
+remaining: "Remaining",
+
+recordPayment: "Record Payment",
+amountReceived: "Amount Received",
+savePayment: "Save Payment",
+
+deleteDebt: "Delete",
+
+overdue: "Overdue",
+
+noCustomerDebts: "No customer debts",
+startTrackingDebts:
+  "Start tracking money owed by customers.",
+
+due: "Due",
+customerPhone: "Phone Number",
+},
     dashboard: "Dashboard",
     sales: "Sales",
     inventory: "Inventory",
@@ -790,6 +832,55 @@ settingsPage: {
 
   enabled:
     "Imewezeshwa",
+},
+
+customerDebtsPage: {
+  customerDebts: "Madeni ya Wateja",
+  customer: "Madeni",
+  debts: "ya Wateja",
+customerDebtTracker: "Mfumo wa Madeni ya Wateja",
+trackCustomerDebts:
+  "Fuatilia fedha zinazodaiwa na wateja, malipo yao na madeni yaliyochelewa.",
+
+enteramount: "Ingiza kiasi cha fedha kilichopokelewa kutoka kwa mteja!",
+
+addCustomerDebt: "Ongeza Deni la Mteja",
+recordMoneyOwed:
+  "Sajili fedha anazodaiwa mteja",
+
+customerName: "Jina la Mteja",
+phoneNumber: "Namba ya Simu",
+amountOwed: "Kiasi Anachodaiwa",
+dueDate: "Tarehe ya Mwisho",
+notes: "Maelezo",
+
+saveDebt: "Hifadhi Deni",
+
+outstandingDebt: "Madeni Yaliyobaki",
+unpaidCustomers: "Wateja Wanaodaiwa",
+collectedThisMonth:
+  "Fedha Zilizokusanywa Mwezi Huu",
+
+debt: "Deni",
+paid: "Kilicholipwa",
+remaining: "Kilichobaki",
+
+recordPayment: "Rekodi Malipo",
+amountReceived: "Kiasi Kilichopokelewa",
+savePayment: "Hifadhi Malipo",
+
+deleteDebt: "Futa",
+
+overdue: "Imechelewa",
+
+noCustomerDebts:
+  "Hakuna madeni ya wateja",
+
+startTrackingDebts:
+  "Anza kufuatilia fedha zinazodaiwa na wateja.",
+
+due: "Mwisho wa Malipo",
+customerPhone: "Namba ya Simu",
 },
 
 

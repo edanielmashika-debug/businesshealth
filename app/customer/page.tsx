@@ -3,6 +3,7 @@
 import { useEffect, useMemo, useState } from "react";
 
 import DashboardLayout from "../../components/dashboard-layout";
+import {useTranslation} from "../../hooks/useTranslation";
 
 import {
     Plus,
@@ -20,8 +21,8 @@ import {
 } from "../../store/customer-debt-store";
 
 export default function CustomerDebtsPage() {
+    const t = useTranslation();
     
-
     const {
         debts,
         fetchDebts,
@@ -227,23 +228,21 @@ return (
 
                             <Wallet className="w-4 h-4" />
 
-                            Customer Debt Tracker
+                            {t.customerDebtsPage.customerDebtTracker}
 
                         </div>
 
                         <h1 className="text-4xl lg:text-5xl font-black mt-5 leading-tight">
 
-                            Customer
+                            {t.customerDebtsPage.customer}
                             <br />
-                            Debts
+                            {t.customerDebtsPage.debts}
 
                         </h1>
 
                         <p className="text-blue-100 mt-4 max-w-2xl text-lg">
 
-                            Track money owed by customers,
-                            monitor repayments and manage
-                            overdue balances.
+                            {t.customerDebtsPage.trackCustomerDebts}
 
                         </p>
 
@@ -277,7 +276,7 @@ return (
                     <div className="relative z-10">
 
                         <p className="text-sm font-medium text-gray-500 dark:text-slate-400">
-                            Outstanding Debt
+                            {t.customerDebtsPage.outstandingDebt}
                         </p>
 
                         <h2 className="text-4xl font-black text-red-500 mt-3">
@@ -301,7 +300,7 @@ return (
                     <div className="relative z-10">
 
                         <p className="text-sm font-medium text-gray-500 dark:text-slate-400">
-                            Unpaid Customers
+                            {t.customerDebtsPage.unpaidCustomers}
                         </p>
 
                         <h2 className="text-4xl font-black text-blue-500 mt-3">
@@ -323,7 +322,7 @@ return (
                     <div className="relative z-10">
 
                         <p className="text-sm font-medium text-gray-500 dark:text-slate-400">
-                            Collected This Month
+                            {t.customerDebtsPage.collectedThisMonth}
                         </p>
 
                         <h2 className="text-4xl font-black text-green-500 mt-3">
@@ -356,11 +355,11 @@ return (
                                 <div>
 
                                     <h2 className="text-3xl font-black text-gray-800 dark:text-white">
-                                        Add Customer Debt
+                                        {t.customerDebtsPage.addCustomerDebt}
                                     </h2>
 
                                     <p className="text-gray-500 dark:text-slate-400 mt-2">
-                                        Record money owed by a customer
+                                        {t.customerDebtsPage.recordMoneyOwed}
                                     </p>
 
                                 </div>
@@ -385,7 +384,7 @@ return (
                                     onChange={(e) =>
                                         setCustomerName(e.target.value)
                                     }
-                                    placeholder="Customer Name"
+                                    placeholder={t.customerDebtsPage.customerName}
                                     className="w-full rounded-2xl border border-gray-200 dark:border-slate-700 bg-gray-50 dark:bg-slate-800 px-5 py-4 outline-none"
                                 />
 
@@ -394,7 +393,7 @@ return (
                                     onChange={(e) =>
                                         setPhone(e.target.value)
                                     }
-                                    placeholder="Phone Number"
+                                    placeholder={t.customerDebtsPage.phoneNumber}
                                     className="w-full rounded-2xl border border-gray-200 dark:border-slate-700 bg-gray-50 dark:bg-slate-800 px-5 py-4 outline-none"
                                 />
 
@@ -404,7 +403,7 @@ return (
                                     onChange={(e) =>
                                         setAmount(e.target.value)
                                     }
-                                    placeholder="Amount Owed"
+                                    placeholder={t.customerDebtsPage.amountOwed}
                                     className="w-full rounded-2xl border border-gray-200 dark:border-slate-700 bg-gray-50 dark:bg-slate-800 px-5 py-4 outline-none"
                                 />
 
@@ -422,7 +421,7 @@ return (
                                     onChange={(e) =>
                                         setNotes(e.target.value)
                                     }
-                                    placeholder="Notes"
+                                    placeholder={t.customerDebtsPage.notes}
                                     rows={4}
                                     className="w-full rounded-2xl border border-gray-200 dark:border-slate-700 bg-gray-50 dark:bg-slate-800 px-5 py-4 outline-none"
                                 />
@@ -431,7 +430,7 @@ return (
                                     type="submit"
                                     className="w-full bg-gradient-to-r from-blue-600 to-cyan-500 text-white rounded-2xl py-4 font-bold"
                                 >
-                                    Save Debt
+                                    {t.customerDebtsPage.saveDebt}
                                 </button>
 
                             </form>
@@ -461,11 +460,11 @@ return (
                                 <div>
 
                                     <h2 className="text-2xl font-black text-gray-800 dark:text-white">
-                                        Record Payment
+                                        {t.customerDebtsPage.recordPayment}
                                     </h2>
 
                                     <p className="text-gray-500 dark:text-slate-400 mt-2">
-                                        Enter amount received from customer
+                                       {t.customerDebtsPage.enteramount}
                                     </p>
 
                                 </div>
@@ -495,7 +494,7 @@ return (
                                             e.target.value
                                         )
                                     }
-                                    placeholder="Amount Received"
+                                    placeholder={t.customerDebtsPage.amountReceived}
                                     className="w-full rounded-2xl border border-gray-200 dark:border-slate-700 bg-gray-50 dark:bg-slate-800 px-5 py-4 outline-none text-black dark:text-white"
                                 />
 
@@ -503,7 +502,7 @@ return (
                                     type="submit"
                                     className="w-full bg-gradient-to-r from-green-500 to-emerald-500 text-white rounded-2xl py-4 font-bold"
                                 >
-                                    Save Payment
+                                    {t.customerDebtsPage.savePayment}
                                 </button>
 
                             </form>
@@ -559,7 +558,7 @@ return (
 
                                                 <AlertTriangle className="w-4 h-4" />
 
-                                                Overdue
+                                                {t.customerDebtsPage.overdue}
 
                                             </span>
 
@@ -570,7 +569,7 @@ return (
 
                                                 <span className="bg-green-100 text-green-600 px-4 py-2 rounded-full text-sm font-semibold">
 
-                                                    Paid
+                                                    {t.customerDebtsPage.paid}
 
                                                 </span>
 
@@ -589,7 +588,7 @@ return (
                                         <div>
 
                                             <p className="text-xs text-gray-500">
-                                                Debt
+                                                {t.customerDebtsPage.debt}
                                             </p>
 
                                             <h3 className="font-bold text-red-500">
@@ -605,7 +604,7 @@ return (
                                         <div>
 
                                             <p className="text-xs text-gray-500">
-                                                Paid
+                                                {t.customerDebtsPage.paid}
                                             </p>
 
                                             <h3 className="font-bold text-green-500">
@@ -621,7 +620,7 @@ return (
                                         <div>
 
                                             <p className="text-xs text-gray-500">
-                                                Remaining
+                                                {t.customerDebtsPage.remaining}
                                             </p>
 
                                             <h3 className="font-bold text-blue-500">
@@ -674,7 +673,7 @@ return (
 
                                                 <CreditCard className="w-4 h-4" />
 
-                                                Record Payment
+                                                {t.customerDebtsPage.recordPayment}
 
                                             </button>
 
@@ -691,7 +690,7 @@ return (
 
                                         <Trash2 className="w-4 h-4" />
 
-                                        Delete
+                                        {t.customerDebtsPage.deleteDebt}
 
                                     </button>
 
@@ -715,13 +714,13 @@ return (
 
                         <h2 className="text-3xl font-black text-gray-800 dark:text-white">
 
-                            No customer debts
+                            {t.customerDebtsPage.noCustomerDebts}
 
                         </h2>
 
                         <p className="text-gray-500 dark:text-slate-400 mt-3">
 
-                            Start tracking money owed by customers.
+                            {t.customerDebtsPage.startTrackingDebts}
 
                         </p>
 

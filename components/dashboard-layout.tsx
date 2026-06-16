@@ -94,7 +94,7 @@ const t = useTranslation();
       icon: HandCoins,
     },
 
-    { name: "Customer Debts",
+    { name: t.customerDebtsPage.customerDebts,
       href: "/customer",
       icon: UserRoundCheck,
     },
