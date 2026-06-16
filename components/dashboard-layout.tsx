@@ -33,6 +33,7 @@ import {
   Sparkles,
   LogOut,
   BrainCircuitIcon,
+  UserRoundCheck,
 } from "lucide-react";
 import { Toaster } from "sonner";
 
@@ -91,6 +92,11 @@ const t = useTranslation();
       name: t.debts.menu,
       href: "/debts",
       icon: HandCoins,
+    },
+
+    { name: "Customer Debts",
+      href: "/customer-debts",
+      icon: UserRoundCheck,
     },
 
     {
