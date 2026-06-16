@@ -86,9 +86,9 @@ export default function AiChatbotPage() {
     );
 
   const debtAnalytics = {
-    totalDebts: debts.length,
+    totalDebts: customerdebts.length,
 
-    outstandingDebt: debts.reduce(
+    outstandingDebt: customerdebts.reduce(
       (sum, debt) =>
         sum +
         (debt.amount -
@@ -97,14 +97,14 @@ export default function AiChatbotPage() {
     ),
 
     totalDebtIssued:
-      debts.reduce(
+      customerdebts.reduce(
         (sum, debt) =>
           sum + debt.amount,
         0
       ),
 
     totalCollected:
-      debts.reduce(
+      customerdebts.reduce(
         (sum, debt) =>
           sum +
           debt.paid_amount,
@@ -112,7 +112,7 @@ export default function AiChatbotPage() {
       ),
 
     overdueDebts:
-      debts.filter(
+      customerdebts.filter(
         (debt) =>
           debt.status !== "paid" &&
           debt.due_date &&
@@ -121,12 +121,12 @@ export default function AiChatbotPage() {
       ).length,
 
     unpaidCustomers:
-      debts.filter(
+      customerdebts.filter(
         (debt) =>
           debt.status !== "paid"
       ).length,
 
-    topDebtors: debts
+    topDebtors: customerdebts
       .map((debt) => ({
         customer:
           debt.customer_name,
