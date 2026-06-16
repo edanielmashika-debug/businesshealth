@@ -205,7 +205,7 @@ export default function AiChatbotPage() {
 
             body: JSON.stringify({
               message: userMessage,
-              debts:
+              customerdebts:
                 [
                   {
                     customer_name: "John",
