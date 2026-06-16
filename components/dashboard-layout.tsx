@@ -95,7 +95,7 @@ const t = useTranslation();
     },
 
     { name: "Customer Debts",
-      href: "/customer-debts",
+      href: "/customer",
       icon: UserRoundCheck,
     },
 
