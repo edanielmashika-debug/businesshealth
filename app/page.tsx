@@ -2,6 +2,11 @@
 
 import { useEffect } from "react";
 
+
+import {
+  useDashboardAIStore,
+} from "@/store/dashboard-ai-store";
+
 import DashboardLayout from "@/components/dashboard-layout";
 import DashboardCard from "@/components/dashboard-card";
 
@@ -46,7 +51,7 @@ export default function HomePage() {
     profit,
   } = useDashboardStats();
 
-const t = useTranslation();
+  const t = useTranslation();
 
 
   const router = useRouter();
@@ -93,8 +98,24 @@ const t = useTranslation();
         state.fetchExpenses
     );
 
+  const {
+    recommendation,
+    prediction,
+    weeklySummary,
+    businessInsight,
+    loading,
+    fetchInsights,
+  } =
+    useDashboardAIStore();
+
+  useEffect(() => {
+    fetchInsights();
+  }, []);
 
 
+  useEffect(() => {
+    fetchInsights();
+  }, []);
   useEffect(() => {
 
     async function checkUser() {
@@ -384,35 +405,51 @@ const t = useTranslation();
 
         {/* AI */}
         <AiInsightsCard
-          insights={insights}
-        />
-
-        <WeeklySummaryCard
-
-          revenue={totalRevenue}
-
-          expenses={totalExpenses}
-
-          profit={profit}
-
-          lowStockCount={lowStockCount}
-
-          pendingDebts={
-            pendingDebts.length
+          insights={
+            businessInsight
+              ? [businessInsight]
+              : [
+                "Analyzing business insights..."
+              ]
           }
         />
 
+<WeeklySummaryCard
+  revenue={totalRevenue}
+  expenses={totalExpenses}
+  profit={profit}
+  lowStockCount={lowStockCount}
+  pendingDebts={
+    pendingDebts.length
+  }
+  aiSummary={
+    weeklySummary
+  }
+/>
+
         <AiPredictionsCard
-          predictions={predictions}
+          predictions={
+            prediction
+              ? [prediction]
+              : [
+                "Generating prediction..."
+              ]
+          }
         />
 
         <AiRecommendationsCard
-          recommendations={recommendations}
+          recommendations={
+            recommendation
+              ? [recommendation]
+              : [
+                "Analyzing your business..."
+              ]
+          }
         />
 
         {/* SECOND ROW */}
 
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-5">
+        < div className="grid grid-cols-1 lg:grid-cols-3 gap-5">
 
           {/* BEST SELLER */}
 
@@ -580,6 +617,6 @@ const t = useTranslation();
         </div>
 
       </div>
-    </DashboardLayout>
+    </DashboardLayout >
   );
 }

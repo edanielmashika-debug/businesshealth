@@ -12,16 +12,18 @@ export default function WeeklySummaryCard({
   profit,
   lowStockCount,
   pendingDebts,
+  aiSummary,
 }: {
   revenue: number;
   expenses: number;
   profit: number;
   lowStockCount: number;
   pendingDebts: number;
+  aiSummary?: string;
 }) {
 
   const isProfitPositive =
-    profit >= 0;
+  profit >= 0;
 
   return (
 
@@ -120,6 +122,8 @@ export default function WeeklySummaryCard({
 
         {/* ALERTS */}
 
+        {/* ALERTS */}
+
         <div className="rounded-2xl bg-black/20 border border-white/10 p-5">
 
           <p className="text-sm text-white/70">
@@ -137,6 +141,22 @@ export default function WeeklySummaryCard({
             </p>
 
           </div>
+
+          {aiSummary && (
+
+            <div className="mt-4 border-t border-white/10 pt-4">
+
+              <p className="text-xs uppercase tracking-wide text-cyan-200 mb-2">
+                AI Summary
+              </p>
+
+              <p className="text-sm text-white/90 leading-relaxed">
+                {aiSummary}
+              </p>
+
+            </div>
+
+          )}
 
         </div>
 
