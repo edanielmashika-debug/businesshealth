@@ -8,7 +8,9 @@ interface DashboardAIState {
 
   loading: boolean;
 
-  fetchInsights: () => Promise<void>;
+  fetchInsights: (
+  businessData: any
+) => Promise<void>;
 }
 
 export const useDashboardAIStore =
@@ -23,16 +25,31 @@ export const useDashboardAIStore =
 
     loading: false,
 
-    fetchInsights: async () => {
+    fetchInsights: async (businessData) => {
       try {
         set({
           loading: true,
         });
 
-        const res =
-          await fetch(
-            "/api/dashboard-ai"
-          );
+const res =
+  await fetch(
+    "/api/ai-chat",
+    {
+      method: "POST",
+
+      headers: {
+        "Content-Type":
+          "application/json",
+      },
+
+body: JSON.stringify({
+
+  dashboard: true,
+
+  businessData,
+}),
+    }
+  );
 
         if (!res.ok) {
           throw new Error(

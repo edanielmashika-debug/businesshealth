@@ -47,11 +47,84 @@ export async function POST(
     const {
       message,
       businessData,
+      dashboard,
     } = body;
 
     /*
       AI REQUEST
     */
+
+      if (dashboard) {
+
+  const completion =
+    await groq.chat.completions.create({
+
+      model:
+        "llama-3.3-70b-versatile",
+
+      messages: [
+        {
+          role: "system",
+          content: `
+Return ONLY valid JSON.
+
+Format:
+
+{
+  "recommendation":"",
+  "prediction":"",
+  "weeklySummary":"",
+  "businessInsight":""
+}
+
+No markdown.
+No explanations.
+Only JSON.
+          `,
+        },
+        {
+          role: "user",
+          content: JSON.stringify(
+            businessData
+          ),
+        },
+      ],
+
+      temperature: 0.5,
+
+      max_tokens: 400,
+    });
+
+  const content =
+    completion.choices?.[0]
+      ?.message?.content || "{}";
+
+  try {
+
+    const parsed =
+      JSON.parse(content);
+
+    return Response.json(
+      parsed
+    );
+
+  } catch {
+
+    return Response.json({
+      recommendation:
+        "Unable to generate recommendation",
+
+      prediction:
+        "Unable to generate prediction",
+
+      weeklySummary:
+        "Unable to generate summary",
+
+      businessInsight:
+        "Unable to generate insight",
+    });
+  }
+}
 
     const completion =
       await groq.chat.completions.create({
@@ -122,6 +195,8 @@ ${message}
       "GROQ ERROR:",
       error
     );
+    
+    
 
     return Response.json(
       {

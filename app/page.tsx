@@ -108,13 +108,16 @@ export default function HomePage() {
   } =
     useDashboardAIStore();
 
-  useEffect(() => {
-    fetchInsights();
-  }, []);
+
 
 
   useEffect(() => {
-    fetchInsights();
+    fetchInsights({
+  sales,
+  expenses,
+  products,
+  debts,
+});
   }, []);
   useEffect(() => {
 
