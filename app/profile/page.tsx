@@ -175,17 +175,11 @@ export default function ProfilePage() {
           .pop();
 
       const fileName =
-        `${user.id}.${ext}`;
+        `${user.id}-${Date.now()}.${ext}`;
 
-      await supabase.storage
-        .from("profiles")
-        .remove([
-          fileName,
-        ]);
 
       const {
-        error:
-        uploadError,
+        error: uploadError,
       } =
         await supabase.storage
           .from("profiles")
