@@ -119,7 +119,7 @@ export default function ProfilePage() {
     const { error } =
       await supabase
         .from("profiles")
-        .ups({
+        .update({
           id: user.id,
 
           business_name:
