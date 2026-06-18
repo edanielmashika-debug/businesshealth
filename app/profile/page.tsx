@@ -17,7 +17,7 @@ import {
   ShieldCheck,
 } from "lucide-react";
 
-import {toast} from "sonner";
+import { toast } from "sonner";
 
 export default function ProfilePage() {
 
@@ -185,7 +185,7 @@ export default function ProfilePage() {
 
       const {
         error:
-          uploadError,
+        uploadError,
       } =
         await supabase.storage
           .from("profiles")
@@ -230,7 +230,7 @@ export default function ProfilePage() {
 
       await supabase
         .from("profiles")
-        .upsert({
+        .update({
           id: user.id,
 
           business_name:
