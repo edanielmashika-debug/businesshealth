@@ -1,301 +1,216 @@
 "use client";
 
-import {
-  useState,
-  useEffect,
-} from "react";
-
-
-
-import {
-  Bot,
-  Send,
-  Sparkles,
-} from "lucide-react";
-
-import {
-  useSalesStore,
-} from "../store/sales-store";
-
-import {
-  useExpenseStore,
-} from "../store/expense-store";
-
-import {
-  useDebtStore,
-} from "../store/debt-store";
-
-import {
-  useInventoryStore,
-} from "../store/inventory-store";
+import { useState, useEffect } from "react";
+import { Bot, Send, Sparkles } from "lucide-react";
+import { useSalesStore } from "../store/sales-store";
+import { useExpenseStore } from "../store/expense-store";
+import { useDebtStore } from "../store/debt-store";
+import { useInventoryStore } from "../store/inventory-store";
 
 export default function AiChatBot() {
+  const fetchSales = useSalesStore((state) => state.fetchSales);
+  useEffect(() => { fetchSales(); }, []);
 
+  const sales = useSalesStore((state) => state.sales || []);
+  const expenses = useExpenseStore((state) => state.expenses || []);
+  const debts = useDebtStore((state) => state.debts || []);
+  const products = useInventoryStore((state) => state.products || []);
 
-const fetchSales =
-  useSalesStore(
-    (state) =>
-      state.fetchSales
-  );
+  const [message, setMessage] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [response, setResponse] = useState("");
 
-useEffect(() => {
-  fetchSales();
-}, []);
-
-
-
-const sales =
-  useSalesStore(
-    (state) =>
-      state.sales || []
-  );
-
-
-
-
-
-  const expenses =
-    useExpenseStore(
-      (state) =>
-        state.expenses || []
-    );
-
-  const debts =
-    useDebtStore(
-      (state) =>
-        state.debts || []
-    );
-
-  const products =
-    useInventoryStore(
-      (state) =>
-        state.products || []
-    );
-
-  const [message, setMessage] =
-    useState("");
-
-  const [loading, setLoading] =
-    useState(false);
-
-  const [response, setResponse] =
-    useState("");
-
-  /* TOTALS */
-
-  const totalSales =
-    sales.reduce(
-      (
-        sum,
-        sale
-      ) =>
-        sum +
-        Number(
-          sale.total ||
-          0
-        ),
-      0
-    );
-
-  const totalExpenses =
-    expenses.reduce(
-      (
-        sum,
-        expense
-      ) =>
-        sum +
-        Number(
-          expense.amount || 0
-        ),
-      0
-    );
-
-  const totalDebts =
-    debts.reduce(
-      (
-        sum,
-        debt
-      ) =>
-        sum +
-        Number(
-          debt.amount || 0
-        ),
-      0
-    );
-
-  const lowStockCount =
-    products.filter(
-      (product) =>
-        product.stock <= 5
-    ).length;
+  const totalSales = sales.reduce((sum, sale) => sum + Number(sale.total || 0), 0);
+  const totalExpenses = expenses.reduce((sum, expense) => sum + Number(expense.amount || 0), 0);
+  const totalDebts = debts.reduce((sum, debt) => sum + Number(debt.amount || 0), 0);
+  const lowStockCount = products.filter((p) => p.stock <= 5).length;
 
   async function handleAsk() {
-
     if (!message) return;
-
     try {
-
       setLoading(true);
-
       setResponse("");
-
       const businessData = {
-
-        totalSales,
-
-        totalExpenses,
-
-        totalDebts,
-
-        lowStockCount,
-
-        productsCount:
-          products.length,
-
-        salesCount:
-          sales.length,
-
-        expensesCount:
-          expenses.length,
-
-        debtsCount:
-          debts.length,
+        totalSales, totalExpenses, totalDebts, lowStockCount,
+        productsCount: products.length, salesCount: sales.length,
+        expensesCount: expenses.length, debtsCount: debts.length,
       };
-
-      const res =
-        await fetch(
-          "/api/ai-chat",
-          {
-            method: "POST",
-
-            headers: {
-              "Content-Type":
-                "application/json",
-            },
-
-            body: JSON.stringify({
-              message,
-
-              businessData,
-            }),
-          }
-        );
-
-      const data =
-        await res.json();
-
-      setResponse(
-        data.reply ||
-          "No response from AI."
-      );
-
+      const res = await fetch("/api/ai-chat", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ message, businessData }),
+      });
+      const data = await res.json();
+      setResponse(data.reply || "No response from AI.");
     } catch (error) {
-
       console.log(error);
-
-      setResponse(
-        "Something went wrong."
-      );
-
+      setResponse("Something went wrong.");
     } finally {
-
       setLoading(false);
     }
   }
 
   return (
-
-    <div className="bg-white dark:bg-slate-900 border border-gray-200 dark:border-slate-800 rounded-3xl p-6 shadow-sm">
-
+    <div
+      style={{
+        background: "#0f1117",
+        border: "1px solid #ffffff0d",
+        borderRadius: 22,
+        padding: "24px",
+        backgroundImage:
+          "radial-gradient(ellipse at top right, #7c3aed0a 0%, transparent 55%)",
+      }}
+    >
       {/* HEADER */}
-
-      <div className="flex items-center gap-4 mb-6">
-
-        <div className="w-14 h-14 rounded-2xl bg-gradient-to-r from-blue-600 to-cyan-500 text-white flex items-center justify-center shadow-lg">
-
-          <Bot className="w-7 h-7" />
-
+      <div style={{ display: "flex", alignItems: "center", gap: 14, marginBottom: 22 }}>
+        <div
+          style={{
+            width: 48,
+            height: 48,
+            borderRadius: 14,
+            background: "linear-gradient(135deg, #7c3aed, #a855f7)",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            boxShadow: "0 0 24px #7c3aed44",
+            flexShrink: 0,
+          }}
+        >
+          <Bot size={22} color="#fff" />
         </div>
-
         <div>
-
-          <h2 className="text-2xl font-bold text-gray-800 dark:text-white">
+          <h2
+            style={{
+              fontSize: 17,
+              fontWeight: 800,
+              color: "#f0f0ff",
+              letterSpacing: "-0.02em",
+            }}
+          >
             Nova AI Assistant
           </h2>
-
-          <p className="text-sm text-gray-500 dark:text-slate-400 mt-1">
+          <p style={{ fontSize: 12, color: "#6b7280", marginTop: 2 }}>
             Analyze your business with AI
           </p>
-
         </div>
-
-      </div>
-
-      {/* INPUT */}
-
-      <div className="space-y-4">
-
-        <textarea
-          value={message}
-          onChange={(e) =>
-            setMessage(
-              e.target.value
-            )
-          }
-          placeholder="Ask Nova AI anything about your business..."
-          className="w-full h-36 rounded-3xl border border-gray-200 dark:border-slate-700 bg-gray-50 dark:bg-slate-950 px-5 py-4 outline-none focus:ring-2 focus:ring-blue-500 text-black dark:text-white placeholder:text-gray-400 dark:placeholder:text-slate-500 resize-none"
+        <div
+          style={{
+            marginLeft: "auto",
+            width: 8,
+            height: 8,
+            borderRadius: "50%",
+            background: "#06ffa5",
+            boxShadow: "0 0 8px #06ffa5",
+          }}
         />
-
-        <button
-          onClick={handleAsk}
-          disabled={loading}
-          className="w-full bg-gradient-to-r from-blue-600 to-cyan-500 text-white rounded-2xl py-4 font-semibold shadow-lg hover:scale-[1.01] transition flex items-center justify-center gap-3 disabled:opacity-60"
-        >
-
-          {loading ? (
-
-            <>
-              <Sparkles className="w-5 h-5 animate-pulse" />
-
-              AI is thinking...
-            </>
-
-          ) : (
-
-            <>
-              <Send className="w-5 h-5" />
-
-              Ask AI
-            </>
-          )}
-
-        </button>
-
       </div>
+
+      {/* TEXTAREA */}
+      <textarea
+        value={message}
+        onChange={(e) => setMessage(e.target.value)}
+        placeholder="Ask Nova anything about your business..."
+        style={{
+          width: "100%",
+          height: 120,
+          borderRadius: 14,
+          border: "1px solid #ffffff0d",
+          background: "#161822",
+          padding: "14px 16px",
+          fontSize: 13,
+          color: "#f0f0ff",
+          outline: "none",
+          resize: "none",
+          boxSizing: "border-box",
+          fontFamily: "inherit",
+          lineHeight: 1.6,
+          transition: "border-color 0.15s ease",
+        }}
+        onFocus={(e) => { e.target.style.borderColor = "#7c3aed55"; }}
+        onBlur={(e) => { e.target.style.borderColor = "#ffffff0d"; }}
+      />
+
+      <button
+        onClick={handleAsk}
+        disabled={loading}
+        style={{
+          width: "100%",
+          marginTop: 12,
+          borderRadius: 13,
+          background: loading
+            ? "#7c3aed55"
+            : "linear-gradient(135deg, #7c3aed, #a855f7)",
+          color: "#fff",
+          padding: "13px 0",
+          fontWeight: 700,
+          fontSize: 13,
+          border: "none",
+          cursor: loading ? "not-allowed" : "pointer",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          gap: 8,
+          boxShadow: loading ? "none" : "0 4px 20px #7c3aed33",
+          transition: "all 0.15s ease",
+        }}
+      >
+        {loading ? (
+          <>
+            <Sparkles size={15} style={{ animation: "pulse 1s infinite" }} />
+            Thinking...
+          </>
+        ) : (
+          <>
+            <Send size={15} />
+            Ask AI
+          </>
+        )}
+      </button>
 
       {/* RESPONSE */}
-
       {response && (
-
-        <div className="mt-6 bg-blue-50 dark:bg-slate-800 border border-blue-100 dark:border-slate-700 rounded-3xl p-5">
-
-          <div className="flex items-center gap-2 mb-3">
-
-            <Sparkles className="w-5 h-5 text-blue-600" />
-
-            <h3 className="font-bold text-blue-700 dark:text-cyan-400">
-              Nova AI Response
-            </h3>
-
+        <div
+          style={{
+            marginTop: 16,
+            background: "#161822",
+            border: "1px solid #7c3aed22",
+            borderRadius: 16,
+            padding: "16px 18px",
+          }}
+        >
+          <div
+            style={{
+              display: "flex",
+              alignItems: "center",
+              gap: 7,
+              marginBottom: 10,
+            }}
+          >
+            <Sparkles size={14} color="#c4b5fd" />
+            <span
+              style={{
+                fontSize: 11,
+                fontWeight: 700,
+                color: "#c4b5fd",
+                textTransform: "uppercase",
+                letterSpacing: "0.06em",
+              }}
+            >
+              Nova Response
+            </span>
           </div>
-
-          <p className="text-gray-700 dark:text-slate-300 leading-7 whitespace-pre-wrap">
+          <p
+            style={{
+              fontSize: 13,
+              color: "#94a3b8",
+              lineHeight: 1.7,
+              whiteSpace: "pre-wrap",
+            }}
+          >
             {response}
           </p>
-
         </div>
       )}
-
     </div>
   );
 }

@@ -9,144 +9,63 @@ import {
   YAxis,
   Tooltip,
 } from "recharts";
-
 import { useTranslation } from "@/hooks/useTranslation";
-
-
-import {
-  useSalesStore,
-} from "@/store/sales-store";
+import { useSalesStore } from "@/store/sales-store";
 
 export default function AnalyticsChart() {
   const t = useTranslation();
-  const sales =
-    useSalesStore(
-      (state) =>
-        state.sales
-    );
+  const sales = useSalesStore((state) => state.sales);
 
-  const groupedSales:
-    Record<
-      string,
-      number
-    > = {};
-
-  sales.forEach(
-    (sale) => {
-
-      const date =
-        new Date(
-          sale.createdAt
-        ).toLocaleDateString();
-
-      if (
-        groupedSales[date]
-      ) {
-
-        groupedSales[
-          date
-        ] += sale.total;
-
-      } else {
-
-        groupedSales[
-          date
-        ] = sale.total;
-      }
-    }
-  );
-
-  const data =
-    Object.entries(
-      groupedSales
-    ).map(
-      ([date, revenue]) => ({
-        date,
-        revenue,
-      })
-    );
+  const groupedSales: Record<string, number> = {};
+  sales.forEach((sale) => {
+    const date = new Date(sale.createdAt).toLocaleDateString();
+    groupedSales[date] = (groupedSales[date] || 0) + sale.total;
+  });
+  const data = Object.entries(groupedSales).map(([date, revenue]) => ({ date, revenue }));
 
   return (
-
-    <div className="h-[380px] w-full">
-
-      <ResponsiveContainer
-        width="100%"
-        height="100%"
-      >
-
-        <AreaChart
-          data={data}
-          margin={{
-            top: 10,
-            right: 20,
-            left: -10,
-            bottom: 0,
-          }}
-        >
-
+    <div style={{ height: 320, width: "100%" }}>
+      <ResponsiveContainer width="100%" height="100%">
+        <AreaChart data={data} margin={{ top: 10, right: 10, left: -20, bottom: 0 }}>
           <defs>
-
-            <linearGradient
-              id="revenueGradient"
-              x1="0"
-              y1="0"
-              x2="0"
-              y2="1"
-            >
-
-              <stop
-                offset="5%"
-                stopColor="#06b6d4"
-                stopOpacity={0.5}
-              />
-
-              <stop
-                offset="95%"
-                stopColor="#06b6d4"
-                stopOpacity={0}
-              />
+            <linearGradient id="revenueGradientNova" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="5%" stopColor="#7c3aed" stopOpacity={0.3} />
+              <stop offset="95%" stopColor="#7c3aed" stopOpacity={0} />
             </linearGradient>
           </defs>
-
-          <CartesianGrid
-            strokeDasharray="4 4"
-            stroke="#1e293b"
-            vertical={false}
-          />
-
+          <CartesianGrid strokeDasharray="1 6" stroke="#ffffff07" vertical={false} />
           <XAxis
             dataKey="date"
-            stroke="#94a3b8"
+            stroke="#374151"
+            tick={{ fill: "#4b5563", fontSize: 11 }}
             tickLine={false}
             axisLine={false}
           />
-
           <YAxis
-            stroke="#94a3b8"
+            stroke="#374151"
+            tick={{ fill: "#4b5563", fontSize: 11 }}
             tickLine={false}
             axisLine={false}
           />
-
           <Tooltip
             contentStyle={{
-              background:
-                "#0f172a",
-              border:
-                "1px solid #1e293b",
-              borderRadius:
-                "16px",
-              color:
-                "white",
+              background: "#161822",
+              border: "1px solid #7c3aed33",
+              borderRadius: 12,
+              color: "#f0f0ff",
+              fontSize: 12,
+              boxShadow: "0 8px 32px #00000044",
             }}
+            cursor={{ stroke: "#7c3aed33", strokeWidth: 1 }}
           />
-
           <Area
             type="monotone"
             dataKey="revenue"
-            stroke="#06b6d4"
-            strokeWidth={4}
-            fill="url(#revenueGradient)"
+            stroke="#a855f7"
+            strokeWidth={2}
+            fill="url(#revenueGradientNova)"
+            dot={false}
+            activeDot={{ r: 5, fill: "#a855f7", stroke: "#f0f0ff", strokeWidth: 2 }}
           />
         </AreaChart>
       </ResponsiveContainer>

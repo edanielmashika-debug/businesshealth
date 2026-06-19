@@ -1,233 +1,247 @@
 "use client";
 
 import { useState } from "react";
-
 import { useDebtStore } from "@/store/debt-store";
-
 import { createDebt } from "@/lib/debts";
 import { useTranslation } from "@/hooks/useTranslation";
+import { Wallet, User, BadgeDollarSign, Plus, Sparkles } from "lucide-react";
 
-import {
-  Wallet,
-  User,
-  BadgeDollarSign,
-  Plus,
-  Sparkles,
-} from "lucide-react";
+const inputStyle: React.CSSProperties = {
+  width: "100%",
+  borderRadius: 14,
+  border: "1px solid #ffffff0d",
+  background: "#161822",
+  padding: "14px 18px",
+  fontSize: 14,
+  color: "#f0f0ff",
+  outline: "none",
+  transition: "border-color 0.15s ease, box-shadow 0.15s ease",
+  boxSizing: "border-box",
+};
+
+const labelStyle: React.CSSProperties = {
+  display: "flex",
+  alignItems: "center",
+  gap: 7,
+  fontSize: 11,
+  fontWeight: 700,
+  color: "#6b7280",
+  textTransform: "uppercase",
+  letterSpacing: "0.08em",
+  marginBottom: 8,
+};
 
 export default function AddDebtForm() {
   const t = useTranslation();
-  const addDebt =
-    useDebtStore(
-      (state) =>
-        state.addDebt
-    );
+  const addDebt = useDebtStore((state) => state.addDebt);
+  const [name, setName] = useState("");
+  const [amount, setAmount] = useState("");
 
-  const [name, setName] =
-    useState("");
-
-  const [amount, setAmount] =
-    useState("");
-
-  async function handleSubmit(
-    e: React.FormEvent
-  ) {
-
+  async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
-
-    if (!name || !amount)
-      return;
-
-    await createDebt({
-      name,
-
-      amount:
-        Number(amount),
-
-      status: "pending",
-    });
-
+    if (!name || !amount) return;
+    await createDebt({ name, amount: Number(amount), status: "pending" });
     addDebt({
       id: crypto.randomUUID(),
-
       name,
-
-      amount:
-        Number(amount),
-
+      amount: Number(amount),
       status: "pending",
-
-      createdAt:
-        new Date().toISOString(),
+      createdAt: new Date().toISOString(),
     });
-
     setName("");
-
     setAmount("");
   }
 
   return (
-
-    <div className="relative overflow-hidden bg-white dark:bg-slate-900 rounded-[2rem] border border-gray-200 dark:border-slate-800 shadow-sm">
-
-      {/* BACKGROUND GLOW */}
-
-      <div className="absolute top-0 right-0 w-56 h-56 bg-orange-500/10 rounded-full blur-3xl" />
-
-      <div className="absolute bottom-0 left-0 w-40 h-40 bg-amber-500/10 rounded-full blur-3xl" />
-
-      <div className="relative z-10 p-6 md:p-8">
-
+    <div
+      style={{
+        position: "relative",
+        overflow: "hidden",
+        background: "#0f1117",
+        borderRadius: 24,
+        border: "1px solid #ffffff0d",
+        backgroundImage:
+          "radial-gradient(ellipse at top right, #7c3aed0a 0%, transparent 55%), radial-gradient(ellipse at bottom left, #a855f706 0%, transparent 50%)",
+      }}
+    >
+      <div style={{ position: "relative", zIndex: 1, padding: "28px 28px 32px" }}>
         {/* HEADER */}
-
-        <div className="mb-8">
-
-          <div className="inline-flex items-center gap-2 bg-orange-100 dark:bg-orange-500/20 text-orange-600 dark:text-orange-300 px-4 py-2 rounded-full text-sm font-semibold">
-
-            <Sparkles className="w-4 h-4" />
-
+        <div style={{ marginBottom: 28 }}>
+          <div
+            style={{
+              display: "inline-flex",
+              alignItems: "center",
+              gap: 6,
+              background: "#7c3aed18",
+              border: "1px solid #7c3aed33",
+              color: "#c4b5fd",
+              padding: "5px 12px",
+              borderRadius: 99,
+              fontSize: 11,
+              fontWeight: 700,
+              letterSpacing: "0.06em",
+              textTransform: "uppercase",
+              marginBottom: 14,
+            }}
+          >
+            <Sparkles size={12} />
             {t.addDebtForm.debtRecord}
-
           </div>
-
-          <h2 className="text-3xl font-black text-gray-800 dark:text-white mt-5">
+          <h2
+            style={{
+              fontSize: 24,
+              fontWeight: 800,
+              color: "#f0f0ff",
+              letterSpacing: "-0.02em",
+              marginBottom: 6,
+            }}
+          >
             {t.addDebtForm.addNewDebt}
           </h2>
-
-          <p className="text-gray-500 dark:text-slate-400 mt-3 leading-relaxed">
+          <p style={{ fontSize: 13, color: "#6b7280", lineHeight: 1.6 }}>
             {t.addDebtForm.description}
           </p>
-
         </div>
 
         {/* FORM */}
-
-        <form
-          onSubmit={handleSubmit}
-          className="space-y-6"
-        >
-
+        <form onSubmit={handleSubmit} style={{ display: "flex", flexDirection: "column", gap: 20 }}>
           {/* NAME */}
-
           <div>
-
-            <label className="flex items-center gap-2 text-sm font-semibold text-gray-700 dark:text-slate-300 mb-3">
-
-              <User className="w-4 h-4" />
-
+            <label style={labelStyle}>
+              <User size={12} />
               {t.addDebtForm.customerName}
-
             </label>
-
-            <div className="relative">
-
-              <input
-                type="text"
-                placeholder={t.addDebtForm.enterCustomerName}
-                value={name}
-                onChange={(e) =>
-                  setName(
-                    e.target.value
-                  )
-                }
-                className="w-full rounded-[1.5rem] border border-gray-200 dark:border-slate-700 bg-gray-50 dark:bg-slate-800 px-5 py-5 text-black dark:text-white placeholder:text-gray-400 dark:placeholder:text-slate-500 outline-none focus:ring-2 focus:ring-orange-500 transition-all"
-              />
-
-            </div>
-
+            <input
+              type="text"
+              placeholder={t.addDebtForm.enterCustomerName}
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              style={inputStyle}
+              onFocus={(e) => {
+                (e.target as HTMLInputElement).style.borderColor = "#7c3aed66";
+                (e.target as HTMLInputElement).style.boxShadow = "0 0 0 3px #7c3aed14";
+              }}
+              onBlur={(e) => {
+                (e.target as HTMLInputElement).style.borderColor = "#ffffff0d";
+                (e.target as HTMLInputElement).style.boxShadow = "none";
+              }}
+            />
           </div>
 
           {/* AMOUNT */}
-
           <div>
-
-            <label className="flex items-center gap-2 text-sm font-semibold text-gray-700 dark:text-slate-300 mb-3">
-
-              <BadgeDollarSign className="w-4 h-4" />
-
+            <label style={labelStyle}>
+              <BadgeDollarSign size={12} />
               {t.addDebtForm.debtAmount}
-
             </label>
-
-            <div className="relative">
-
-              <div className="absolute left-5 top-1/2 -translate-y-1/2 text-orange-500 font-bold">
+            <div style={{ position: "relative" }}>
+              <span
+                style={{
+                  position: "absolute",
+                  left: 18,
+                  top: "50%",
+                  transform: "translateY(-50%)",
+                  fontSize: 12,
+                  fontWeight: 800,
+                  color: "#7c3aed",
+                  letterSpacing: "0.04em",
+                }}
+              >
                 TZS
-              </div>
-
+              </span>
               <input
                 type="number"
                 placeholder="50000"
                 value={amount}
-                onChange={(e) =>
-                  setAmount(
-                    e.target.value
-                  )
-                }
-                className="w-full rounded-[1.5rem] border border-gray-200 dark:border-slate-700 bg-gray-50 dark:bg-slate-800 pl-16 pr-5 py-5 text-black dark:text-white placeholder:text-gray-400 dark:placeholder:text-slate-500 outline-none focus:ring-2 focus:ring-orange-500 transition-all"
+                onChange={(e) => setAmount(e.target.value)}
+                style={{ ...inputStyle, paddingLeft: 54 }}
+                onFocus={(e) => {
+                  (e.target as HTMLInputElement).style.borderColor = "#7c3aed66";
+                  (e.target as HTMLInputElement).style.boxShadow = "0 0 0 3px #7c3aed14";
+                }}
+                onBlur={(e) => {
+                  (e.target as HTMLInputElement).style.borderColor = "#ffffff0d";
+                  (e.target as HTMLInputElement).style.boxShadow = "none";
+                }}
               />
-
             </div>
-
           </div>
 
-          {/* PREVIEW CARD */}
-
+          {/* PREVIEW */}
           {(name || amount) && (
-
-            <div className="bg-gradient-to-br from-orange-500 to-red-500 rounded-[1.8rem] p-6 text-white shadow-lg">
-
-              <div className="flex items-center justify-between">
-
+            <div
+              style={{
+                borderRadius: 18,
+                background: "linear-gradient(135deg, #7c3aed, #a855f7)",
+                padding: "20px 22px",
+                color: "#fff",
+                boxShadow: "0 8px 32px #7c3aed33",
+              }}
+            >
+              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start" }}>
                 <div>
-
-                  <p className="text-sm opacity-80">
+                  <p style={{ fontSize: 11, opacity: 0.7, fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.06em" }}>
                     {t.addDebtForm.pendingDebt}
                   </p>
-
-                  <h3 className="text-2xl font-black mt-2">
+                  <h3 style={{ fontSize: 20, fontWeight: 800, marginTop: 6 }}>
                     {name || "Customer"}
                   </h3>
-
                 </div>
-
-                <div className="w-14 h-14 rounded-2xl bg-white/20 flex items-center justify-center">
-
-                  <Wallet className="w-7 h-7" />
-
+                <div
+                  style={{
+                    width: 40,
+                    height: 40,
+                    borderRadius: 12,
+                    background: "rgba(255,255,255,0.15)",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                  }}
+                >
+                  <Wallet size={18} />
                 </div>
-
               </div>
-
-              <h2 className="text-4xl font-black mt-6">
-                TZS{" "}
-                {amount
-                  ? Number(
-                      amount
-                    ).toLocaleString()
-                  : "0"}
+              <h2 style={{ fontSize: 30, fontWeight: 900, marginTop: 16, letterSpacing: "-0.03em" }}>
+                TZS {amount ? Number(amount).toLocaleString() : "0"}
               </h2>
-
             </div>
           )}
 
-          {/* BUTTON */}
-
+          {/* SUBMIT */}
           <button
             type="submit"
-            className="w-full bg-gradient-to-r from-orange-500 via-amber-500 to-red-500 hover:scale-[1.01] active:scale-[0.99] text-white rounded-[1.5rem] py-5 font-bold text-lg shadow-xl transition-all duration-300 flex items-center justify-center gap-3"
+            style={{
+              width: "100%",
+              background: "linear-gradient(135deg, #7c3aed, #a855f7)",
+              color: "#fff",
+              borderRadius: 14,
+              padding: "14px 0",
+              fontWeight: 700,
+              fontSize: 14,
+              border: "none",
+              cursor: "pointer",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              gap: 8,
+              boxShadow: "0 4px 24px #7c3aed33",
+              transition: "all 0.15s ease",
+              letterSpacing: "-0.01em",
+            }}
+            onMouseEnter={(e) => {
+              (e.currentTarget as HTMLElement).style.transform = "translateY(-1px)";
+              (e.currentTarget as HTMLElement).style.boxShadow = "0 8px 32px #7c3aed44";
+            }}
+            onMouseLeave={(e) => {
+              (e.currentTarget as HTMLElement).style.transform = "translateY(0)";
+              (e.currentTarget as HTMLElement).style.boxShadow = "0 4px 24px #7c3aed33";
+            }}
           >
-
-            <Plus className="w-5 h-5" />
-
+            <Plus size={16} />
             {t.addDebtForm.saveDebt}
-
           </button>
-
         </form>
-
       </div>
-
     </div>
   );
 }

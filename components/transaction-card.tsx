@@ -1,251 +1,190 @@
 "use client";
 
-import {
-  Trash2,
-  ArrowDownCircle,
-  ArrowUpCircle,
-} from "lucide-react";
-
+import { Trash2, ArrowDownCircle, ArrowUpCircle } from "lucide-react";
 import { useEffect } from "react";
-
 import { Transaction } from "../types/transaction";
-import {
-  getTransactions,
-  deleteTransactionFromDB,
-} from "../services/transaction-service";
-
-import {
-  useTransactionStore,
-} from "../store/transaction-store";
+import { getTransactions, deleteTransactionFromDB } from "../services/transaction-service";
+import { useTransactionStore } from "../store/transaction-store";
 
 type TransactionCardProps = {
   transaction: Transaction;
-
-  onDelete: (
-    id: string
-  ) => void;
+  onDelete: (id: string) => void;
 };
 
-export default function TransactionCard({
-  transaction,
-  onDelete,
-}: TransactionCardProps) {
-
-  const isRevenue =
-    transaction.type ===
-    "revenue";
-
-  const transactions =
-    useTransactionStore(
-      (state) =>
-        state.transactions
-    );
-
-  const deleteTransaction =
-    useTransactionStore(
-      (state) =>
-        state.deleteTransaction
-    );
-
-
-  const setTransactions =
-    useTransactionStore(
-      (state) =>
-        state.setTransactions
-    );
+export default function TransactionCard({ transaction, onDelete }: TransactionCardProps) {
+  const isRevenue = transaction.type === "revenue";
+  const deleteTransaction = useTransactionStore((state) => state.deleteTransaction);
+  const setTransactions = useTransactionStore((state) => state.setTransactions);
 
   useEffect(() => {
-
     async function loadTransactions() {
-
-      const data =
-        await getTransactions();
-
+      const data = await getTransactions();
       if (!data) return;
-
-      const formatted =
-        data.map(
-          (transaction: any) => ({
-            id: transaction.id,
-
-            title:
-              transaction.title,
-
-            amount:
-              Number(
-                transaction.amount
-              ),
-
-            category:
-              transaction.category,
-
-            type:
-              transaction.type,
-
-            source:
-              transaction.source,
-
-            createdAt:
-              transaction.created_at,
-          })
-        );
-
-      setTransactions(
-        formatted
-      );
+      const formatted = data.map((transaction: any) => ({
+        id: transaction.id,
+        title: transaction.title,
+        amount: Number(transaction.amount),
+        category: transaction.category,
+        type: transaction.type,
+        source: transaction.source,
+        createdAt: transaction.created_at,
+      }));
+      setTransactions(formatted);
     }
 
-
-    async function handleDelete(
-      id: string
-    ) {
-
+    async function handleDelete(id: string) {
       deleteTransaction(id);
-
-      await deleteTransactionFromDB(
-        id
-      );
+      await deleteTransactionFromDB(id);
     }
-
 
     loadTransactions();
-
   }, []);
 
+  const accentColor = isRevenue ? "#06ffa5" : "#f87171";
+  const accentBg = isRevenue ? "#06ffa508" : "#f8717108";
+  const accentBorder = isRevenue ? "#06ffa518" : "#f8717118";
+
   return (
-
     <div
-      className="group relative overflow-hidden bg-white dark:bg-slate-900 border border-gray-200 dark:border-slate-800 rounded-[2rem] p-5 shadow-sm hover:shadow-2xl transition-all duration-300"
+      style={{
+        position: "relative",
+        overflow: "hidden",
+        background: "#0f1117",
+        border: "1px solid #ffffff0d",
+        borderRadius: 18,
+        padding: "18px 20px",
+        transition: "all 0.2s ease",
+      }}
+      onMouseEnter={(e) => {
+        (e.currentTarget as HTMLElement).style.transform = "translateY(-2px)";
+        (e.currentTarget as HTMLElement).style.borderColor = `${accentColor}22`;
+        (e.currentTarget as HTMLElement).style.boxShadow = `0 8px 32px ${accentColor}0a`;
+      }}
+      onMouseLeave={(e) => {
+        (e.currentTarget as HTMLElement).style.transform = "translateY(0)";
+        (e.currentTarget as HTMLElement).style.borderColor = "#ffffff0d";
+        (e.currentTarget as HTMLElement).style.boxShadow = "none";
+      }}
     >
-
-      {/* BACKGROUND GLOW */}
-
+      {/* Glow */}
       <div
-        className={`absolute top-0 right-0 w-40 h-40 blur-3xl opacity-10 rounded-full ${transaction.type === "revenue"
-          ? "bg-green-500"
-          : "bg-red-500"
-          }`}
+        style={{
+          position: "absolute",
+          top: -30,
+          right: -30,
+          width: 100,
+          height: 100,
+          borderRadius: "50%",
+          background: accentColor,
+          opacity: 0.06,
+          filter: "blur(30px)",
+          pointerEvents: "none",
+        }}
       />
 
-      {/* TOP */}
-
-      <div className="relative z-10 flex items-start justify-between gap-4">
-
+      <div style={{ position: "relative", zIndex: 1, display: "flex", alignItems: "flex-start", justifyContent: "space-between", gap: 16 }}>
         {/* LEFT */}
-
-        <div className="flex items-start gap-4">
-
-          {/* ICON */}
-
+        <div style={{ display: "flex", alignItems: "flex-start", gap: 14 }}>
           <div
-            className={`w-14 h-14 rounded-2xl flex items-center justify-center text-white shadow-lg ${transaction.type === "revenue"
-              ? "bg-gradient-to-br from-green-500 to-emerald-700"
-              : "bg-gradient-to-br from-red-500 to-rose-700"
-              }`}
+            style={{
+              width: 44,
+              height: 44,
+              borderRadius: 13,
+              background: accentBg,
+              border: `1px solid ${accentBorder}`,
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              color: accentColor,
+              flexShrink: 0,
+            }}
           >
-
-            {transaction.type === "revenue"
-              ? "↗"
-              : "↘"}
-
+            {isRevenue ? <ArrowDownCircle size={20} /> : <ArrowUpCircle size={20} />}
           </div>
-
-          {/* INFO */}
 
           <div>
-
-            <h2 className="text-xl font-bold text-gray-800 dark:text-white leading-tight">
+            <h2 style={{ fontSize: 15, fontWeight: 700, color: "#e2e8f0", letterSpacing: "-0.01em" }}>
               {transaction.title}
             </h2>
-
-            <div className="flex items-center gap-2 mt-2 flex-wrap">
-
-              <span
-                className={`px-3 py-1 rounded-full text-xs font-semibold ${transaction.type === "revenue"
-                  ? "bg-green-100 dark:bg-green-500/20 text-green-700 dark:text-green-300"
-                  : "bg-red-100 dark:bg-red-500/20 text-red-700 dark:text-red-300"
-                  }`}
-              >
-                {transaction.type}
-              </span>
-
-              <span className="px-3 py-1 rounded-full text-xs font-semibold bg-gray-100 dark:bg-slate-800 text-gray-600 dark:text-slate-300">
-                {transaction.category}
-              </span>
-
-              {transaction.source && (
-
-                <span className="px-3 py-1 rounded-full text-xs font-semibold bg-blue-100 dark:bg-blue-500/20 text-blue-700 dark:text-blue-300">
-                  {transaction.source}
+            <div style={{ display: "flex", flexWrap: "wrap", gap: 6, marginTop: 8 }}>
+              {[
+                { label: transaction.type, color: accentColor, bg: accentBg, border: accentBorder },
+                { label: transaction.category, color: "#94a3b8", bg: "#ffffff06", border: "#ffffff0d" },
+                ...(transaction.source ? [{ label: transaction.source, color: "#c4b5fd", bg: "#7c3aed0a", border: "#7c3aed1a" }] : []),
+              ].map((tag) => (
+                <span
+                  key={tag.label}
+                  style={{
+                    padding: "3px 10px",
+                    borderRadius: 99,
+                    fontSize: 11,
+                    fontWeight: 600,
+                    color: tag.color,
+                    background: tag.bg,
+                    border: `1px solid ${tag.border}`,
+                  }}
+                >
+                  {tag.label}
                 </span>
-
-              )}
-
+              ))}
             </div>
-
           </div>
-
         </div>
 
-        {/* AMOUNT */}
-
-        <div className="text-right">
-
-          <p className="text-xs uppercase tracking-wide text-gray-400 dark:text-slate-500 font-semibold">
+        {/* RIGHT */}
+        <div style={{ textAlign: "right", flexShrink: 0 }}>
+          <p style={{ fontSize: 10, fontWeight: 700, color: "#4b5563", textTransform: "uppercase", letterSpacing: "0.06em" }}>
             Amount
           </p>
-
-          <h2
-            className={`text-2xl md:text-3xl font-black mt-2 ${transaction.type === "revenue"
-              ? "text-green-600 dark:text-green-400"
-              : "text-red-500 dark:text-red-400"
-              }`}
-          >
-            TZS{" "}
-            {transaction.amount.toLocaleString()}
+          <h2 style={{ fontSize: 20, fontWeight: 800, color: accentColor, marginTop: 4, letterSpacing: "-0.02em" }}>
+            TZS {transaction.amount.toLocaleString()}
           </h2>
-
         </div>
-
       </div>
 
       {/* BOTTOM */}
-
-      <div className="relative z-10 mt-6 flex items-center justify-between gap-4 flex-wrap">
-
-        {/* DATE */}
-
-        <div className="flex items-center gap-2 text-sm text-gray-500 dark:text-slate-400">
-
-          <div className="w-9 h-9 rounded-xl bg-gray-100 dark:bg-slate-800 flex items-center justify-center">
-            📅
-          </div>
-
-          <span>
-            {new Date(
-              transaction.createdAt
-            ).toLocaleDateString()}
-          </span>
-
-        </div>
-
-        {/* DELETE */}
-
+      <div
+        style={{
+          position: "relative",
+          zIndex: 1,
+          marginTop: 14,
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "space-between",
+          flexWrap: "wrap",
+          gap: 8,
+        }}
+      >
+        <span style={{ fontSize: 11, color: "#4b5563", fontWeight: 500 }}>
+          {new Date(transaction.createdAt).toLocaleDateString()}
+        </span>
         <button
-          onClick={() =>
-            onDelete(transaction.id)
+          onClick={() => onDelete(transaction.id)}
+          style={{
+            padding: "5px 12px",
+            borderRadius: 9,
+            background: "#ef444408",
+            border: "1px solid #ef444420",
+            color: "#f87171",
+            fontSize: 12,
+            fontWeight: 600,
+            cursor: "pointer",
+            display: "flex",
+            alignItems: "center",
+            gap: 5,
+            transition: "all 0.15s ease",
+          }}
+          onMouseEnter={(e) =>
+            ((e.currentTarget as HTMLElement).style.background = "#ef444418")
           }
-          className="px-5 py-2 rounded-2xl bg-red-50 dark:bg-red-500/10 text-red-600 dark:text-red-400 font-semibold hover:bg-red-100 dark:hover:bg-red-500/20 transition-all"
+          onMouseLeave={(e) =>
+            ((e.currentTarget as HTMLElement).style.background = "#ef444408")
+          }
         >
-          <Trash2 size={16} />
-
+          <Trash2 size={12} />
           Delete
         </button>
-
       </div>
-
     </div>
   );
 }
-
-

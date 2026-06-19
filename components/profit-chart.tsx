@@ -10,65 +10,48 @@ import {
   Tooltip,
 } from "recharts";
 
-export default function ProfitChart({
-  data,
-}: {
-  data: any[];
-}) {
-
-  const formattedData =
-    data.map(
-      (sale) => ({
-
-        date:
-          new Date(
-            sale.createdAt
-          ).toLocaleDateString(),
-
-        profit:
-          sale.profit,
-      })
-    );
+export default function ProfitChart({ data }: { data: any[] }) {
+  const formattedData = data.map((sale) => ({
+    date: new Date(sale.createdAt).toLocaleDateString(),
+    profit: sale.profit,
+  }));
 
   return (
-
-    <div className="h-[350px]">
-
-      <ResponsiveContainer
-        width="100%"
-        height="100%"
-      >
-
-        <LineChart
-          data={
-            formattedData
-          }
-        >
-
-          <CartesianGrid
-            strokeDasharray="3 3"
-            stroke="#e5e7eb"
-          />
-
+    <div style={{ height: 300, width: "100%" }}>
+      <ResponsiveContainer width="100%" height="100%">
+        <LineChart data={formattedData} margin={{ top: 10, right: 10, left: -20, bottom: 0 }}>
+          <CartesianGrid strokeDasharray="1 6" stroke="#ffffff07" vertical={false} />
           <XAxis
             dataKey="date"
-            stroke="#94a3b8"
+            stroke="#374151"
+            tick={{ fill: "#4b5563", fontSize: 11 }}
+            tickLine={false}
+            axisLine={false}
           />
-
           <YAxis
-            stroke="#94a3b8"
+            stroke="#374151"
+            tick={{ fill: "#4b5563", fontSize: 11 }}
+            tickLine={false}
+            axisLine={false}
           />
-
-          <Tooltip />
-
+          <Tooltip
+            contentStyle={{
+              background: "#161822",
+              border: "1px solid #06ffa522",
+              borderRadius: 12,
+              color: "#f0f0ff",
+              fontSize: 12,
+              boxShadow: "0 8px 32px #00000044",
+            }}
+            cursor={{ stroke: "#06ffa522", strokeWidth: 1 }}
+          />
           <Line
             type="monotone"
             dataKey="profit"
-            stroke="#10b981"
-            strokeWidth={4}
-            dot={{
-              r: 5,
-            }}
+            stroke="#06ffa5"
+            strokeWidth={2}
+            dot={false}
+            activeDot={{ r: 5, fill: "#06ffa5", stroke: "#f0f0ff", strokeWidth: 2 }}
           />
         </LineChart>
       </ResponsiveContainer>

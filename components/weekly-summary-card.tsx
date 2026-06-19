@@ -1,10 +1,6 @@
 "use client";
 
-import {
-  TrendingUp,
-  TrendingDown,
-  Sparkles,
-} from "lucide-react";
+import { TrendingUp, TrendingDown, Sparkles } from "lucide-react";
 
 export default function WeeklySummaryCard({
   revenue,
@@ -21,146 +17,192 @@ export default function WeeklySummaryCard({
   pendingDebts: number;
   aiSummary?: string;
 }) {
-
-  const isProfitPositive =
-  profit >= 0;
+  const isProfitPositive = profit >= 0;
 
   return (
-
-    <div className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-violet-600 via-blue-600 to-cyan-500 p-7 text-white shadow-2xl">
-
-      {/* GLOW */}
-
-      <div className="absolute -top-20 -right-20 w-72 h-72 bg-white/10 rounded-full blur-3xl" />
-
-      <div className="absolute -bottom-20 -left-20 w-72 h-72 bg-cyan-300/10 rounded-full blur-3xl" />
+    <div
+      style={{
+        position: "relative",
+        overflow: "hidden",
+        borderRadius: 22,
+        background: "#0f1117",
+        border: "1px solid #7c3aed22",
+        padding: "24px",
+        backgroundImage:
+          "radial-gradient(ellipse at top right, #7c3aed14 0%, transparent 55%), radial-gradient(ellipse at bottom left, #a855f708 0%, transparent 50%)",
+        boxShadow: "0 0 60px #7c3aed0a",
+      }}
+    >
+      {/* GRID TEXTURE */}
+      <div
+        style={{
+          position: "absolute",
+          inset: 0,
+          backgroundImage:
+            "url(\"data:image/svg+xml,%3Csvg width='32' height='32' viewBox='0 0 32 32' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' stroke='%237c3aed06' stroke-width='1'%3E%3Cpath d='M0 16h32M16 0v32'/%3E%3C/g%3E%3C/svg%3E\")",
+          pointerEvents: "none",
+        }}
+      />
 
       {/* HEADER */}
-
-      <div className="relative z-10 flex items-center gap-4">
-
-        <div className="w-14 h-14 rounded-2xl bg-white/10 backdrop-blur-md border border-white/20 flex items-center justify-center">
-
-          <Sparkles className="w-7 h-7" />
-
+      <div
+        style={{
+          position: "relative",
+          zIndex: 1,
+          display: "flex",
+          alignItems: "center",
+          gap: 14,
+          marginBottom: 22,
+        }}
+      >
+        <div
+          style={{
+            width: 44,
+            height: 44,
+            borderRadius: 13,
+            background: "#7c3aed18",
+            border: "1px solid #7c3aed33",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            boxShadow: "0 0 16px #7c3aed22",
+          }}
+        >
+          <Sparkles size={18} color="#c4b5fd" />
         </div>
-
         <div>
-
-          <h2 className="text-2xl font-bold">
+          <h2 style={{ fontSize: 17, fontWeight: 800, color: "#f0f0ff", letterSpacing: "-0.02em" }}>
             Weekly AI Summary
           </h2>
-
-          <p className="text-white/70 text-sm mt-1">
+          <p style={{ fontSize: 12, color: "#6b7280", marginTop: 2 }}>
             Smart overview of your business performance
           </p>
-
         </div>
+        <div
+          style={{
+            marginLeft: "auto",
+            width: 7,
+            height: 7,
+            borderRadius: "50%",
+            background: "#06ffa5",
+            boxShadow: "0 0 8px #06ffa5",
+          }}
+        />
       </div>
 
-      {/* CONTENT */}
-
-      <div className="relative z-10 mt-8 grid grid-cols-1 md:grid-cols-2 gap-5">
-
+      {/* GRID */}
+      <div
+        style={{
+          position: "relative",
+          zIndex: 1,
+          display: "grid",
+          gridTemplateColumns: "1fr 1fr",
+          gap: 10,
+        }}
+      >
         {/* REVENUE */}
-
-        <div className="rounded-2xl bg-white/10 backdrop-blur-md border border-white/10 p-5">
-
-          <p className="text-sm text-white/70">
+        <div
+          style={{
+            borderRadius: 15,
+            background: "#06ffa508",
+            border: "1px solid #06ffa514",
+            padding: "16px 18px",
+          }}
+        >
+          <p style={{ fontSize: 10, fontWeight: 700, color: "#4b5563", textTransform: "uppercase", letterSpacing: "0.06em" }}>
             Revenue
           </p>
-
-          <h3 className="text-3xl font-bold mt-2">
+          <h3 style={{ fontSize: 22, fontWeight: 800, color: "#06ffa5", marginTop: 6, letterSpacing: "-0.02em" }}>
             TZS {revenue.toLocaleString()}
           </h3>
-
         </div>
 
         {/* EXPENSES */}
-
-        <div className="rounded-2xl bg-white/10 backdrop-blur-md border border-white/10 p-5">
-
-          <p className="text-sm text-white/70">
+        <div
+          style={{
+            borderRadius: 15,
+            background: "#f8717108",
+            border: "1px solid #f8717114",
+            padding: "16px 18px",
+          }}
+        >
+          <p style={{ fontSize: 10, fontWeight: 700, color: "#4b5563", textTransform: "uppercase", letterSpacing: "0.06em" }}>
             Expenses
           </p>
-
-          <h3 className="text-3xl font-bold mt-2">
+          <h3 style={{ fontSize: 22, fontWeight: 800, color: "#f87171", marginTop: 6, letterSpacing: "-0.02em" }}>
             TZS {expenses.toLocaleString()}
           </h3>
-
         </div>
 
         {/* PROFIT */}
-
-        <div className="rounded-2xl bg-black/20 border border-white/10 p-5">
-
-          <div className="flex items-center gap-2">
-
+        <div
+          style={{
+            borderRadius: 15,
+            background: "#7c3aed0a",
+            border: "1px solid #7c3aed1a",
+            padding: "16px 18px",
+          }}
+        >
+          <div style={{ display: "flex", alignItems: "center", gap: 6, marginBottom: 6 }}>
             {isProfitPositive ? (
-
-              <TrendingUp className="w-5 h-5 text-green-300" />
-
+              <TrendingUp size={13} color="#06ffa5" />
             ) : (
-
-              <TrendingDown className="w-5 h-5 text-red-300" />
-
+              <TrendingDown size={13} color="#f87171" />
             )}
-
-            <p className="text-sm text-white/70">
-              Estimated Profit
+            <p style={{ fontSize: 10, fontWeight: 700, color: "#4b5563", textTransform: "uppercase", letterSpacing: "0.06em" }}>
+              Est. Profit
             </p>
-
           </div>
-
-          <h3 className="text-3xl font-bold mt-3">
-
+          <h3 style={{ fontSize: 22, fontWeight: 800, color: isProfitPositive ? "#06ffa5" : "#f87171", letterSpacing: "-0.02em" }}>
             TZS {profit.toLocaleString()}
-
           </h3>
-
         </div>
 
         {/* ALERTS */}
-
-        {/* ALERTS */}
-
-        <div className="rounded-2xl bg-black/20 border border-white/10 p-5">
-
-          <p className="text-sm text-white/70">
+        <div
+          style={{
+            borderRadius: 15,
+            background: "#ffffff04",
+            border: "1px solid #ffffff08",
+            padding: "16px 18px",
+          }}
+        >
+          <p style={{ fontSize: 10, fontWeight: 700, color: "#4b5563", textTransform: "uppercase", letterSpacing: "0.06em", marginBottom: 10 }}>
             Business Alerts
           </p>
-
-          <div className="mt-3 space-y-2 text-sm">
-
-            <p>
-              • {lowStockCount} low stock products
+          <div style={{ display: "flex", flexDirection: "column", gap: 5 }}>
+            <p style={{ fontSize: 12, color: "#94a3b8" }}>
+              <span style={{ color: "#f87171", fontWeight: 700 }}>{lowStockCount}</span> low stock items
             </p>
-
-            <p>
-              • {pendingDebts} pending debts
+            <p style={{ fontSize: 12, color: "#94a3b8" }}>
+              <span style={{ color: "#facc15", fontWeight: 700 }}>{pendingDebts}</span> pending debts
             </p>
-
           </div>
-
-          {aiSummary && (
-
-            <div className="mt-4 border-t border-white/10 pt-4">
-
-              <p className="text-xs uppercase tracking-wide text-cyan-200 mb-2">
-                AI Summary
-              </p>
-
-              <p className="text-sm text-white/90 leading-relaxed">
-                {aiSummary}
-              </p>
-
-            </div>
-
-          )}
-
         </div>
-
       </div>
+
+      {/* AI SUMMARY */}
+      {aiSummary && (
+        <div
+          style={{
+            position: "relative",
+            zIndex: 1,
+            marginTop: 10,
+            borderRadius: 15,
+            background: "#7c3aed08",
+            border: "1px solid #7c3aed1a",
+            padding: "14px 16px",
+          }}
+        >
+          <div style={{ display: "flex", alignItems: "center", gap: 6, marginBottom: 8 }}>
+            <Sparkles size={12} color="#c4b5fd" />
+            <span style={{ fontSize: 10, fontWeight: 700, color: "#c4b5fd", textTransform: "uppercase", letterSpacing: "0.06em" }}>
+              AI Summary
+            </span>
+          </div>
+          <p style={{ fontSize: 12, color: "#94a3b8", lineHeight: 1.7 }}>{aiSummary}</p>
+        </div>
+      )}
     </div>
   );
 }

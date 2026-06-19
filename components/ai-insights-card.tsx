@@ -1,77 +1,100 @@
 "use client";
 
-import {
-  Sparkles,
-  Brain,
-} from "lucide-react";
+import { Sparkles, Brain } from "lucide-react";
 
-export default function AiInsightsCard({
-  insights,
-}: {
-  insights: string[];
-}) {
-
+export default function AiInsightsCard({ insights }: { insights: string[] }) {
   return (
-
-    <div className="bg-gradient-to-br from-slate-900 via-blue-950 to-slate-900 rounded-3xl p-6 text-white shadow-xl border border-blue-500/20 overflow-hidden relative">
-
-      {/* GLOW */}
-
-      <div className="absolute -top-10 -right-10 w-40 h-40 bg-cyan-500/20 blur-3xl rounded-full" />
-
-      <div className="absolute -bottom-10 -left-10 w-40 h-40 bg-blue-600/20 blur-3xl rounded-full" />
+    <div
+      style={{
+        position: "relative",
+        overflow: "hidden",
+        background: "#0f1117",
+        borderRadius: 22,
+        border: "1px solid #7c3aed22",
+        padding: "24px",
+        backgroundImage:
+          "radial-gradient(ellipse at top right, #7c3aed12 0%, transparent 55%), radial-gradient(ellipse at bottom left, #a855f708 0%, transparent 50%)",
+        boxShadow: "0 0 40px #7c3aed08",
+      }}
+    >
+      {/* Grid texture */}
+      <div
+        style={{
+          position: "absolute",
+          inset: 0,
+          backgroundImage:
+            "url(\"data:image/svg+xml,%3Csvg width='32' height='32' viewBox='0 0 32 32' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' stroke='%237c3aed08' stroke-width='1'%3E%3Cpath d='M0 16h32M16 0v32'/%3E%3C/g%3E%3C/svg%3E\")",
+          pointerEvents: "none",
+        }}
+      />
 
       {/* HEADER */}
-
-      <div className="flex items-center gap-4 relative z-10">
-
-        <div className="w-14 h-14 rounded-2xl bg-white/10 backdrop-blur-md flex items-center justify-center border border-white/10">
-
-          <Brain className="w-7 h-7 text-cyan-400" />
-
+      <div
+        style={{
+          display: "flex",
+          alignItems: "center",
+          gap: 14,
+          marginBottom: 20,
+          position: "relative",
+          zIndex: 1,
+        }}
+      >
+        <div
+          style={{
+            width: 46,
+            height: 46,
+            borderRadius: 13,
+            background: "#7c3aed18",
+            border: "1px solid #7c3aed33",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            flexShrink: 0,
+          }}
+        >
+          <Brain size={20} color="#c4b5fd" />
         </div>
-
         <div>
-
-          <h2 className="text-2xl font-bold">
+          <h2 style={{ fontSize: 17, fontWeight: 800, color: "#f0f0ff", letterSpacing: "-0.02em" }}>
             AI Business Insights
           </h2>
-
-          <p className="text-sm text-blue-100/70 mt-1">
+          <p style={{ fontSize: 12, color: "#6b7280", marginTop: 2 }}>
             Smart recommendations for your business
           </p>
-
         </div>
       </div>
 
-      {/* INSIGHTS */}
-
-      <div className="mt-6 space-y-4 relative z-10">
-
-        {insights.map(
-          (
-            insight,
-            index
-          ) => (
-
-            <div
-              key={index}
-              className="flex items-start gap-3 bg-white/5 border border-white/10 rounded-2xl p-4 backdrop-blur-sm"
-            >
-
-              <div className="mt-0.5">
-
-                <Sparkles className="w-5 h-5 text-cyan-400" />
-
-              </div>
-
-              <p className="text-sm leading-relaxed text-blue-50">
-                {insight}
-              </p>
-
-            </div>
-          )
-        )}
+      {/* INSIGHTS LIST */}
+      <div
+        style={{
+          display: "flex",
+          flexDirection: "column",
+          gap: 10,
+          position: "relative",
+          zIndex: 1,
+        }}
+      >
+        {insights.map((insight, index) => (
+          <div
+            key={index}
+            style={{
+              display: "flex",
+              alignItems: "flex-start",
+              gap: 10,
+              background: "#7c3aed0a",
+              border: "1px solid #7c3aed1a",
+              borderRadius: 13,
+              padding: "12px 14px",
+            }}
+          >
+            <Sparkles
+              size={14}
+              color="#c4b5fd"
+              style={{ marginTop: 2, flexShrink: 0 }}
+            />
+            <p style={{ fontSize: 13, color: "#94a3b8", lineHeight: 1.6 }}>{insight}</p>
+          </div>
+        ))}
       </div>
     </div>
   );

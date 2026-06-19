@@ -1,393 +1,255 @@
 "use client";
 
 import { useState } from "react";
-
-import {
-  useTransactionStore,
-} from "@/store/transaction-store";
-
+import { useTransactionStore } from "@/store/transaction-store";
 import { useTranslation } from "@/hooks/useTranslation";
+import { Smartphone, Sparkles, ArrowDownCircle, ArrowUpCircle, CheckCircle2 } from "lucide-react";
 
-import {
-  Smartphone,
-  Sparkles,
-  ArrowDownCircle,
-  ArrowUpCircle,
-  CheckCircle2,
-} from "lucide-react";
+const inputStyle: React.CSSProperties = {
+  width: "100%",
+  height: 160,
+  borderRadius: 14,
+  border: "1px solid #ffffff0d",
+  background: "#161822",
+  padding: "14px 16px",
+  fontSize: 13,
+  color: "#f0f0ff",
+  outline: "none",
+  resize: "none",
+  boxSizing: "border-box",
+  fontFamily: "inherit",
+  lineHeight: 1.6,
+  transition: "border-color 0.15s ease",
+};
 
 export default function SmsImport() {
-
   const t = useTranslation();
+  const addTransaction = useTransactionStore((state) => state.addTransaction);
+  const [sms, setSms] = useState("");
 
-  const addTransaction =
-    useTransactionStore(
-      (state) =>
-        state.addTransaction
-    );
-
-  const [sms, setSms] =
-    useState("");
-
-  function extractAmount(
-    text: string
-  ) {
-
-    const match =
-      text.match(
-        /(\d[\d,]*)/
-      );
-
-    if (!match)
-      return 0;
-
-    return Number(
-      match[0].replace(
-        /,/g,
-        ""
-      )
-    );
+  function extractAmount(text: string) {
+    const match = text.match(/(\d[\d,]*)/);
+    if (!match) return 0;
+    return Number(match[0].replace(/,/g, ""));
   }
 
-  function detectProvider(
-    text: string
-  ) {
-
-    const lower =
-      text.toLowerCase();
-
-    if (
-      lower.includes(
-        "mpesa"
-      )
-    ) {
-      return "M-Pesa";
-    }
-
-    if (
-      lower.includes(
-        "airtel"
-      )
-    ) {
-      return "Airtel Money";
-    }
-
-    if (
-      lower.includes(
-        "tigopesa"
-      )
-    ) {
-      return "Tigo Pesa";
-    }
-
-    if (
-      lower.includes(
-        "halopesa"
-      )
-    ) {
-      return "HaloPesa";
-    }
-
+  function detectProvider(text: string) {
+    const lower = text.toLowerCase();
+    if (lower.includes("mpesa")) return "M-Pesa";
+    if (lower.includes("airtel")) return "Airtel Money";
+    if (lower.includes("tigopesa")) return "Tigo Pesa";
+    if (lower.includes("halopesa")) return "HaloPesa";
     return "Mobile Money";
   }
 
-  function detectType(
-    text: string
-  ) {
-
-    const lower =
-      text.toLowerCase();
-
+  function detectType(text: string) {
+    const lower = text.toLowerCase();
     const isRevenue =
-
-      lower.includes(
-        "received"
-      ) ||
-
-      lower.includes(
-        "umepokea"
-      ) ||
-
-      lower.includes(
-        "cash received"
-      ) ||
-
-      lower.includes(
-        "paid to you"
-      );
-
-    return isRevenue
-      ? "revenue"
-      : "expense";
+      lower.includes("received") ||
+      lower.includes("umepokea") ||
+      lower.includes("cash received") ||
+      lower.includes("paid to you");
+    return isRevenue ? "revenue" : "expense";
   }
 
   function handleImport() {
-
-    if (!sms)
-      return;
-
-    const amount =
-      extractAmount(
-        sms
-      );
-
-    const provider =
-      detectProvider(
-        sms
-      );
-
-    const type =
-      detectType(
-        sms
-      );
-
+    if (!sms) return;
     addTransaction({
-
-      id:
-        crypto.randomUUID(),
-
-      title:
-        provider,
-
-      amount,
-
-      category:
-        "Mobile Money",
-
-      type,
-
-      source:
-        "sms" as const,
-
-      createdAt:
-        new Date().toISOString(),
+      id: crypto.randomUUID(),
+      title: detectProvider(sms),
+      amount: extractAmount(sms),
+      category: "Mobile Money",
+      type: detectType(sms),
+      source: "sms" as const,
+      createdAt: new Date().toISOString(),
     });
-
     setSms("");
   }
 
-  const previewAmount =
-    extractAmount(
-      sms
-    );
-
-  const previewProvider =
-    detectProvider(
-      sms
-    );
-
-  const previewType =
-    detectType(
-      sms
-    );
+  const previewAmount = extractAmount(sms);
+  const previewProvider = detectProvider(sms);
+  const previewType = detectType(sms);
+  const isRevenue = previewType === "revenue";
+  const accentColor = isRevenue ? "#06ffa5" : "#f87171";
 
   return (
-
-    <div className="space-y-6">
-
+    <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
       {/* HERO */}
-
-      <div className="relative overflow-hidden rounded-[2rem] bg-gradient-to-br from-blue-600 via-cyan-500 to-indigo-700 p-6 text-white shadow-xl">
-
-        <div className="absolute inset-0 opacity-10 bg-[radial-gradient(circle_at_top_right,white,transparent_40%)]" />
-
-        <div className="relative z-10 flex items-start justify-between gap-4">
-
+      <div
+        style={{
+          borderRadius: 20,
+          background: "#0f1117",
+          border: "1px solid #7c3aed33",
+          padding: "22px 24px",
+          backgroundImage:
+            "radial-gradient(ellipse at top right, #7c3aed18 0%, transparent 60%)",
+        }}
+      >
+        <div
+          style={{
+            display: "inline-flex",
+            alignItems: "center",
+            gap: 6,
+            background: "#7c3aed18",
+            border: "1px solid #7c3aed33",
+            color: "#c4b5fd",
+            padding: "4px 10px",
+            borderRadius: 99,
+            fontSize: 11,
+            fontWeight: 700,
+            letterSpacing: "0.06em",
+            textTransform: "uppercase",
+            marginBottom: 12,
+          }}
+        >
+          <Sparkles size={11} />
+          {t.smsImport.smartSmsImport}
+        </div>
+        <div style={{ display: "flex", alignItems: "flex-end", justifyContent: "space-between", gap: 12 }}>
           <div>
-
-            <div className="inline-flex items-center gap-2 bg-white/15 backdrop-blur-md px-4 py-2 rounded-full text-sm font-semibold">
-
-              <Sparkles className="w-4 h-4" />
-
-                {t.smsImport.smartSmsImport}
-
-            </div>
-
-            <h2 className="text-3xl font-black mt-5 leading-tight">
-              {t.smsImport.import}
-              <br />
-              {t.smsImport.mobileMoneySms}
+            <h2 style={{ fontSize: 22, fontWeight: 800, color: "#f0f0ff", letterSpacing: "-0.02em", lineHeight: 1.2 }}>
+              {t.smsImport.import} {t.smsImport.mobileMoneySms}
             </h2>
-
-            <p className="text-blue-100 mt-3 max-w-xl">
+            <p style={{ fontSize: 12, color: "#6b7280", marginTop: 6, lineHeight: 1.5 }}>
               {t.smsImport.importDescription}
             </p>
-
           </div>
-
-          <div className="hidden md:flex w-16 h-16 rounded-3xl bg-white text-blue-700 items-center justify-center shadow-2xl">
-
-            <Smartphone size={30} />
-
+          <div
+            style={{
+              width: 44,
+              height: 44,
+              borderRadius: 13,
+              background: "linear-gradient(135deg, #7c3aed, #a855f7)",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              color: "#fff",
+              flexShrink: 0,
+              boxShadow: "0 4px 16px #7c3aed33",
+            }}
+          >
+            <Smartphone size={20} />
           </div>
-
         </div>
-
       </div>
 
       {/* INPUT */}
-
-      <div className="bg-white dark:bg-slate-900 border border-gray-200 dark:border-slate-800 rounded-[2rem] p-5 shadow-sm">
-
-        <div className="mb-5">
-
-          <h3 className="text-xl font-bold text-gray-800 dark:text-white">
-            {t.smsImport.smsMessage}
-          </h3>
-
-          <p className="text-sm text-gray-500 dark:text-slate-400 mt-1">
-            {t.smsImport.smsMessageDescription}
-          </p>
-
-        </div>
-
+      <div
+        style={{
+          background: "#0f1117",
+          border: "1px solid #ffffff0d",
+          borderRadius: 20,
+          padding: "20px 22px",
+        }}
+      >
+        <h3 style={{ fontSize: 14, fontWeight: 700, color: "#e2e8f0", marginBottom: 4 }}>
+          {t.smsImport.smsMessage}
+        </h3>
+        <p style={{ fontSize: 12, color: "#6b7280", marginBottom: 12, lineHeight: 1.5 }}>
+          {t.smsImport.smsMessageDescription}
+        </p>
         <textarea
           value={sms}
-          onChange={(e) =>
-            setSms(
-              e.target.value
-            )
-          }
-          placeholder="Example:
-Umepokea TZS 50,000 kutoka kwa John kupitia M-Pesa..."
-          className="w-full h-52 rounded-[2rem] border border-gray-200 dark:border-slate-700 bg-gray-50 dark:bg-slate-800 px-5 py-5 text-black dark:text-white placeholder:text-gray-400 dark:placeholder:text-slate-500 outline-none focus:ring-2 focus:ring-blue-500 resize-none transition"
+          onChange={(e) => setSms(e.target.value)}
+          placeholder={`Example:\nUmepokea TZS 50,000 kutoka kwa John kupitia M-Pesa...`}
+          style={inputStyle}
+          onFocus={(e) => { e.target.style.borderColor = "#7c3aed55"; }}
+          onBlur={(e) => { e.target.style.borderColor = "#ffffff0d"; }}
         />
-
       </div>
 
       {/* LIVE PREVIEW */}
-
-      {
-        sms && (
-
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-
-            {/* PROVIDER */}
-
-            <div className="relative overflow-hidden bg-white dark:bg-slate-900 border border-gray-200 dark:border-slate-800 rounded-[2rem] p-5 shadow-sm">
-
-              <div className="absolute top-0 right-0 w-32 h-32 bg-blue-500/10 rounded-full blur-3xl" />
-
-              <div className="relative z-10">
-
-                <p className="text-sm text-gray-500 dark:text-slate-400">
-                  {t.smsImport.provider}
-                </p>
-
-                <h2 className="text-2xl font-black text-blue-600 dark:text-blue-400 mt-3">
-                  {previewProvider}
-                </h2>
-
-              </div>
-
+      {sms && (
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 10 }}>
+          {[
+            { label: t.smsImport.provider, value: previewProvider, color: "#c4b5fd", bg: "#7c3aed0a", border: "#7c3aed1a" },
+            { label: t.smsImport.amount, value: `TZS ${previewAmount.toLocaleString()}`, color: "#06ffa5", bg: "#06ffa508", border: "#06ffa514" },
+          ].map((item) => (
+            <div
+              key={item.label}
+              style={{
+                background: item.bg,
+                border: `1px solid ${item.border}`,
+                borderRadius: 14,
+                padding: "14px 16px",
+              }}
+            >
+              <p style={{ fontSize: 10, fontWeight: 700, color: "#4b5563", textTransform: "uppercase", letterSpacing: "0.06em" }}>
+                {item.label}
+              </p>
+              <h2 style={{ fontSize: 16, fontWeight: 800, color: item.color, marginTop: 6, letterSpacing: "-0.02em" }}>
+                {item.value}
+              </h2>
             </div>
+          ))}
 
-            {/* AMOUNT */}
-
-            <div className="relative overflow-hidden bg-white dark:bg-slate-900 border border-gray-200 dark:border-slate-800 rounded-[2rem] p-5 shadow-sm">
-
-              <div className="absolute top-0 right-0 w-32 h-32 bg-green-500/10 rounded-full blur-3xl" />
-
-              <div className="relative z-10">
-
-                <p className="text-sm text-gray-500 dark:text-slate-400">
-                  {t.smsImport.amount}
-                </p>
-
-                <h2 className="text-2xl font-black text-green-600 mt-3">
-                  TZS{" "}
-                  {previewAmount.toLocaleString()}
-                </h2>
-
-              </div>
-
-            </div>
-
-            {/* TYPE */}
-
-            <div className="relative overflow-hidden bg-white dark:bg-slate-900 border border-gray-200 dark:border-slate-800 rounded-[2rem] p-5 shadow-sm">
-
+          {/* TYPE */}
+          <div
+            style={{
+              background: isRevenue ? "#06ffa508" : "#f8717108",
+              border: `1px solid ${isRevenue ? "#06ffa514" : "#f8717118"}`,
+              borderRadius: 14,
+              padding: "14px 16px",
+            }}
+          >
+            <p style={{ fontSize: 10, fontWeight: 700, color: "#4b5563", textTransform: "uppercase", letterSpacing: "0.06em" }}>
+              {t.smsImport.transactionType}
+            </p>
+            <div style={{ display: "flex", alignItems: "center", gap: 8, marginTop: 8 }}>
               <div
-                className={`absolute top-0 right-0 w-32 h-32 rounded-full blur-3xl ${
-                  previewType ===
-                  "revenue"
-                    ? "bg-green-500/10"
-                    : "bg-red-500/10"
-                }`}
-              />
-
-              <div className="relative z-10">
-
-                <p className="text-sm text-gray-500 dark:text-slate-400">
-                  {t.smsImport.transactionType}
-                </p>
-
-                <div className="flex items-center gap-3 mt-3">
-
-                  <div
-                    className={`w-12 h-12 rounded-2xl flex items-center justify-center ${
-                      previewType ===
-                      "revenue"
-                        ? "bg-green-100 dark:bg-green-500/20 text-green-600"
-                        : "bg-red-100 dark:bg-red-500/20 text-red-600"
-                    }`}
-                  >
-
-                    {previewType ===
-                    "revenue" ? (
-
-                      <ArrowDownCircle className="w-6 h-6" />
-
-                    ) : (
-
-                      <ArrowUpCircle className="w-6 h-6" />
-
-                    )}
-
-                  </div>
-
-                  <h2
-                    className={`text-xl font-black capitalize ${
-                      previewType ===
-                      "revenue"
-                        ? "text-green-600"
-                        : "text-red-500"
-                    }`}
-                  >
-                    {previewType}
-                  </h2>
-
-                </div>
-
+                style={{
+                  width: 28,
+                  height: 28,
+                  borderRadius: 8,
+                  background: isRevenue ? "#06ffa514" : "#f8717114",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  color: accentColor,
+                }}
+              >
+                {isRevenue ? <ArrowDownCircle size={14} /> : <ArrowUpCircle size={14} />}
               </div>
-
+              <h2 style={{ fontSize: 13, fontWeight: 800, color: accentColor, textTransform: "capitalize" }}>
+                {previewType}
+              </h2>
             </div>
-
           </div>
-        )
-      }
+        </div>
+      )}
 
       {/* IMPORT BUTTON */}
-
       <button
-        onClick={
-          handleImport
-        }
-        className="relative overflow-hidden w-full rounded-[2rem] bg-gradient-to-r from-blue-600 via-cyan-500 to-indigo-600 text-white py-5 font-black text-lg shadow-2xl hover:scale-[1.01] active:scale-[0.99] transition-all duration-300"
+        onClick={handleImport}
+        style={{
+          width: "100%",
+          borderRadius: 14,
+          background: "linear-gradient(135deg, #7c3aed, #a855f7)",
+          color: "#fff",
+          padding: "14px 0",
+          fontWeight: 700,
+          fontSize: 14,
+          border: "none",
+          cursor: "pointer",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          gap: 8,
+          boxShadow: "0 4px 24px #7c3aed33",
+          transition: "all 0.15s ease",
+        }}
+        onMouseEnter={(e) => {
+          (e.currentTarget as HTMLElement).style.transform = "translateY(-1px)";
+          (e.currentTarget as HTMLElement).style.boxShadow = "0 8px 32px #7c3aed44";
+        }}
+        onMouseLeave={(e) => {
+          (e.currentTarget as HTMLElement).style.transform = "translateY(0)";
+          (e.currentTarget as HTMLElement).style.boxShadow = "0 4px 24px #7c3aed33";
+        }}
       >
-
-        <div className="absolute inset-0 opacity-20 bg-[radial-gradient(circle_at_top_right,white,transparent_35%)]" />
-
-        <div className="relative z-10 flex items-center justify-center gap-3">
-
-          <CheckCircle2 className="w-6 h-6" />
-
-          {t.smsImport.importTransaction}
-
-        </div>
-
+        <CheckCircle2 size={16} />
+        {t.smsImport.importTransaction}
       </button>
-
     </div>
   );
 }
