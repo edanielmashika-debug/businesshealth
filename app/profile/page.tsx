@@ -1,497 +1,307 @@
 "use client";
 
 import { useEffect, useState } from "react";
-
 import { useRouter } from "next/navigation";
-
 import DashboardLayout from "../../components/dashboard-layout";
-
 import { supabase } from "../../lib/supabase";
-
-import {
-  Camera,
-  LogOut,
-  Save,
-  Building2,
-  Mail,
-  ShieldCheck,
-} from "lucide-react";
-
+import { Camera, LogOut, Save, Building2, Mail, ShieldCheck } from "lucide-react";
 import { toast } from "sonner";
 
+const inputStyle: React.CSSProperties = {
+  width: "100%",
+  borderRadius: 13,
+  border: "1px solid #ffffff0d",
+  background: "#161822",
+  padding: "13px 16px 13px 44px",
+  fontSize: 14,
+  color: "#f0f0ff",
+  outline: "none",
+  transition: "border-color 0.15s ease, box-shadow 0.15s ease",
+  boxSizing: "border-box",
+  fontFamily: "inherit",
+};
+
+const labelStyle: React.CSSProperties = {
+  fontSize: 11,
+  fontWeight: 700,
+  color: "#6b7280",
+  textTransform: "uppercase",
+  letterSpacing: "0.07em",
+  display: "block",
+  marginBottom: 8,
+};
+
 export default function ProfilePage() {
-
-  const router =
-    useRouter();
-
-  const [loading, setLoading] =
-    useState(false);
-
-  const [email, setEmail] =
-    useState("");
-
-  const [
-    businessName,
-    setBusinessName,
-  ] = useState("");
-
-  const [logoUrl, setLogoUrl] =
-    useState("");
-
-  /* LOAD PROFILE */
+  const router = useRouter();
+  const [loading, setLoading] = useState(false);
+  const [email, setEmail] = useState("");
+  const [businessName, setBusinessName] = useState("");
+  const [logoUrl, setLogoUrl] = useState("");
 
   useEffect(() => {
-
     async function loadProfile() {
-
-      const {
-        data: { user },
-      } =
-        await supabase.auth.getUser();
-
-      if (!user) {
-
-        router.push("/login");
-
+      const { data: { user } } = await supabase.auth.getUser();
+      if (!user) { router.push("/login"); return; }
+      setEmail(user.email || "");
+      const { data, error } = await supabase.from("profiles").select("*").eq("id", user.id).single();
+      if (error || !data) {
+        await supabase.from("profiles").insert({ id: user.id, business_name: "", logo_url: "" });
         return;
       }
-
-      setEmail(
-        user.email || ""
-      );
-
-      const { data, error } =
-        await supabase
-          .from("profiles")
-          .select("*")
-          .eq(
-            "id",
-            user.id
-          )
-          .single();
-
-      /* CREATE EMPTY PROFILE */
-
-      if (
-        error ||
-        !data
-      ) {
-
-        await supabase
-          .from("profiles")
-          .insert({
-            id: user.id,
-
-            business_name: "",
-
-            logo_url: "",
-          });
-
-        return;
-      }
-
-      setBusinessName(
-        data.business_name || ""
-      );
-
-      setLogoUrl(
-        data.logo_url || ""
-      );
+      setBusinessName(data.business_name || "");
+      setLogoUrl(data.logo_url || "");
     }
-
     loadProfile();
-
   }, [router]);
 
-  /* SAVE PROFILE */
-
   async function handleSave() {
-
     setLoading(true);
-
-    const {
-      data: { user },
-    } =
-      await supabase.auth.getUser();
-
+    const { data: { user } } = await supabase.auth.getUser();
     if (!user) return;
-
-    const { error } =
-      await supabase
-        .from("profiles")
-        .update({
-          id: user.id,
-
-          business_name:
-            businessName,
-
-          logo_url:
-            logoUrl,
-        });
-
-    if (error) {
-
-      console.log(error);
-
-      toast.error(
-        error.message
-      );
-
-    } else {
-
-      toast.success(
-        "Profile updated successfully"
-      );
-    }
-
+    const { error } = await supabase.from("profiles").update({ id: user.id, business_name: businessName, logo_url: logoUrl });
+    if (error) { toast.error(error.message); } else { toast.success("Profile updated successfully"); }
     setLoading(false);
   }
 
-  /* UPLOAD LOGO */
-
-  async function handleUpload(
-    e: React.ChangeEvent<HTMLInputElement>
-  ) {
-
+  async function handleUpload(e: React.ChangeEvent<HTMLInputElement>) {
     try {
-
-      const file =
-        e.target.files?.[0];
-
+      const file = e.target.files?.[0];
       if (!file) return;
-
       setLoading(true);
-
-      const {
-        data: { user },
-      } =
-        await supabase.auth.getUser();
-
+      const { data: { user } } = await supabase.auth.getUser();
       if (!user) return;
-
-      const ext =
-        file.name
-          .split(".")
-          .pop();
-
-      const fileName =
-        `${user.id}-${Date.now()}.${ext}`;
-
-
-      const {
-        error: uploadError,
-      } =
-        await supabase.storage
-          .from("profiles")
-          .upload(
-            fileName,
-            file,
-            {
-              upsert: true,
-            }
-          );
-
-      if (uploadError) {
-
-        console.log(
-          uploadError
-        );
-
-        toast.error(
-          uploadError.message
-        );
-
-        setLoading(false);
-
-        return;
-      }
-
-      const {
-        data: publicUrlData,
-      } =
-        supabase.storage
-          .from("profiles")
-          .getPublicUrl(
-            fileName
-          );
-
-      const publicUrl =
-        `${publicUrlData.publicUrl}?t=${Date.now()}`;
-
-      setLogoUrl(
-        publicUrl
-      );
-
-      await supabase
-        .from("profiles")
-        .update({
-          id: user.id,
-
-          business_name:
-            businessName,
-
-          logo_url:
-            publicUrl,
-        });
-
+      const ext = file.name.split(".").pop();
+      const fileName = `${user.id}-${Date.now()}.${ext}`;
+      const { error: uploadError } = await supabase.storage.from("profiles").upload(fileName, file, { upsert: true });
+      if (uploadError) { toast.error(uploadError.message); setLoading(false); return; }
+      const { data: publicUrlData } = supabase.storage.from("profiles").getPublicUrl(fileName);
+      const publicUrl = `${publicUrlData.publicUrl}?t=${Date.now()}`;
+      setLogoUrl(publicUrl);
+      await supabase.from("profiles").update({ id: user.id, business_name: businessName, logo_url: publicUrl });
       setLoading(false);
-
-    } catch (error) {
-
-      console.log(error);
-
-      setLoading(false);
-    }
+    } catch (error) { console.log(error); setLoading(false); }
   }
 
-  /* LOGOUT */
-
   async function handleLogout() {
-
     await supabase.auth.signOut();
-
     router.push("/login");
   }
 
+  const focusIn = (e: React.FocusEvent<HTMLInputElement>) => { e.target.style.borderColor = "#7c3aed66"; e.target.style.boxShadow = "0 0 0 3px #7c3aed14"; };
+  const focusOut = (e: React.FocusEvent<HTMLInputElement>) => { e.target.style.borderColor = "#ffffff0d"; e.target.style.boxShadow = "none"; };
+
   return (
-
     <DashboardLayout>
+      <div style={{ maxWidth: 720, margin: "0 auto", display: "flex", flexDirection: "column", gap: 20, paddingBottom: 40 }}>
 
-      <div className="max-w-5xl mx-auto space-y-8 pb-10">
-
-        {/* HERO */}
-
-        <div className="relative overflow-hidden rounded-[2rem] bg-gradient-to-br from-blue-600 via-cyan-500 to-indigo-700 p-8 md:p-10 text-white shadow-2xl">
-
-          <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,white,transparent_40%)] opacity-10" />
-
-          <div className="relative z-10 flex flex-col lg:flex-row lg:items-center lg:justify-between gap-8">
-
-            {/* LEFT */}
-
+        {/* HERO — logo + name */}
+        <div
+          style={{
+            position: "relative",
+            overflow: "hidden",
+            borderRadius: 22,
+            background: "#0f1117",
+            border: "1px solid #7c3aed22",
+            padding: "28px 28px",
+            backgroundImage: "radial-gradient(ellipse at top right, #7c3aed14 0%, transparent 55%)",
+            boxShadow: "0 0 60px #7c3aed08",
+          }}
+        >
+          <div style={{ display: "flex", flexWrap: "wrap", alignItems: "center", justifyContent: "space-between", gap: 24 }}>
             <div>
-
-              <div className="inline-flex items-center gap-2 bg-white/15 backdrop-blur-md px-4 py-2 rounded-full text-sm font-medium">
-
-                <ShieldCheck className="w-4 h-4" />
-
+              <div style={{ display: "inline-flex", alignItems: "center", gap: 6, background: "#7c3aed18", border: "1px solid #7c3aed33", color: "#c4b5fd", padding: "4px 12px", borderRadius: 99, fontSize: 11, fontWeight: 700, letterSpacing: "0.06em", textTransform: "uppercase", marginBottom: 14 }}>
+                <ShieldCheck size={11} />
                 Business Profile
-
               </div>
-
-              <h1 className="text-4xl lg:text-5xl font-black mt-5 leading-tight">
-
-                Manage
-                <br />
-                Your Account
-
+              <h1 style={{ fontSize: 26, fontWeight: 900, color: "#f0f0ff", letterSpacing: "-0.03em", marginBottom: 6 }}>
+                Manage Your Account
               </h1>
-
-              <p className="text-blue-100 mt-4 max-w-2xl text-lg">
-
-                Customize your business identity, upload your logo,
-                and manage account information.
-
+              <p style={{ fontSize: 13, color: "#6b7280", lineHeight: 1.6, maxWidth: 360 }}>
+                Customize your business identity, upload your logo, and manage account details.
               </p>
-
             </div>
 
-            {/* RIGHT */}
-
-            <div className="flex flex-col items-center">
-
-              <div className="relative">
-
-                <div className="w-36 h-36 rounded-[2rem] overflow-hidden bg-white/15 backdrop-blur-md border border-white/20 shadow-2xl flex items-center justify-center">
-
-                  {logoUrl ? (
-
-                    <img
-                      src={logoUrl}
-                      alt="Business Logo"
-                      className="w-full h-full object-cover"
-                    />
-
-                  ) : (
-
-                    <span className="text-white text-5xl font-black">
-                      {businessName
-                        ?.charAt(0)
-                        ?.toUpperCase() || "B"}
-                    </span>
-
-                  )}
-
+            {/* LOGO UPLOAD */}
+            <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 10 }}>
+              <div style={{ position: "relative" }}>
+                <div
+                  style={{
+                    width: 100,
+                    height: 100,
+                    borderRadius: 20,
+                    overflow: "hidden",
+                    background: "#7c3aed18",
+                    border: "1px solid #7c3aed33",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    boxShadow: "0 0 24px #7c3aed22",
+                  }}
+                >
+                  {logoUrl
+                    ? <img src={logoUrl} alt="Business Logo" style={{ width: "100%", height: "100%", objectFit: "cover" }} />
+                    : <span style={{ color: "#c4b5fd", fontSize: 36, fontWeight: 900 }}>{businessName?.charAt(0)?.toUpperCase() || "B"}</span>
+                  }
                 </div>
-
-                <label className="absolute -bottom-2 -right-2 w-14 h-14 rounded-2xl bg-white text-blue-700 shadow-xl flex items-center justify-center cursor-pointer hover:scale-110 transition">
-
-                  <Camera className="w-5 h-5" />
-
-                  <input
-                    type="file"
-                    accept="image/*"
-                    onChange={
-                      handleUpload
-                    }
-                    hidden
-                  />
-
+                <label
+                  style={{
+                    position: "absolute",
+                    bottom: -8,
+                    right: -8,
+                    width: 32,
+                    height: 32,
+                    borderRadius: 10,
+                    background: "linear-gradient(135deg, #7c3aed, #a855f7)",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    cursor: "pointer",
+                    boxShadow: "0 4px 12px #7c3aed44",
+                    color: "#fff",
+                  }}
+                >
+                  <Camera size={14} />
+                  <input type="file" accept="image/*" onChange={handleUpload} hidden />
                 </label>
-
               </div>
-
-              <p className="text-sm text-blue-100 mt-5">
-                Upload business logo
-              </p>
-
+              <p style={{ fontSize: 11, color: "#6b7280" }}>Upload logo</p>
             </div>
-
           </div>
-
         </div>
 
-        {/* PROFILE FORM */}
-
-        <div className="bg-white dark:bg-slate-900 border border-gray-200 dark:border-slate-800 rounded-[2rem] p-6 md:p-8 shadow-sm">
-
-          <div className="flex items-center gap-3 mb-8">
-
-            <div className="w-14 h-14 rounded-2xl bg-blue-100 dark:bg-blue-500/20 flex items-center justify-center">
-
-              <Building2 className="w-7 h-7 text-blue-600 dark:text-blue-400" />
-
+        {/* FORM CARD */}
+        <div
+          style={{
+            background: "#0f1117",
+            border: "1px solid #ffffff0d",
+            borderRadius: 22,
+            padding: "24px 26px",
+          }}
+        >
+          <div style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 22 }}>
+            <div style={{ width: 40, height: 40, borderRadius: 12, background: "#7c3aed18", border: "1px solid #7c3aed33", display: "flex", alignItems: "center", justifyContent: "center" }}>
+              <Building2 size={18} color="#c4b5fd" />
             </div>
-
             <div>
-
-              <h2 className="text-2xl font-bold text-gray-800 dark:text-white">
-                Business Information
-              </h2>
-
-              <p className="text-gray-500 dark:text-slate-400 mt-1">
-                Update your business identity and account details
-              </p>
-
+              <h2 style={{ fontSize: 15, fontWeight: 800, color: "#f0f0ff", letterSpacing: "-0.01em" }}>Business Information</h2>
+              <p style={{ fontSize: 12, color: "#6b7280", marginTop: 2 }}>Update your business identity and account details</p>
             </div>
-
           </div>
 
-          <div className="space-y-6">
-
+          <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
             {/* BUSINESS NAME */}
-
             <div>
-
-              <label className="text-sm font-semibold text-gray-600 dark:text-slate-300">
-                Business Name
-              </label>
-
-              <div className="relative mt-2">
-
-                <Building2 className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
-
+              <label style={labelStyle}>Business Name</label>
+              <div style={{ position: "relative" }}>
+                <Building2 size={14} color="#4b5563" style={{ position: "absolute", left: 14, top: "50%", transform: "translateY(-50%)" }} />
                 <input
                   type="text"
-                  value={
-                    businessName
-                  }
-                  onChange={(e) =>
-                    setBusinessName(
-                      e.target.value
-                    )
-                  }
+                  value={businessName}
+                  onChange={(e) => setBusinessName(e.target.value)}
                   placeholder="My Business"
-                  className="w-full rounded-2xl border border-gray-200 dark:border-slate-700 bg-gray-50 dark:bg-slate-950 pl-12 pr-5 py-4 outline-none focus:ring-2 focus:ring-blue-500 text-black dark:text-white placeholder:text-gray-400"
+                  style={inputStyle}
+                  onFocus={focusIn}
+                  onBlur={focusOut}
                 />
-
               </div>
-
             </div>
 
-            {/* EMAIL */}
-
+            {/* EMAIL (readonly) */}
             <div>
-
-              <label className="text-sm font-semibold text-gray-600 dark:text-slate-300">
-                Email Address
-              </label>
-
-              <div className="relative mt-2">
-
-                <Mail className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
-
-                <div className="w-full rounded-2xl border border-gray-200 dark:border-slate-700 bg-gray-100 dark:bg-slate-950 pl-12 pr-5 py-4 text-gray-700 dark:text-slate-300">
-
+              <label style={labelStyle}>Email Address</label>
+              <div style={{ position: "relative" }}>
+                <Mail size={14} color="#4b5563" style={{ position: "absolute", left: 14, top: "50%", transform: "translateY(-50%)" }} />
+                <div
+                  style={{
+                    width: "100%",
+                    borderRadius: 13,
+                    border: "1px solid #ffffff08",
+                    background: "#0d0e15",
+                    padding: "13px 16px 13px 44px",
+                    fontSize: 14,
+                    color: "#4b5563",
+                    boxSizing: "border-box",
+                  }}
+                >
                   {email}
-
                 </div>
-
               </div>
-
             </div>
 
-            {/* SAVE BUTTON */}
-
+            {/* SAVE */}
             <button
-              onClick={
-                handleSave
-              }
-              disabled={
-                loading
-              }
-              className="w-full bg-gradient-to-r from-blue-600 via-cyan-500 to-indigo-600 hover:opacity-95 text-white rounded-2xl py-4 font-semibold shadow-lg transition-all duration-300 hover:scale-[1.01] flex items-center justify-center gap-3"
+              onClick={handleSave}
+              disabled={loading}
+              style={{
+                width: "100%",
+                marginTop: 4,
+                background: loading ? "#7c3aed55" : "linear-gradient(135deg, #7c3aed, #a855f7)",
+                color: "#fff",
+                borderRadius: 13,
+                padding: "13px 0",
+                fontWeight: 700,
+                fontSize: 14,
+                border: "none",
+                cursor: loading ? "not-allowed" : "pointer",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                gap: 8,
+                boxShadow: loading ? "none" : "0 4px 24px #7c3aed33",
+                transition: "all 0.15s ease",
+              }}
+              onMouseEnter={(e) => { if (!loading) { (e.currentTarget as HTMLElement).style.transform = "translateY(-1px)"; } }}
+              onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.transform = "translateY(0)"; }}
             >
-
-              <Save size={18} />
-
-              {loading
-                ? "Saving..."
-                : "Save Changes"}
-
+              <Save size={15} />
+              {loading ? "Saving..." : "Save Changes"}
             </button>
-
           </div>
-
         </div>
 
         {/* LOGOUT CARD */}
-
-        <div className="bg-white dark:bg-slate-900 border border-red-200 dark:border-red-900/40 rounded-[2rem] p-6 shadow-sm">
-
-          <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-5">
-
-            <div>
-
-              <h2 className="text-xl font-bold text-gray-800 dark:text-white">
-                Logout Session
-              </h2>
-
-              <p className="text-gray-500 dark:text-slate-400 mt-1">
-                Securely sign out from your business dashboard
-              </p>
-
-            </div>
-
-            <button
-              onClick={
-                handleLogout
-              }
-              className="bg-red-500 hover:bg-red-600 text-white rounded-2xl px-6 py-4 font-semibold transition-all duration-300 hover:scale-[1.02] flex items-center justify-center gap-3 shadow-lg"
-            >
-
-              <LogOut size={18} />
-
-              Logout
-
-            </button>
-
+        <div
+          style={{
+            background: "#0f1117",
+            border: "1px solid #ef444420",
+            borderRadius: 22,
+            padding: "20px 26px",
+            display: "flex",
+            flexWrap: "wrap",
+            alignItems: "center",
+            justifyContent: "space-between",
+            gap: 16,
+            backgroundImage: "radial-gradient(ellipse at top right, #ef444408 0%, transparent 55%)",
+          }}
+        >
+          <div>
+            <h2 style={{ fontSize: 15, fontWeight: 800, color: "#f0f0ff" }}>Logout Session</h2>
+            <p style={{ fontSize: 12, color: "#6b7280", marginTop: 3 }}>Securely sign out from your business dashboard</p>
           </div>
-
+          <button
+            onClick={handleLogout}
+            style={{
+              background: "#ef444408",
+              border: "1px solid #ef444433",
+              color: "#f87171",
+              borderRadius: 12,
+              padding: "10px 20px",
+              fontWeight: 700,
+              fontSize: 13,
+              cursor: "pointer",
+              display: "flex",
+              alignItems: "center",
+              gap: 8,
+              transition: "all 0.15s ease",
+            }}
+            onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.background = "#ef444416"; }}
+            onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.background = "#ef444408"; }}
+          >
+            <LogOut size={14} />
+            Logout
+          </button>
         </div>
-
       </div>
-
     </DashboardLayout>
   );
 }
