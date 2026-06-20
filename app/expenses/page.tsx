@@ -1,573 +1,538 @@
 "use client";
 
-import {
-  useEffect,
-  useState,
-} from "react";
-
+import { useEffect, useState } from "react";
 import DashboardLayout from "../../components/dashboard-layout";
-import {useTranslation} from "../../hooks/useTranslation";
-import {
-  useExpenseStore,
-} from "../../store/expense-store";
+import { useTranslation } from "../../hooks/useTranslation";
+import { useExpenseStore } from "../../store/expense-store";
+import { Plus, X, Wallet, TrendingDown, Receipt, Trash2, Sparkles } from "lucide-react";
 
-import {
-  Plus,
-  X,
-  Wallet,
-  TrendingDown,
-  Receipt,
-  Trash2,
-  Sparkles,
-} from "lucide-react";
+const inputStyle: React.CSSProperties = {
+  width: "100%",
+  borderRadius: 13,
+  border: "1px solid #ffffff0d",
+  background: "#161822",
+  padding: "13px 16px",
+  fontSize: 14,
+  color: "#f0f0ff",
+  outline: "none",
+  transition: "border-color 0.15s ease, box-shadow 0.15s ease",
+  boxSizing: "border-box",
+  fontFamily: "inherit",
+};
+
+const labelStyle: React.CSSProperties = {
+  fontSize: 11,
+  fontWeight: 700,
+  color: "#6b7280",
+  textTransform: "uppercase",
+  letterSpacing: "0.08em",
+  display: "block",
+  marginBottom: 8,
+};
 
 export default function ExpensesPage() {
-const t = useTranslation();
-  const {
-    expenses,
-    addExpense,
-    deleteExpense,
-    fetchExpenses,
-  } =
-    useExpenseStore();
+  const t = useTranslation();
+  const { expenses, addExpense, deleteExpense, fetchExpenses } = useExpenseStore();
 
-  const [title, setTitle] =
-    useState("");
+  const [title, setTitle] = useState("");
+  const [amount, setAmount] = useState("");
+  const [category, setCategory] = useState("");
+  const [showForm, setShowForm] = useState(false);
 
-  const [amount, setAmount] =
-    useState("");
+  useEffect(() => { fetchExpenses(); }, []);
 
-  const [category, setCategory] =
-    useState("");
-
-  const [showForm, setShowForm] =
-    useState(false);
-
-  useEffect(() => {
-
-    fetchExpenses();
-
-  }, []);
-
-  const handleSubmit = async (
-    e: React.FormEvent
-  ) => {
-
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-
-    if (
-      !title ||
-      !amount ||
-      !category
-    )
-      return;
-
+    if (!title || !amount || !category) return;
     await addExpense({
       id: crypto.randomUUID(),
-
       title,
-
-      amount:
-        Number(amount),
-
+      amount: Number(amount),
       category,
-
-      createdAt:
-        new Date().toISOString(),
+      createdAt: new Date().toISOString(),
     });
-
     setTitle("");
     setAmount("");
     setCategory("");
-
     setShowForm(false);
   };
 
-  const totalExpenses =
-    expenses.reduce(
-      (
-        sum,
-        expense
-      ) =>
-        sum +
-        expense.amount,
-      0
-    );
+  const totalExpenses = expenses.reduce((sum, expense) => sum + expense.amount, 0);
+  const categoriesCount = new Set(expenses.map((expense) => expense.category)).size;
 
-  const categoriesCount =
-    new Set(
-      expenses.map(
-        (expense) =>
-          expense.category
-      )
-    ).size;
+  const focusIn = (e: React.FocusEvent<HTMLInputElement>) => {
+    e.target.style.borderColor = "#f8717166";
+    e.target.style.boxShadow = "0 0 0 3px #f8717114";
+  };
+  const focusOut = (e: React.FocusEvent<HTMLInputElement>) => {
+    e.target.style.borderColor = "#ffffff0d";
+    e.target.style.boxShadow = "none";
+  };
 
   return (
-
     <DashboardLayout>
-
-      <div className="space-y-8 pb-10">
+      <div style={{ display: "flex", flexDirection: "column", gap: 20, paddingBottom: 40 }}>
 
         {/* HERO */}
-
-        <div className="relative overflow-hidden rounded-[2.5rem] bg-gradient-to-br from-red-500 via-rose-500 to-orange-500 p-8 lg:p-10 text-white shadow-2xl">
-
-          <div className="absolute inset-0 opacity-10 bg-[radial-gradient(circle_at_top_right,white,transparent_35%)]" />
-
-          <div className="absolute -right-10 -top-10 w-48 h-48 bg-white/10 rounded-full blur-3xl" />
-
-          <div className="relative z-10 flex flex-col lg:flex-row lg:items-center lg:justify-between gap-8">
-
+        <div
+          style={{
+            position: "relative",
+            overflow: "hidden",
+            borderRadius: 22,
+            background: "#0f1117",
+            border: "1px solid #f8717122",
+            padding: "28px 28px",
+            backgroundImage:
+              "radial-gradient(ellipse at top right, #f8717112 0%, transparent 55%), url(\"data:image/svg+xml,%3Csvg width='32' height='32' viewBox='0 0 32 32' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' stroke='%23f8717106' stroke-width='1'%3E%3Cpath d='M0 16h32M16 0v32'/%3E%3C/g%3E%3C/svg%3E\")",
+            boxShadow: "0 0 60px #f8717108",
+          }}
+        >
+          <div style={{ position: "relative", zIndex: 1, display: "flex", flexWrap: "wrap", alignItems: "center", justifyContent: "space-between", gap: 20 }}>
             <div>
-
-              <div className="inline-flex items-center gap-2 bg-white/15 backdrop-blur-md px-4 py-2 rounded-full text-sm font-medium">
-
-                <Sparkles className="w-4 h-4" />
-
+              <div
+                style={{
+                  display: "inline-flex",
+                  alignItems: "center",
+                  gap: 6,
+                  background: "#f8717114",
+                  border: "1px solid #f8717133",
+                  color: "#fca5a5",
+                  padding: "4px 12px",
+                  borderRadius: 99,
+                  fontSize: 11,
+                  fontWeight: 700,
+                  letterSpacing: "0.06em",
+                  textTransform: "uppercase",
+                  marginBottom: 14,
+                }}
+              >
+                <Sparkles size={11} />
                 {t.expensesPage.expenseTracker}
-
               </div>
-
-              <h1 className="text-4xl lg:text-5xl font-black mt-5 leading-tight">
-                {t.expensesPage.business}
-                <br />
-                {t.expensesPage.expenses}
+              <h1 style={{ fontSize: 30, fontWeight: 900, color: "#f0f0ff", letterSpacing: "-0.03em", lineHeight: 1.1 }}>
+                {t.expensesPage.business} {t.expensesPage.expenses}
               </h1>
-
-              <p className="text-red-100 mt-4 max-w-2xl text-lg">
+              <p style={{ fontSize: 13, color: "#6b7280", marginTop: 8, lineHeight: 1.6 }}>
                 {t.expensesPage.businessExpensesDescription}
               </p>
-
             </div>
 
-            {/* ADD BUTTON */}
-
             <button
-              onClick={() =>
-                setShowForm(true)
-              }
-              className="w-20 h-20 rounded-[2rem] bg-white text-red-500 shadow-2xl flex items-center justify-center hover:scale-110 active:scale-95 transition-all duration-300"
+              onClick={() => setShowForm(true)}
+              style={{
+                width: 52,
+                height: 52,
+                borderRadius: 15,
+                background: "linear-gradient(135deg, #ef4444, #f87171)",
+                border: "none",
+                color: "#fff",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                cursor: "pointer",
+                boxShadow: "0 4px 20px #ef444444",
+                transition: "all 0.15s ease",
+                flexShrink: 0,
+              }}
+              onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.transform = "scale(1.08)"; }}
+              onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.transform = "scale(1)"; }}
             >
-
-              <Plus className="w-10 h-10" />
-
+              <Plus size={22} />
             </button>
-
           </div>
-
         </div>
 
         {/* STATS */}
-
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-
-          {/* TOTAL */}
-
-          <div className="relative overflow-hidden bg-white dark:bg-slate-900 rounded-[2rem] border border-gray-200 dark:border-slate-800 p-6 shadow-sm hover:shadow-xl transition">
-
-            <div className="absolute top-0 right-0 w-40 h-40 bg-red-500/10 rounded-full blur-3xl" />
-
-            <div className="relative z-10">
-
-              <div className="flex items-center justify-between">
-
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(180px, 1fr))", gap: 12 }}>
+          {[
+            { label: t.expensesPage.totalExpenses, value: `TZS ${totalExpenses.toLocaleString()}`, color: "#f87171", bg: "#f8717110", border: "#f8717122", icon: <Wallet size={16} /> },
+            { label: t.expensesPage.expenseRecords, value: expenses.length, color: "#facc15", bg: "#facc1510", border: "#facc1522", icon: <Receipt size={16} /> },
+            { label: t.expensesPage.categories, value: categoriesCount, color: "#fca5a5", bg: "#f8717108", border: "#f8717118", icon: <TrendingDown size={16} /> },
+          ].map((card) => (
+            <div
+              key={card.label}
+              style={{
+                position: "relative",
+                overflow: "hidden",
+                background: "#0f1117",
+                borderRadius: 18,
+                border: `1px solid ${card.border}`,
+                padding: "18px 20px",
+                backgroundImage: `radial-gradient(ellipse at top right, ${card.bg} 0%, transparent 60%)`,
+                transition: "all 0.2s ease",
+              }}
+              onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.transform = "translateY(-2px)"; }}
+              onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.transform = "translateY(0)"; }}
+            >
+              <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between" }}>
                 <div>
-
-                  <p className="text-sm font-medium text-gray-500 dark:text-slate-400">
-                    {t.expensesPage.totalExpenses}
+                  <p style={{ fontSize: 11, fontWeight: 700, color: "#6b7280", textTransform: "uppercase", letterSpacing: "0.07em" }}>
+                    {card.label}
                   </p>
-
-                  <h2 className="text-4xl font-black mt-3 text-red-500">
-                    TZS{" "}
-                    {totalExpenses.toLocaleString()}
+                  <h2 style={{ fontSize: 26, fontWeight: 900, color: card.color, marginTop: 8, letterSpacing: "-0.03em" }}>
+                    {card.value}
                   </h2>
-
                 </div>
-
-                <div className="w-14 h-14 rounded-2xl bg-red-100 dark:bg-red-500/20 flex items-center justify-center">
-
-                  <Wallet className="w-7 h-7 text-red-500" />
-
+                <div
+                  style={{
+                    width: 40,
+                    height: 40,
+                    borderRadius: 12,
+                    background: card.bg,
+                    border: `1px solid ${card.border}`,
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    color: card.color,
+                  }}
+                >
+                  {card.icon}
                 </div>
-
               </div>
-
             </div>
-
-          </div>
-
-          {/* TOTAL RECORDS */}
-
-          <div className="relative overflow-hidden bg-white dark:bg-slate-900 rounded-[2rem] border border-gray-200 dark:border-slate-800 p-6 shadow-sm hover:shadow-xl transition">
-
-            <div className="absolute top-0 right-0 w-40 h-40 bg-orange-500/10 rounded-full blur-3xl" />
-
-            <div className="relative z-10">
-
-              <div className="flex items-center justify-between">
-
-                <div>
-
-                  <p className="text-sm font-medium text-gray-500 dark:text-slate-400">
-                     {t.expensesPage.expenseRecords}
-                  </p>
-
-                  <h2 className="text-4xl font-black mt-3 text-orange-500">
-                    {expenses.length}
-                  </h2>
-
-                </div>
-
-                <div className="w-14 h-14 rounded-2xl bg-orange-100 dark:bg-orange-500/20 flex items-center justify-center">
-
-                  <Receipt className="w-7 h-7 text-orange-500" />
-
-                </div>
-
-              </div>
-
-            </div>
-
-          </div>
-
-          {/* CATEGORIES */}
-
-          <div className="relative overflow-hidden bg-white dark:bg-slate-900 rounded-[2rem] border border-gray-200 dark:border-slate-800 p-6 shadow-sm hover:shadow-xl transition">
-
-            <div className="absolute top-0 right-0 w-40 h-40 bg-rose-500/10 rounded-full blur-3xl" />
-
-            <div className="relative z-10">
-
-              <div className="flex items-center justify-between">
-
-                <div>
-
-                  <p className="text-sm font-medium text-gray-500 dark:text-slate-400">
-                    {t.expensesPage.categories}
-                  </p>
-
-                  <h2 className="text-4xl font-black mt-3 text-rose-500">
-                    {categoriesCount}
-                  </h2>
-
-                </div>
-
-                <div className="w-14 h-14 rounded-2xl bg-rose-100 dark:bg-rose-500/20 flex items-center justify-center">
-
-                  <TrendingDown className="w-7 h-7 text-rose-500" />
-
-                </div>
-
-              </div>
-
-            </div>
-
-          </div>
-
+          ))}
         </div>
 
-        {/* POPUP FORM */}
-
+        {/* ADD FORM MODAL */}
         {showForm && (
+          <div
+            style={{
+              position: "fixed",
+              inset: 0,
+              zIndex: 50,
+              background: "rgba(0,0,0,0.8)",
+              backdropFilter: "blur(12px)",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              padding: 16,
+            }}
+          >
+            <div
+              style={{
+                width: "100%",
+                maxWidth: 520,
+                maxHeight: "90vh",
+                overflow: "hidden",
+                background: "#0f1117",
+                borderRadius: 24,
+                border: "1px solid #f8717133",
+                boxShadow: "0 0 80px #f8717114",
+                display: "flex",
+                flexDirection: "column",
+              }}
+            >
+              {/* ACCENT BAR */}
+              <div style={{ height: 2, background: "linear-gradient(90deg, #ef4444, #f87171, #facc15)", flexShrink: 0 }} />
 
-          <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-md flex items-center justify-center p-4">
-
-            <div className="w-full max-w-2xl bg-white dark:bg-slate-900 rounded-[2rem] border border-gray-200 dark:border-slate-800 shadow-2xl relative overflow-hidden max-h-[92vh] flex flex-col">
-
-              {/* TOP BAR */}
-
-              <div className="h-2 bg-gradient-to-r from-red-500 via-rose-500 to-orange-500" />
-
-              {/* CLOSE */}
-
-              <button
-                onClick={() =>
-                  setShowForm(false)
-                }
-                className="absolute top-5 right-5 w-11 h-11 rounded-full bg-gray-100 dark:bg-slate-800 text-black dark:text-white flex items-center justify-center hover:scale-110 transition"
+              {/* MODAL HEADER */}
+              <div
+                style={{
+                  padding: "18px 22px 0",
+                  display: "flex",
+                  alignItems: "flex-start",
+                  justifyContent: "space-between",
+                  flexShrink: 0,
+                }}
               >
-
-                <X size={20} />
-
-              </button>
-
-              {/* SCROLLABLE CONTENT */}
-
-              <div className="overflow-y-auto p-6 md:p-8">
-
-                <div className="mb-8">
-
-                  <div className="inline-flex items-center gap-2 bg-red-100 dark:bg-red-500/20 text-red-600 dark:text-red-300 px-4 py-2 rounded-full text-sm font-semibold">
-
-                    <Receipt className="w-4 h-4" />
-
+                <div>
+                  <div
+                    style={{
+                      display: "inline-flex",
+                      alignItems: "center",
+                      gap: 6,
+                      background: "#f8717114",
+                      border: "1px solid #f8717133",
+                      color: "#fca5a5",
+                      padding: "3px 10px",
+                      borderRadius: 99,
+                      fontSize: 11,
+                      fontWeight: 700,
+                      textTransform: "uppercase",
+                      letterSpacing: "0.06em",
+                      marginBottom: 8,
+                    }}
+                  >
+                    <Receipt size={11} />
                     {t.expensesPage.newExpense}
-
                   </div>
-
-                  <h2 className="text-3xl font-black text-gray-800 dark:text-white mt-5">
+                  <h2 style={{ fontSize: 18, fontWeight: 800, color: "#f0f0ff", letterSpacing: "-0.02em" }}>
                     {t.expensesPage.addExpense}
                   </h2>
-
-                  <p className="text-gray-500 dark:text-slate-400 mt-3">
+                  <p style={{ fontSize: 12, color: "#6b7280", marginTop: 4 }}>
                     {t.expensesPage.addExpenseDescription}
                   </p>
-
                 </div>
-
-                <form
-                  onSubmit={
-                    handleSubmit
-                  }
-                  className="space-y-6"
+                <button
+                  onClick={() => setShowForm(false)}
+                  style={{
+                    width: 34,
+                    height: 34,
+                    borderRadius: 10,
+                    background: "#ffffff08",
+                    border: "1px solid #ffffff0d",
+                    color: "#94a3b8",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    cursor: "pointer",
+                    flexShrink: 0,
+                  }}
                 >
+                  <X size={15} />
+                </button>
+              </div>
 
+              {/* SCROLLABLE FORM */}
+              <div style={{ overflowY: "auto", padding: "16px 22px 24px" }}>
+                <form onSubmit={handleSubmit} style={{ display: "flex", flexDirection: "column", gap: 16 }}>
                   {/* TITLE */}
-
                   <div>
-
-                    <label className="block text-sm font-semibold text-gray-700 dark:text-slate-300 mb-3">
-                      {t.expensesPage.expenseTitle}
-                    </label>
-
+                    <label style={labelStyle}>{t.expensesPage.expenseTitle}</label>
                     <input
                       type="text"
                       placeholder={t.expensesPage.expenseTitlePlaceholder}
                       value={title}
-                      onChange={(e) =>
-                        setTitle(
-                          e.target.value
-                        )
-                      }
-                      className="w-full rounded-[1.5rem] border border-gray-200 dark:border-slate-700 bg-gray-50 dark:bg-slate-800 px-5 py-5 outline-none focus:ring-2 focus:ring-red-500 text-black dark:text-white placeholder:text-gray-400"
+                      onChange={(e) => setTitle(e.target.value)}
+                      style={inputStyle}
+                      onFocus={focusIn}
+                      onBlur={focusOut}
                     />
-
                   </div>
 
                   {/* AMOUNT */}
-
                   <div>
-
-                    <label className="block text-sm font-semibold text-gray-700 dark:text-slate-300 mb-3">
-                      {t.expensesPage.amount}
-                    </label>
-
-                    <div className="relative">
-
-                      <span className="absolute left-5 top-1/2 -translate-y-1/2 text-red-500 font-bold">
+                    <label style={labelStyle}>{t.expensesPage.amount}</label>
+                    <div style={{ position: "relative" }}>
+                      <span
+                        style={{
+                          position: "absolute",
+                          left: 16,
+                          top: "50%",
+                          transform: "translateY(-50%)",
+                          fontSize: 12,
+                          fontWeight: 800,
+                          color: "#f87171",
+                          letterSpacing: "0.04em",
+                          pointerEvents: "none",
+                        }}
+                      >
                         TZS
                       </span>
-
                       <input
                         type="number"
                         placeholder="50000"
                         value={amount}
-                        onChange={(e) =>
-                          setAmount(
-                            e.target.value
-                          )
-                        }
-                        className="w-full rounded-[1.5rem] border border-gray-200 dark:border-slate-700 bg-gray-50 dark:bg-slate-800 pl-16 pr-5 py-5 outline-none focus:ring-2 focus:ring-red-500 text-black dark:text-white placeholder:text-gray-400"
+                        onChange={(e) => setAmount(e.target.value)}
+                        style={{ ...inputStyle, paddingLeft: 54 }}
+                        onFocus={focusIn}
+                        onBlur={focusOut}
                       />
-
                     </div>
-
                   </div>
 
                   {/* CATEGORY */}
-
                   <div>
-
-                    <label className="block text-sm font-semibold text-gray-700 dark:text-slate-300 mb-3">
-                      {t.expensesPage.category}
-                    </label>
-
+                    <label style={labelStyle}>{t.expensesPage.category}</label>
                     <input
                       type="text"
                       placeholder={t.expensesPage.categoryPlaceholder}
                       value={category}
-                      onChange={(e) =>
-                        setCategory(
-                          e.target.value
-                        )
-                      }
-                      className="w-full rounded-[1.5rem] border border-gray-200 dark:border-slate-700 bg-gray-50 dark:bg-slate-800 px-5 py-5 outline-none focus:ring-2 focus:ring-red-500 text-black dark:text-white placeholder:text-gray-400"
+                      onChange={(e) => setCategory(e.target.value)}
+                      style={inputStyle}
+                      onFocus={focusIn}
+                      onBlur={focusOut}
                     />
-
                   </div>
 
-                  {/* PREVIEW */}
-
-                  {(title ||
-                    amount) && (
-
-                    <div className="bg-gradient-to-br from-red-500 to-orange-500 rounded-[1.8rem] p-6 text-white shadow-lg">
-
-                      <div className="flex items-center justify-between">
-
+                  {/* LIVE PREVIEW */}
+                  {(title || amount) && (
+                    <div
+                      style={{
+                        borderRadius: 16,
+                        background: "linear-gradient(135deg, #ef4444, #f87171)",
+                        padding: "18px 20px",
+                        color: "#fff",
+                        boxShadow: "0 8px 28px #ef444433",
+                      }}
+                    >
+                      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start" }}>
                         <div>
-
-                          <p className="text-sm opacity-80">
+                          <p style={{ fontSize: 11, opacity: 0.7, fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.06em" }}>
                             {t.expensesPage.expensePreview}
                           </p>
-
-                          <h3 className="text-2xl font-black mt-2">
-                            {title ||
-                              "Expense"}
-                          </h3>
-
+                          <h3 style={{ fontSize: 18, fontWeight: 800, marginTop: 4 }}>{title || "Expense"}</h3>
                         </div>
-
-                        <div className="w-14 h-14 rounded-2xl bg-white/20 flex items-center justify-center">
-
-                          <Wallet className="w-7 h-7" />
-
+                        <div
+                          style={{
+                            width: 38,
+                            height: 38,
+                            borderRadius: 11,
+                            background: "rgba(255,255,255,0.15)",
+                            display: "flex",
+                            alignItems: "center",
+                            justifyContent: "center",
+                          }}
+                        >
+                          <Wallet size={17} />
                         </div>
-
                       </div>
-
-                      <h2 className="text-4xl font-black mt-6">
-                        TZS{" "}
-                        {amount
-                          ? Number(
-                              amount
-                            ).toLocaleString()
-                          : "0"}
+                      <h2 style={{ fontSize: 28, fontWeight: 900, marginTop: 14, letterSpacing: "-0.03em" }}>
+                        TZS {amount ? Number(amount).toLocaleString() : "0"}
                       </h2>
-
                     </div>
                   )}
 
-                  {/* BUTTON */}
-
+                  {/* SUBMIT */}
                   <button
                     type="submit"
-                    className="w-full bg-gradient-to-r from-red-500 via-rose-500 to-orange-500 hover:scale-[1.01] active:scale-[0.99] text-white rounded-[1.5rem] py-5 font-bold text-lg shadow-xl transition-all duration-300 flex items-center justify-center gap-3"
+                    style={{
+                      width: "100%",
+                      background: "linear-gradient(135deg, #ef4444, #f87171)",
+                      color: "#fff",
+                      borderRadius: 13,
+                      padding: "13px 0",
+                      fontWeight: 700,
+                      fontSize: 14,
+                      border: "none",
+                      cursor: "pointer",
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      gap: 8,
+                      boxShadow: "0 4px 20px #ef444433",
+                      transition: "all 0.15s ease",
+                    }}
+                    onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.transform = "translateY(-1px)"; (e.currentTarget as HTMLElement).style.boxShadow = "0 8px 28px #ef444444"; }}
+                    onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.transform = "translateY(0)"; (e.currentTarget as HTMLElement).style.boxShadow = "0 4px 20px #ef444433"; }}
                   >
-
-                    <Plus className="w-5 h-5" />
-
+                    <Plus size={16} />
                     {t.expensesPage.saveExpense}
-
                   </button>
-
                 </form>
-
               </div>
-
             </div>
-
           </div>
         )}
 
         {/* EXPENSE LIST */}
-
-        <div className="grid gap-5">
-
-          {expenses.map(
-            (expense) => (
-
+        <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
+          {expenses.length === 0 ? (
+            <div
+              style={{
+                background: "#0f1117",
+                border: "1px dashed #ffffff10",
+                borderRadius: 20,
+                padding: "56px 24px",
+                textAlign: "center",
+                backgroundImage: "radial-gradient(ellipse at center, #f8717108 0%, transparent 60%)",
+              }}
+            >
+              <div style={{ fontSize: 44, marginBottom: 14 }}>💸</div>
+              <h2 style={{ fontSize: 20, fontWeight: 800, color: "#f0f0ff", letterSpacing: "-0.02em", marginBottom: 8 }}>
+                {t.expensesPage.noExpensesYet}
+              </h2>
+              <p style={{ fontSize: 13, color: "#6b7280", maxWidth: 320, margin: "0 auto", lineHeight: 1.6 }}>
+                {t.expensesPage.noExpensesYetDescription}
+              </p>
+            </div>
+          ) : (
+            expenses.map((expense) => (
               <div
-                key={
-                  expense.id
-                }
-                className="relative overflow-hidden bg-white dark:bg-slate-900 rounded-[2rem] border border-gray-200 dark:border-slate-800 p-6 shadow-sm hover:shadow-xl transition-all duration-300"
+                key={expense.id}
+                style={{
+                  position: "relative",
+                  overflow: "hidden",
+                  background: "#0f1117",
+                  border: "1px solid #f8717114",
+                  borderRadius: 18,
+                  padding: "18px 20px",
+                  backgroundImage: "radial-gradient(ellipse at top right, #f8717108 0%, transparent 55%)",
+                  transition: "all 0.2s ease",
+                }}
+                onMouseEnter={(e) => {
+                  (e.currentTarget as HTMLElement).style.transform = "translateY(-1px)";
+                  (e.currentTarget as HTMLElement).style.borderColor = "#f8717122";
+                }}
+                onMouseLeave={(e) => {
+                  (e.currentTarget as HTMLElement).style.transform = "translateY(0)";
+                  (e.currentTarget as HTMLElement).style.borderColor = "#f8717114";
+                }}
               >
-
-                <div className="absolute top-0 right-0 w-40 h-40 bg-red-500/5 rounded-full blur-3xl" />
-
-                <div className="relative z-10 flex flex-col lg:flex-row lg:items-center lg:justify-between gap-6">
-
+                <div
+                  style={{
+                    position: "relative",
+                    zIndex: 1,
+                    display: "flex",
+                    flexWrap: "wrap",
+                    alignItems: "center",
+                    justifyContent: "space-between",
+                    gap: 16,
+                  }}
+                >
                   {/* LEFT */}
-
                   <div>
-
-                    <div className="flex items-center gap-3 flex-wrap">
-
-                      <h2 className="text-2xl font-black text-gray-800 dark:text-white">
-                        {
-                          expense.title
-                        }
+                    <div style={{ display: "flex", alignItems: "center", gap: 10, flexWrap: "wrap" }}>
+                      <h2 style={{ fontSize: 17, fontWeight: 800, color: "#f0f0ff", letterSpacing: "-0.01em" }}>
+                        {expense.title}
                       </h2>
-
-                      <span className="bg-red-100 dark:bg-red-500/20 text-red-600 dark:text-red-300 px-4 py-2 rounded-full text-sm font-semibold">
-                        {
-                          expense.category
-                        }
+                      <span
+                        style={{
+                          padding: "3px 10px",
+                          borderRadius: 99,
+                          fontSize: 11,
+                          fontWeight: 700,
+                          background: "#f8717114",
+                          border: "1px solid #f8717122",
+                          color: "#fca5a5",
+                        }}
+                      >
+                        {expense.category}
                       </span>
-
                     </div>
-
-                    <p className="text-gray-500 dark:text-slate-400 mt-4">
-                      {t.expensesPage.category}
+                    <p style={{ fontSize: 11, color: "#4b5563", marginTop: 8 }}>
+                      {new Date(expense.createdAt).toLocaleDateString()}
                     </p>
-
-                    <p className="text-sm text-gray-500 dark:text-slate-400 mt-3">
-                      {new Date(
-                        expense.createdAt
-                      ).toLocaleDateString()}
-                    </p>
-
                   </div>
 
                   {/* RIGHT */}
-
-                  <div className="flex flex-col items-start lg:items-end gap-4">
-
-                    <h2 className="text-4xl font-black text-red-500">
-                      TZS{" "}
-                      {expense.amount.toLocaleString()}
+                  <div style={{ display: "flex", alignItems: "center", gap: 16 }}>
+                    <h2 style={{ fontSize: 22, fontWeight: 900, color: "#f87171", letterSpacing: "-0.02em" }}>
+                      TZS {expense.amount.toLocaleString()}
                     </h2>
-
                     <button
-                      onClick={() =>
-                        deleteExpense(
-                          expense.id
-                        )
-                      }
-                      className="flex items-center gap-2 bg-red-500 hover:bg-red-600 text-white px-5 py-3 rounded-2xl font-semibold transition-all"
+                      onClick={() => deleteExpense(expense.id)}
+                      style={{
+                        width: 36,
+                        height: 36,
+                        borderRadius: 10,
+                        background: "#ef444408",
+                        border: "1px solid #ef444422",
+                        color: "#f87171",
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        cursor: "pointer",
+                        transition: "all 0.15s ease",
+                      }}
+                      onMouseEnter={(e) => {
+                        (e.currentTarget as HTMLElement).style.background = "#ef444418";
+                        (e.currentTarget as HTMLElement).style.transform = "scale(1.1)";
+                      }}
+                      onMouseLeave={(e) => {
+                        (e.currentTarget as HTMLElement).style.background = "#ef444408";
+                        (e.currentTarget as HTMLElement).style.transform = "scale(1)";
+                      }}
                     >
-
-                      <Trash2 className="w-4 h-4" />
-
-                      {t.expensesPage.delete}
-
+                      <Trash2 size={14} />
                     </button>
-
                   </div>
-
                 </div>
-
               </div>
-            )
+            ))
           )}
-
-          {/* EMPTY STATE */}
-
-          {expenses.length ===
-            0 && (
-
-            <div className="bg-white dark:bg-slate-900 rounded-[2rem] border border-dashed border-gray-300 dark:border-slate-700 p-14 text-center">
-
-              <div className="text-6xl mb-5">
-                💸
-              </div>
-
-              <h2 className="text-3xl font-black text-gray-800 dark:text-white">
-                {t.expensesPage.noExpensesYet}
-              </h2>
-
-              <p className="text-gray-500 dark:text-slate-400 mt-3 max-w-md mx-auto">
-                {t.expensesPage.noExpensesYetDescription}
-              </p>
-
-            </div>
-          )}
-
         </div>
-
       </div>
-
     </DashboardLayout>
   );
 }
