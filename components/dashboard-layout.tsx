@@ -83,7 +83,7 @@ export default function DashboardLayout({
         <div
           onClick={() => setOpen(false)}
           className="fixed inset-0 z-30 lg:hidden"
-          style={{ background: "rgba(0,0,0,0.7)", backdropFilter: "blur(8px)" }}
+          style={{ background: "rgba(0,0,0,0.7)",}}
         />
       )}
 
@@ -114,8 +114,7 @@ export default function DashboardLayout({
           width: 272,
           background: "#0a0b14",
           borderRight: "1px solid #ffffff0d",
-          backgroundImage:
-            "radial-gradient(ellipse at 80% 0%, #7c3aed0f 0%, transparent 60%), url(\"data:image/svg+xml,%3Csvg width='40' height='40' viewBox='0 0 40 40' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' stroke='%23ffffff05' stroke-width='1'%3E%3Cpath d='M0 20h40M20 0v40'/%3E%3C/g%3E%3C/svg%3E\")",
+        
         }}
       >
         {/* BRAND */}
@@ -344,7 +343,7 @@ export default function DashboardLayout({
             zIndex: 30,
             height: 64,
             background: "#07080fee",
-            backdropFilter: "blur(20px)",
+            
             borderBottom: "1px solid #ffffff08",
             padding: "0 28px",
             display: "flex",
